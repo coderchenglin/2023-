@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<unistd.h>   //dup,dup2
+#include<pthread.h>
+
+#include<fcntl.h>
+#include<unistd.h>   //fork
+
+
+int main(int argc , char* argv[])
+{
+    int fd;
+
+    //ps  -- process status
+
+    fd = open("ps.out",O_WRONLY|O_CREAT|O_TRUNC,0644);
+    if(fd<0)
+    {
+        perror("open ps.out error");
+        exit(1);
+    }
+
+    dup2(fd,STDOUT_FILENO);
+
+    execlp("ps","ps","ax",NULL);
+    perror("execlp errpr");
+
+    return 0;
+}
+
+
+//总结,fcntl函数使用F_DUPFD参数时,跟dup函数功能一样,只是后面可用选择返回(使用)哪一个文件描述符,如果指定的文件描述符(假设是7),被占用,则返回一个>=7的文件描述符
+
+
+
+
+
