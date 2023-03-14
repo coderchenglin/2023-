@@ -1,0 +1,35 @@
+/*
+pipe管道:1.父子进程间通信
+         2.兄弟进程间通信
+
+fifo管道:无血缘关系进程间通信
+
+        命名管道:mkfifo
+        无血缘关系的进程间通信:
+            读端:open fifo O_RDONLY
+            写端:open fifo O_WRONLY
+
+文件实现进程间通信:
+        打开的文件是内核中的一块缓冲区.多个无血缘关系的进程,可以同时访问该文件.
+        如果没有写进去,就读不到,且这种方式是不会阻塞的
+
+mmap:
+void* mmap(void* addr,size_t length, int prot, ing flags, int fd, off_t offset)   ---   创建共享内存映射
+
+参数:
+    addr:指定映射区的首地址.通常传NULL,表示让系统自动分配
+    length:共享内存映射区的大小. (一般<=文件的实际大小)
+    prot:共享内存映射区的读写属性.PROT_READ,PROT_WRITE,PROT_READ|PROT_WRITE 
+    flags:标注共享内存的共享属性.MAP_SHARED , MAP_PRIVATE
+    fd:用于创建共享内存映射区的那个文件的 文件描述符
+    offset:默认0.即偏移量为0, 表示映射文件全部.必须是4k的整数倍
+
+返回值:
+    成功:映射区的首地址.
+    失败:MAP_FAILED -> ((void*)(-1))   , errno
+*/
+
+
+
+
+
