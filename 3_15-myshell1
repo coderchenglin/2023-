@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include <fcntl.h>
+
+#define MAX_ARGS 10
+#define MAX_ARG_LENGTH 100
+#define MAX_LINE_LENGTH 1000
+
+int main() {
+    while (1) {
+        char line[MAX_LINE_LENGTH];
+        char *args[MAX_ARGS];
+        char *arg;
+        int argcount = 0;
+        int background = 0;
+        int redirect_input = 0, redirect_output = 0, redirect_append = 0;
+        int fd_in, fd_out;
+
+        printf("> ");
+        fgets(line, MAX_LINE_LENGTH, stdin);
+
+        // Remove trailing newline character
+        line[strlen(line) - 1] = '\0';
+
+        // Parse arguments
+        arg = strtok(line, " ");
+        while (arg != NULL && argcount < MAX_ARGS) {
+            if (strcmp(arg, "|") == 0) {
+                // Pipeline
+                args[argcount] = NULL;
+                break;
+            } else if (strcmp(arg, "<") == 0) {
+                // Input redirection
+                redirect_input = 1;
+                arg = strtok(NULL, " ");
+                fd_in = open(arg, O_RDONLY);
+                if (fd_in < 0) {
+                    perror(arg);
+                    break;
+                }
+            } else if (strcmp(arg, ">") == 0) {
+                // Output redirection
+                redirect_output = 1;
+                arg = strtok(NULL, " ");
+                fd_out = open(arg, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+                if (fd_out < 0) {
+                    perror(arg);
+                    break;
+                }
+            } else if (strcmp(arg, ">>") == 0) {
+                // Output redirection (append)
+                redirect_append = 1;
+                arg = strtok(NULL, " ");
+                fd_out = open(arg, O_WRONLY | O_CREAT | O_APPEND, 0666);
+                if (fd_out < 0) {
+                    perror(arg);
+                    break;
+                }
+            } else if (strcmp(arg, "&") == 0) {
+                // Background
+                background = 1;
+                break;
+            } else {
+                // Normal argument
+                args[argcount++] = arg;
+            }
+            arg = strtok(NULL, " ");
+        }
+        args[argcount] = NULL;
+
+        // Check for empty command line
+        if (args[0] == NULL) {
+            continue;
+        }
+
+        // Check for built-in commands
+        if (strcmp(args[0], "cd") == 0) {
+            if (args[1] == NULL) {
+                chdir(getenv("HOME"));
+            } else if (strcmp(args[1], "-") == 0) {
+                chdir(getenv("OLDPWD"));
+            } else {
+                chdir(args[1]);
+            }
+            continue;
+        } else if (strcmp(args[0], "exit") == 0) {
+            break;
+        }
+
+        // Fork a new process
+        pid_t pid = fork();
+        if (pid < 0) {
+            perror("fork");
+            break;
+        } else if (pid == 0) {
+            // Child process
+            if (redirect_input) {
+                dup2(fd_in, STDIN_FILENO);
+                close(fd_in);
+            }
+            if (redirect_output) {
+                dup2(fd_out, STDOUT_FILENO);
+                close(fd_out);
+            }
+            if (redirect_append) {
+                dup2(fd_out, STDOUT_FILENO);
+                close(fd_out);
+            }
+
+            // Execute the command
+            execvp(argvs[0],args);
+            perror(args[0]);
+            exit(1);
+        }else{
+            //Parent process
+            if(!background){
+                //Wait for the child process to complete
+                waitpid(pid,NULL,0);
+            }
+        }   
+    }
+    return 0;
+}
