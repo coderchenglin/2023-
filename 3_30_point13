@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+//练习使用qsort函数
+//qsort()
+//参1:待排序元素首元素地址
+//参2:待排序元素个数
+//参3:元素大小
+//参4:传一个比较函数的函数指针进来  int (*p)(const void*,const void* )
+//这个比较函数的返回值,大于0,交换,小于0,不交换
+
+int swap1(const void* e1 ,const void* e2)
+{
+    return *(int*)e2-*(int*)e1;
+}
+
+int swap2(const void* e1,const void* e2)
+{
+    return *(char*)e1-*(char*)e2;
+}
+
+
+int main()
+{
+    int arr[10] = {1,2,3,4,5,6,7,8,9,10};
+    int sz = sizeof(arr)/sizeof(arr[0]);
+
+    char arr1[]= {'b','a','d','c','f','e','g'};
+
+    int sz1 = sizeof(arr1)/sizeof(arr1[0]);
+    qsort(arr1,sz1,sizeof(arr1[0]),&swap2);
+
+    int i=0;
+    for(i = 0;i<sz1;i++)
+    {
+        printf("%c ",arr1[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+
