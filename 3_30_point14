@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+struct stu 
+{
+    char* name;
+    int age;
+};
+
+int swap_by_name(const void* e1,const void* e2)
+{
+    return strcmp(((struct stu*)e1)->name,((struct stu*)e2)->name);
+}
+
+
+int swap_by_age(const void* e1,const void* e2)
+{
+    return ((struct stu*)e1)->age - ((struct stu*)e2)->age;
+}
+
+int main()
+{
+    struct stu s[] = {{"zhangsan",34},{"lisi",30},{"wangwu",20}};
+    int sz = sizeof(s)/sizeof(s[0]);
+    qsort(s,sz,sizeof(s[0]),swap_by_age);
+
+
+
+    return 0;
+}
+
