@@ -1,0 +1,41 @@
+#include<stdio.h>
+
+//总结:有哪些是指针?
+//int* a
+//char* a
+//int a[]
+//char a[]
+
+//int* a = {1,2,3}
+//char* a = "abc";  //指针存放字符串(指针不能存数组)
+//char a[]="abc";   //数组存放字符串
+//char a[]={'a','b','c'};  //数组存放数组
+//char* a[]={"ab","bc","cd"};  //指针数组
+
+//char* a = {'a','b','c'}  err!
+
+int main()
+{
+    char a[] = {'a','b','c'};
+    char b[] = {'b','c','d'};
+    char c[] = {'c','d','e'};
+    
+    char* arr[3] = {a,b,c};
+
+    int i,j;
+    for(i = 0;i<3;i++)
+    {
+        for(j = 0;j<3;j++)
+        {
+            printf("%c",*(arr[i]+j));  //最重要的一点 arr[i]代表第i个元素的,首地址!是地址!可以进行+-运算,+-运算后还能进行解引用得到对应的值!
+        }
+        printf("\n");
+    }
+
+
+
+    return 0;
+}
+
+
+
