@@ -1,0 +1,385 @@
+   PPID     PID    PGID     SID TTY        TPGID STAT   UID   TIME COMMAND
+      0       1       1       1 ?             -1 Ss       0   0:01 /sbin/init splash
+      0       2       0       0 ?             -1 S        0   0:00 [kthreadd]
+      2       3       0       0 ?             -1 I<       0   0:00 [rcu_gp]
+      2       4       0       0 ?             -1 I<       0   0:00 [rcu_par_gp]
+      2       5       0       0 ?             -1 I<       0   0:00 [slub_flushwq]
+      2       6       0       0 ?             -1 I<       0   0:00 [netns]
+      2       7       0       0 ?             -1 I        0   0:05 [kworker/0:0-events]
+      2       8       0       0 ?             -1 I<       0   0:00 [kworker/0:0H-events_highpri]
+      2      10       0       0 ?             -1 I<       0   0:00 [mm_percpu_wq]
+      2      11       0       0 ?             -1 I        0   0:00 [rcu_tasks_kthread]
+      2      12       0       0 ?             -1 I        0   0:00 [rcu_tasks_rude_kthread]
+      2      13       0       0 ?             -1 I        0   0:00 [rcu_tasks_trace_kthread]
+      2      14       0       0 ?             -1 S        0   0:00 [ksoftirqd/0]
+      2      15       0       0 ?             -1 I        0   0:16 [rcu_preempt]
+      2      16       0       0 ?             -1 S        0   0:00 [migration/0]
+      2      17       0       0 ?             -1 S        0   0:00 [idle_inject/0]
+      2      19       0       0 ?             -1 S        0   0:00 [cpuhp/0]
+      2      20       0       0 ?             -1 S        0   0:00 [cpuhp/1]
+      2      21       0       0 ?             -1 S        0   0:00 [idle_inject/1]
+      2      22       0       0 ?             -1 S        0   0:01 [migration/1]
+      2      23       0       0 ?             -1 S        0   0:00 [ksoftirqd/1]
+      2      25       0       0 ?             -1 I<       0   0:00 [kworker/1:0H-events_highpri]
+      2      26       0       0 ?             -1 S        0   0:00 [cpuhp/2]
+      2      27       0       0 ?             -1 S        0   0:00 [idle_inject/2]
+      2      28       0       0 ?             -1 S        0   0:00 [migration/2]
+      2      29       0       0 ?             -1 S        0   0:00 [ksoftirqd/2]
+      2      31       0       0 ?             -1 I<       0   0:00 [kworker/2:0H-events_highpri]
+      2      32       0       0 ?             -1 S        0   0:00 [cpuhp/3]
+      2      33       0       0 ?             -1 S        0   0:00 [idle_inject/3]
+      2      34       0       0 ?             -1 S        0   0:00 [migration/3]
+      2      35       0       0 ?             -1 S        0   0:00 [ksoftirqd/3]
+      2      37       0       0 ?             -1 I<       0   0:00 [kworker/3:0H-events_highpri]
+      2      38       0       0 ?             -1 S        0   0:00 [cpuhp/4]
+      2      39       0       0 ?             -1 S        0   0:00 [idle_inject/4]
+      2      40       0       0 ?             -1 S        0   0:00 [migration/4]
+      2      41       0       0 ?             -1 S        0   0:00 [ksoftirqd/4]
+      2      43       0       0 ?             -1 I<       0   0:00 [kworker/4:0H-events_highpri]
+      2      44       0       0 ?             -1 S        0   0:00 [cpuhp/5]
+      2      45       0       0 ?             -1 S        0   0:00 [idle_inject/5]
+      2      46       0       0 ?             -1 S        0   0:00 [migration/5]
+      2      47       0       0 ?             -1 S        0   0:00 [ksoftirqd/5]
+      2      49       0       0 ?             -1 I<       0   0:00 [kworker/5:0H-kblockd]
+      2      50       0       0 ?             -1 S        0   0:00 [cpuhp/6]
+      2      51       0       0 ?             -1 S        0   0:00 [idle_inject/6]
+      2      52       0       0 ?             -1 S        0   0:00 [migration/6]
+      2      53       0       0 ?             -1 S        0   0:00 [ksoftirqd/6]
+      2      55       0       0 ?             -1 I<       0   0:00 [kworker/6:0H-events_highpri]
+      2      56       0       0 ?             -1 S        0   0:00 [cpuhp/7]
+      2      57       0       0 ?             -1 S        0   0:00 [idle_inject/7]
+      2      58       0       0 ?             -1 S        0   0:00 [migration/7]
+      2      59       0       0 ?             -1 S        0   0:00 [ksoftirqd/7]
+      2      61       0       0 ?             -1 I<       0   0:00 [kworker/7:0H-events_highpri]
+      2      62       0       0 ?             -1 S        0   0:00 [cpuhp/8]
+      2      63       0       0 ?             -1 S        0   0:00 [idle_inject/8]
+      2      64       0       0 ?             -1 S        0   0:01 [migration/8]
+      2      65       0       0 ?             -1 S        0   0:01 [ksoftirqd/8]
+      2      67       0       0 ?             -1 I<       0   0:00 [kworker/8:0H-events_highpri]
+      2      68       0       0 ?             -1 S        0   0:00 [cpuhp/9]
+      2      69       0       0 ?             -1 S        0   0:00 [idle_inject/9]
+      2      70       0       0 ?             -1 S        0   0:01 [migration/9]
+      2      71       0       0 ?             -1 S        0   0:00 [ksoftirqd/9]
+      2      73       0       0 ?             -1 I<       0   0:00 [kworker/9:0H-events_highpri]
+      2      74       0       0 ?             -1 S        0   0:00 [cpuhp/10]
+      2      75       0       0 ?             -1 S        0   0:00 [idle_inject/10]
+      2      76       0       0 ?             -1 S        0   0:01 [migration/10]
+      2      77       0       0 ?             -1 S        0   0:00 [ksoftirqd/10]
+      2      79       0       0 ?             -1 I<       0   0:00 [kworker/10:0H-events_highpri]
+      2      80       0       0 ?             -1 S        0   0:00 [cpuhp/11]
+      2      81       0       0 ?             -1 S        0   0:00 [idle_inject/11]
+      2      82       0       0 ?             -1 S        0   0:01 [migration/11]
+      2      83       0       0 ?             -1 S        0   0:00 [ksoftirqd/11]
+      2      85       0       0 ?             -1 I<       0   0:00 [kworker/11:0H-kblockd]
+      2      86       0       0 ?             -1 S        0   0:00 [cpuhp/12]
+      2      87       0       0 ?             -1 S        0   0:00 [idle_inject/12]
+      2      88       0       0 ?             -1 S        0   0:01 [migration/12]
+      2      89       0       0 ?             -1 S        0   0:00 [ksoftirqd/12]
+      2      91       0       0 ?             -1 I<       0   0:00 [kworker/12:0H-events_highpri]
+      2      92       0       0 ?             -1 S        0   0:00 [cpuhp/13]
+      2      93       0       0 ?             -1 S        0   0:00 [idle_inject/13]
+      2      94       0       0 ?             -1 S        0   0:01 [migration/13]
+      2      95       0       0 ?             -1 S        0   0:00 [ksoftirqd/13]
+      2      97       0       0 ?             -1 I<       0   0:00 [kworker/13:0H-events_highpri]
+      2      98       0       0 ?             -1 S        0   0:00 [cpuhp/14]
+      2      99       0       0 ?             -1 S        0   0:00 [idle_inject/14]
+      2     100       0       0 ?             -1 S        0   0:01 [migration/14]
+      2     101       0       0 ?             -1 S        0   0:00 [ksoftirqd/14]
+      2     103       0       0 ?             -1 I<       0   0:00 [kworker/14:0H-events_highpri]
+      2     104       0       0 ?             -1 S        0   0:00 [cpuhp/15]
+      2     105       0       0 ?             -1 S        0   0:00 [idle_inject/15]
+      2     106       0       0 ?             -1 S        0   0:01 [migration/15]
+      2     107       0       0 ?             -1 S        0   0:00 [ksoftirqd/15]
+      2     109       0       0 ?             -1 I<       0   0:00 [kworker/15:0H-kblockd]
+      2     110       0       0 ?             -1 S        0   0:00 [kdevtmpfs]
+      2     111       0       0 ?             -1 I<       0   0:00 [inet_frag_wq]
+      2     112       0       0 ?             -1 S        0   0:00 [kauditd]
+      2     113       0       0 ?             -1 S        0   0:00 [khungtaskd]
+      2     115       0       0 ?             -1 S        0   0:00 [oom_reaper]
+      2     117       0       0 ?             -1 I<       0   0:00 [writeback]
+      2     118       0       0 ?             -1 S        0   0:00 [kcompactd0]
+      2     119       0       0 ?             -1 SN       0   0:00 [ksmd]
+      2     120       0       0 ?             -1 SN       0   0:00 [khugepaged]
+      2     121       0       0 ?             -1 I<       0   0:00 [kintegrityd]
+      2     122       0       0 ?             -1 I<       0   0:00 [kblockd]
+      2     123       0       0 ?             -1 I<       0   0:00 [blkcg_punt_bio]
+      2     125       0       0 ?             -1 I<       0   0:00 [tpm_dev_wq]
+      2     126       0       0 ?             -1 I<       0   0:00 [ata_sff]
+      2     127       0       0 ?             -1 I<       0   0:00 [md]
+      2     128       0       0 ?             -1 I<       0   0:00 [edac-poller]
+      2     129       0       0 ?             -1 I<       0   0:00 [devfreq_wq]
+      2     130       0       0 ?             -1 S        0   0:00 [watchdogd]
+      2     131       0       0 ?             -1 I<       0   0:00 [kworker/6:1H-kblockd]
+      2     132       0       0 ?             -1 S        0   0:00 [kswapd0]
+      2     133       0       0 ?             -1 S        0   0:00 [ecryptfs-kthread]
+      2     141       0       0 ?             -1 I        0   0:03 [kworker/8:1-mm_percpu_wq]
+      2     145       0       0 ?             -1 I        0   0:00 [kworker/12:1-events]
+      2     146       0       0 ?             -1 I        0   0:00 [kworker/13:1-mm_percpu_wq]
+      2     148       0       0 ?             -1 I        0   0:00 [kworker/15:1-events]
+      2     153       0       0 ?             -1 I<       0   0:00 [kthrotld]
+      2     158       0       0 ?             -1 S        0   0:00 [irq/124-pciehp]
+      2     159       0       0 ?             -1 I<       0   0:00 [acpi_thermal_pm]
+      2     160       0       0 ?             -1 S        0   0:00 [xenbus_probe]
+      2     161       0       0 ?             -1 I<       0   0:00 [vfio-irqfd-clea]
+      2     162       0       0 ?             -1 I<       0   0:00 [hfi-updates]
+      2     164       0       0 ?             -1 I<       0   0:00 [mld]
+      2     165       0       0 ?             -1 I<       0   0:01 [kworker/2:1H-events_highpri]
+      2     166       0       0 ?             -1 I<       0   0:00 [ipv6_addrconf]
+      2     171       0       0 ?             -1 I<       0   0:00 [kstrp]
+      2     177       0       0 ?             -1 I<       0   0:00 [zswap-shrink]
+      2     226       0       0 ?             -1 I<       0   0:00 [charger_manager]
+      2     250       0       0 ?             -1 I<       0   0:00 [kworker/4:1H-events_highpri]
+      2     301       0       0 ?             -1 I<       0   0:00 [kworker/14:1H-events_highpri]
+      2     303       0       0 ?             -1 I<       0   0:00 [kworker/8:1H-events_highpri]
+      2     304       0       0 ?             -1 I<       0   0:00 [kworker/7:1H-events_highpri]
+      2     305       0       0 ?             -1 I<       0   0:00 [nvme-wq]
+      2     306       0       0 ?             -1 I<       0   0:00 [nvme-reset-wq]
+      2     307       0       0 ?             -1 I<       0   0:00 [nvme-delete-wq]
+      2     311       0       0 ?             -1 I<       0   0:00 [sdhci]
+      2     312       0       0 ?             -1 S        0   0:00 [irq/145-mmc0]
+      2     314       0       0 ?             -1 S        0   0:00 [irq/146-ELAN0662:00]
+      2     315       0       0 ?             -1 I<       0   0:00 [kworker/0:1H-events_highpri]
+      2     316       0       0 ?             -1 I<       0   0:00 [kworker/10:1H-events_highpri]
+      2     317       0       0 ?             -1 I<       0   0:00 [kworker/9:1H-events_highpri]
+      2     318       0       0 ?             -1 I<       0   0:00 [kworker/12:1H-kblockd]
+      2     322       0       0 ?             -1 I        0   0:00 [kworker/15:2-events]
+      2     341       0       0 ?             -1 S        0   0:01 [jbd2/nvme0n1p6-8]
+      2     342       0       0 ?             -1 I<       0   0:00 [ext4-rsv-conver]
+      2     343       0       0 ?             -1 I<       0   0:01 [kworker/1:1H-events_highpri]
+      2     346       0       0 ?             -1 I<       0   0:00 [kworker/13:1H-events_highpri]
+      1     387     387     387 ?             -1 S<s      0   0:02 /lib/systemd/systemd-journald
+      2     413       0       0 ?             -1 I<       0   0:00 [kworker/15:1H-events_highpri]
+      1     416     416     416 ?             -1 Ss       0   0:00 /lib/systemd/systemd-udevd
+      2     452       0       0 ?             -1 I<       0   0:00 [kworker/11:1H-events_highpri]
+      2     470       0       0 ?             -1 I<       0   0:00 [kworker/5:1H-kblockd]
+      2     531       0       0 ?             -1 I<       0   0:00 [cfg80211]
+      2     534       0       0 ?             -1 S        0   0:00 [irq/164-mei_me]
+      2     538       0       0 ?             -1 S        0   0:07 [irq/165-iwlwifi:default_queue]
+      2     539       0       0 ?             -1 S        0   0:01 [irq/166-iwlwifi:queue_1]
+      2     540       0       0 ?             -1 S        0   0:00 [irq/167-iwlwifi:queue_2]
+      2     542       0       0 ?             -1 S        0   0:00 [irq/168-iwlwifi:queue_3]
+      2     543       0       0 ?             -1 S        0   0:00 [irq/169-iwlwifi:queue_4]
+      2     545       0       0 ?             -1 S        0   0:01 [irq/170-iwlwifi:queue_5]
+      2     546       0       0 ?             -1 S        0   0:00 [irq/171-iwlwifi:queue_6]
+      2     549       0       0 ?             -1 S        0   0:02 [irq/172-iwlwifi:queue_7]
+      2     551       0       0 ?             -1 S        0   0:00 [irq/173-iwlwifi:queue_8]
+      2     552       0       0 ?             -1 S        0   0:02 [irq/174-iwlwifi:queue_9]
+      2     553       0       0 ?             -1 S        0   0:00 [irq/175-iwlwifi:queue_10]
+      2     554       0       0 ?             -1 S        0   0:01 [irq/176-iwlwifi:queue_11]
+      2     555       0       0 ?             -1 S        0   0:00 [irq/177-iwlwifi:queue_12]
+      2     556       0       0 ?             -1 S        0   0:02 [irq/178-iwlwifi:queue_13]
+      2     557       0       0 ?             -1 S        0   0:00 [irq/179-iwlwifi:queue_14]
+      2     558       0       0 ?             -1 S        0   0:00 [irq/180-iwlwifi:exception]
+      2     581       0       0 ?             -1 I<       0   0:00 [kworker/3:1H-kblockd]
+      1     583     583     583 ?             -1 Ss     129   0:00 /sbin/rpcbind -f -w
+      1     585     585     585 ?             -1 Ss     108   0:12 /lib/systemd/systemd-oomd
+      1     586     586     586 ?             -1 Ss     101   0:01 /lib/systemd/systemd-resolved
+      1     587     587     587 ?             -1 Ssl    103   0:00 /lib/systemd/systemd-timesyncd
+      2     598       0       0 ?             -1 I<       0   0:00 [cryptd]
+      2     628       0       0 ?             -1 I<       0   0:00 [rpciod]
+      2     629       0       0 ?             -1 I<       0   0:00 [xprtiod]
+      1     683     683     683 ?             -1 Ssl      0   0:00 /usr/libexec/accounts-daemon
+      1     684     684     684 ?             -1 Ss       0   0:11 /usr/sbin/acpid
+      1     687     687     687 ?             -1 Ss     114   0:01 avahi-daemon: running [liupeng-ThinkBook-14-G4-IAP.local]
+      1     688     688     688 ?             -1 Ss       0   0:03 /usr/lib/bluetooth/bluetoothd
+      1     689     689     689 ?             -1 Ss       0   0:00 /usr/sbin/cron -f -P
+      1     690     690     690 ?             -1 Ss     102   0:03 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+      1     691     691     691 ?             -1 Ssl      0   0:03 /usr/sbin/NetworkManager --no-daemon
+      1     699     699     699 ?             -1 Ssl      0   0:00 /usr/sbin/irqbalance --foreground
+      1     700     700     700 ?             -1 Ss       0   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+      1     702     702     702 ?             -1 Ssl      0   0:01 /usr/libexec/polkitd --no-debug
+      1     704     704     704 ?             -1 Ssl      0   0:00 /usr/libexec/power-profiles-daemon
+      1     707     707     707 ?             -1 Ssl    104   0:00 /usr/sbin/rsyslogd -n -iNONE
+      1     711     711     711 ?             -1 Ssl      0   0:02 /usr/lib/snapd/snapd
+      1     714     714     714 ?             -1 Ssl      0   0:00 /usr/libexec/switcheroo-control
+      1     718     718     718 ?             -1 Ss       0   0:00 /lib/systemd/systemd-logind
+      1     721     721     721 ?             -1 Ssl      0   0:01 /usr/sbin/thermald --systemd --dbus-enable --adaptive
+      1     723     723     723 ?             -1 Ssl      0   0:00 /usr/libexec/udisks2/udisksd
+      1     725     725     725 ?             -1 Ss       0   0:03 /sbin/wpa_supplicant -u -s -O /run/wpa_supplicant
+    687     731     687     687 ?             -1 S      114   0:00 avahi-daemon: chroot helper
+      1     769     769     769 ?             -1 Ssl      0   0:00 /usr/sbin/ModemManager
+      1     772     772     772 ?             -1 Ssl      0   0:00 /usr/libexec/boltd
+      1     774     774     774 ?             -1 Ss       0   0:00 /usr/sbin/cupsd -l
+      1     794     794     794 ?             -1 Ssl      0   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+      1     826     826     826 ?             -1 Ssl      0   0:00 /usr/sbin/gdm3
+      2     868       0       0 ?             -1 S        0   0:00 [card0-crtc0]
+      2     869       0       0 ?             -1 S        0   0:00 [card0-crtc1]
+      2     870       0       0 ?             -1 S        0   0:00 [card0-crtc2]
+      2     871       0       0 ?             -1 S        0   0:00 [card0-crtc3]
+      1     894     894     894 ?             -1 Ssl      0   0:01 /usr/libexec/upowerd
+      2     974       0       0 ?             -1 S        0   0:00 [irq/183-AudioDSP]
+      1    1154    1154    1154 ?             -1 SNsl   116   0:00 /usr/libexec/rtkit-daemon
+      1    1322    1322    1322 ?             -1 Ssl    123   0:01 /usr/libexec/geoclue
+      1    1323    1323    1323 ?             -1 Ssl      0   0:02 /usr/libexec/packagekitd
+      1    1464    1464    1464 ?             -1 Ssl    122   0:00 /usr/libexec/colord
+      2    1486       0       0 ?             -1 I        0   0:00 [kworker/7:2-events]
+      1    1578    1578    1578 ?             -1 Ssl      0   0:00 /usr/sbin/cups-browsed
+      1    1582    1582    1582 ?             -1 Ss     113   0:00 /usr/sbin/kerneloops --test
+      1    1584    1584    1584 ?             -1 Ss     113   0:00 /usr/sbin/kerneloops
+    826    1589     826     826 ?             -1 Sl       0   0:00 gdm-session-worker [pam/gdm-password]
+      1    1602    1602    1602 ?             -1 Ss    1000   0:00 /lib/systemd/systemd --user
+   1602    1603    1602    1602 ?             -1 S     1000   0:00 (sd-pam)
+   1602    1609    1609    1609 ?             -1 S<sl  1000   0:00 /usr/bin/pipewire
+   1602    1610    1610    1610 ?             -1 Ssl   1000   0:00 /usr/bin/pipewire-media-session
+   1602    1611    1611    1611 ?             -1 S<sl  1000   1:24 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+   1602    1621    1621    1621 ?             -1 Ss    1000   0:04 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+      1    1623    1622    1622 ?             -1 Sl    1000   0:00 /usr/bin/gnome-keyring-daemon --daemonize --login
+   1602    1627    1627    1627 ?             -1 Ssl   1000   0:00 /usr/libexec/gvfsd
+   1602    1660    1660    1660 ?             -1 SNsl  1000   0:00 /usr/libexec/tracker-miner-fs-3
+   1602    1673    1673    1673 ?             -1 Ssl   1000   0:00 /usr/libexec/gvfs-udisks2-volume-monitor
+      2    1678       0       0 ?             -1 S<       0   0:00 [krfcommd]
+   1602    1680    1680    1680 ?             -1 Ssl   1000   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+   1602    1684    1684    1684 ?             -1 Ssl   1000   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+   1602    1688    1688    1688 ?             -1 Ssl   1000   0:00 /usr/libexec/gvfs-goa-volume-monitor
+   1602    1692    1621    1621 ?             -1 Sl    1000   0:00 /usr/libexec/goa-daemon
+   1602    1699    1621    1621 ?             -1 Sl    1000   0:00 /usr/libexec/goa-identity-service
+   1602    1701    1701    1701 ?             -1 Ssl   1000   0:00 /usr/libexec/gvfs-afc-volume-monitor
+   1589    1727    1727    1727 tty2        1727 Ssl+  1000   0:00 /usr/libexec/gdm-wayland-session env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --session=ubuntu
+   1727    1730    1727    1727 tty2        1727 Sl+   1000   0:00 /usr/libexec/gnome-session-binary --session=ubuntu
+   1602    1760    1760    1760 ?             -1 Ssl   1000   0:00 /usr/libexec/gnome-session-ctl --monitor
+   1602    1772    1772    1772 ?             -1 Ssl   1000   0:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+   1772    1787    1772    1772 ?             -1 Sl    1000   0:00 /usr/libexec/at-spi-bus-launcher --launch-immediately
+   1602    1790    1790    1790 ?             -1 Ssl   1000  11:42 /usr/bin/gnome-shell
+   1787    1796    1772    1772 ?             -1 S     1000   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 11 --address=unix:path=/run/user/1000/at-spi/bus
+   1602    1872    1621    1621 ?             -1 Sl    1000   0:00 /usr/libexec/gnome-shell-calendar-server
+   1602    1878    1878    1878 ?             -1 Ssl   1000   0:00 /usr/libexec/evolution-source-registry
+   1602    1883    1883    1883 ?             -1 Ssl   1000   0:00 /usr/libexec/dconf-service
+   1602    1888    1888    1888 ?             -1 Ssl   1000   0:00 /usr/libexec/evolution-calendar-factory
+   1602    1899    1899    1899 ?             -1 Ssl   1000   0:00 /usr/libexec/evolution-addressbook-factory
+   1627    1909    1627    1627 ?             -1 Sl    1000   0:00 /usr/libexec/gvfsd-trash --spawner :1.2 /org/gtk/gvfs/exec_spaw/0
+   1602    1921    1621    1621 ?             -1 Sl    1000   0:00 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.Shell.Notifications
+   1602    1923    1772    1772 ?             -1 Sl    1000   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+   1602    1940    1940    1940 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-a11y-settings
+   1602    1941    1941    1941 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-color
+   1602    1942    1942    1942 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-datetime
+   1602    1945    1945    1945 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-housekeeping
+   1602    1946    1946    1946 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-keyboard
+   1602    1949    1949    1949 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-media-keys
+   1602    1952    1952    1952 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-power
+   1602    1955    1955    1955 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-print-notifications
+   1602    1959    1959    1959 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-rfkill
+   1602    1962    1962    1962 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-screensaver-proxy
+   1602    1965    1965    1965 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-sharing
+   1602    1967    1967    1967 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-smartcard
+   1602    1969    1969    1969 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-sound
+   1602    1971    1971    1971 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-wacom
+   1772    2007    1772    1772 ?             -1 Sl    1000   0:00 /usr/libexec/gsd-disk-utility-notify
+   1772    2008    1772    1772 ?             -1 Sl    1000   0:13 /home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/cfw --enable-crashpad
+   1772    2011    1772    1772 ?             -1 Sl    1000   0:00 /usr/libexec/evolution-data-server/evolution-alarm-notify
+   1602    2021    2020    2020 ?             -1 Sl    1000   0:09 fcitx
+   1790    2077    1790    1790 ?             -1 Sl    1000   3:03 /usr/bin/Xwayland :0 -rootless -noreset -accessx -core -auth /run/user/1000/.mutter-Xwaylandauth.CQ0G21 -listen 4 -listen 5 -displayfd 6 -initfd 7
+   1602    2087    1772    1772 ?             -1 Sl    1000   0:03 /snap/snap-store/638/usr/bin/snap-store --gapplication-service
+   2008    2123    1772    1772 ?             -1 S     1000   0:00 /home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/cfw --type=zygote --no-zygote-sandbox --enable-crashpad --enable-crashpad
+   2008    2139    1772    1772 ?             -1 S     1000   0:00 /home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/cfw --type=zygote --enable-crashpad --enable-crashpad
+   2139    2155    1772    1772 ?             -1 S     1000   0:00 /home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/cfw --type=zygote --enable-crashpad --enable-crashpad
+   1602    2192    1955    1955 ?             -1 Sl    1000   0:00 /usr/libexec/gsd-printer
+   1602    2278    1621    1621 ?             -1 Sl    1000   0:00 /usr/bin/gjs /usr/share/gnome-shell/org.gnome.ScreenSaver
+   1602    2299    2299    2299 ?             -1 Ssl   1000   0:00 /usr/libexec/gsd-xsettings
+   1602    2338    2338    2338 ?             -1 Ss    1000   0:05 /usr/bin/dbus-daemon --syslog --fork --print-pid 5 --print-address 7 --config-file /usr/share/fcitx/dbus/daemon.conf
+   1602    2343    2342    2342 ?             -1 SN    1000   0:00 /usr/bin/fcitx-dbus-watcher unix:abstract=/tmp/dbus-g5xYPWjMXQ,guid=b0e4574695811feacd5422c8642a8822 2338
+   2123    2358    1772    1772 ?             -1 Sl    1000   0:06 /home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/cfw --type=gpu-process --enable-crashpad --enable-crash-reporter=2fa648a7-8b0e-4cae-97e0-df410a8c77dd,no_channel --user-data-dir=/home/liupeng/.config/clash_win --gpu-preferences=WAAAAAAAAAAgAAAIAAAAAAAAAAAAAAAAAABgAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAABAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --use-gl=angle --use-angle=swiftshader-webgl --shared-files --field-trial-handle=0,i,5446687611481224275,9201489412908902791,131072 --disable-features=OutOfBlinkCors,SpareRendererForSitePerProcess
+   2008    2385    1772    1772 ?             -1 Sl    1000   0:02 /home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/cfw --type=utility --utility-sub-type=network.mojom.NetworkService --lang=zh-CN --service-sandbox-type=none --enable-crashpad --enable-crash-reporter=2fa648a7-8b0e-4cae-97e0-df410a8c77dd,no_channel --user-data-dir=/home/liupeng/.config/clash_win --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,5446687611481224275,9201489412908902791,131072 --disable-features=OutOfBlinkCors,SpareRendererForSitePerProcess --enable-crashpad
+   2008    2388    1772    1772 ?             -1 Sl    1000   0:47 /home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/cfw --type=renderer --enable-crashpad --enable-crash-reporter=2fa648a7-8b0e-4cae-97e0-df410a8c77dd,no_channel --user-data-dir=/home/liupeng/.config/clash_win --app-path=/home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/resources/app.asar --no-sandbox --no-zygote --disable-gpu-compositing --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=4 --launch-time-ticks=18435606 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,5446687611481224275,9201489412908902791,131072 --disable-features=OutOfBlinkCors,SpareRendererForSitePerProcess --enable-crashpad
+   1602    2457    2456    2456 ?             -1 Sl    1000   0:03 /opt/sogoupinyin/files/bin/sogoupinyin-watchdog
+   1602    2492    2491    2491 ?             -1 Sl    1000   0:23 /opt/sogoupinyin/files/bin/sogoupinyin-service
+      1    2512    2512    2512 ?             -1 Ssl      0   0:00 /usr/libexec/fwupd/fwupd
+   2388    2528    1772    1772 ?             -1 Sl    1000   0:23 /home/liupeng/下载/Clash for Windows-0.20.19-x64-linux/resources/static/files/linux/x64/clash-linux
+   1602    2552    2552    2552 ?             -1 Ss    1000   0:00 /snap/snapd-desktop-integration/57/usr/bin/snapd-desktop-integration
+   2552    2629    2552    2552 ?             -1 Sl    1000   0:00 /snap/snapd-desktop-integration/57/usr/bin/snapd-desktop-integration
+   1602    3677    1621    1621 ?             -1 Sl    1000   0:00 /usr/bin/snap userd
+   1772    4473    1772    1772 ?             -1 Sl    1000   0:00 update-notifier
+   1602    4474    4474    4474 ?             -1 Ssl   1000   0:00 /usr/libexec/gvfsd-metadata
+      2    5594       0       0 ?             -1 I<       0   0:19 [kworker/u33:0-hci0]
+      2    7801       0       0 ?             -1 I<       0   0:13 [kworker/u33:3-hci0]
+   1602    8036    8036    8036 ?             -1 Ss    1000   0:00 /usr/lib/bluetooth/obexd
+      2    8041       0       0 ?             -1 I        0   0:00 [kworker/13:0-cgroup_destroy]
+      2    8046       0       0 ?             -1 I        0   0:00 [kworker/11:0-mm_percpu_wq]
+   1627    8852    1627    1627 ?             -1 Sl    1000   0:00 /usr/libexec/gvfsd-network --spawner :1.2 /org/gtk/gvfs/exec_spaw/1
+   1627    8864    1627    1627 ?             -1 Sl    1000   0:00 /usr/libexec/gvfsd-dnssd --spawner :1.2 /org/gtk/gvfs/exec_spaw/3
+   1790   10900    1790    1790 ?             -1 SLl   1000   1:34 /opt/google/chrome/chrome
+  10900   10906    1790    1790 ?             -1 S     1000   0:00 cat
+  10900   10907    1790    1790 ?             -1 S     1000   0:00 cat
+   1602   10909   10908   10908 ?             -1 Sl    1000   0:00 /opt/google/chrome/chrome_crashpad_handler --monitor-self --monitor-self-annotation=ptype=crashpad-handler --database=/home/liupeng/.config/google-chrome/Crash Reports --metrics-dir=/home/liupeng/.config/google-chrome --url=https://clients2.google.com/cr/report --annotation=channel= --annotation=lsb-release=Ubuntu 22.04.1 LTS --annotation=plat=Linux --annotation=prod=Chrome_Linux --annotation=ver=111.0.5563.146 --initial-client-fd=5 --shared-client-connection
+   1602   10911   10910   10910 ?             -1 Sl    1000   0:00 /opt/google/chrome/chrome_crashpad_handler --no-periodic-tasks --monitor-self-annotation=ptype=crashpad-handler --database=/home/liupeng/.config/google-chrome/Crash Reports --url=https://clients2.google.com/cr/report --annotation=channel= --annotation=lsb-release=Ubuntu 22.04.1 LTS --annotation=plat=Linux --annotation=prod=Chrome_Linux --annotation=ver=111.0.5563.146 --initial-client-fd=4 --shared-client-connection
+  10900   10917    1790    1790 ?             -1 S     1000   0:00 /opt/google/chrome/chrome --type=zygote --no-zygote-sandbox --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable
+  10900   10918    1790    1790 ?             -1 S     1000   0:00 /opt/google/chrome/chrome --type=zygote --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable
+  10918   10919    1790    1790 ?             -1 S     1000   0:00 /opt/google/chrome/nacl_helper
+  10918   10922    1790    1790 ?             -1 S     1000   0:00 /opt/google/chrome/chrome --type=zygote --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable
+  10917   10946    1790    1790 ?             -1 Sl    1000   8:49 /opt/google/chrome/chrome --type=gpu-process --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --gpu-preferences=WAAAAAAAAAAgAAAIAAAAAAAAAAAAAAAAAABgAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAABAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10900   10947    1790    1790 ?             -1 Sl    1000   0:21 /opt/google/chrome/chrome --type=utility --utility-sub-type=network.mojom.NetworkService --lang=zh-CN --service-sandbox-type=none --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   10959    1790    1790 ?             -1 Sl    1000   0:00 /opt/google/chrome/chrome --type=utility --utility-sub-type=storage.mojom.StorageService --lang=zh-CN --service-sandbox-type=utility --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   11009    1790    1790 ?             -1 Sl    1000   0:01 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --first-renderer-process --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=6 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=2467520435 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   11010    1790    1790 ?             -1 Sl    1000   0:02 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=2467521790 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   11115    1790    1790 ?             -1 Sl    1000   0:00 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=12 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=2469570758 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   11155    1790    1790 ?             -1 Sl    1000   0:01 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=16 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=2480088643 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   11163    1790    1790 ?             -1 Sl    1000   0:11 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=17 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=2480435711 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   11193    1790    1790 ?             -1 Sl    1000   0:00 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=20 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=2482610144 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   11221    1790    1790 ?             -1 Sl    1000  21:28 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=21 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=2483574916 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10900   11268    1790    1790 ?             -1 Sl    1000   0:27 /opt/google/chrome/chrome --type=utility --utility-sub-type=audio.mojom.AudioService --lang=zh-CN --service-sandbox-type=none --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+   1602   11411    1949    1949 ?             -1 S     1000   0:00 /usr/bin/python3 /usr/bin/gnome-terminal --wait
+  11411   11414    1949    1949 ?             -1 Sl    1000   0:00 /usr/bin/gnome-terminal.real --wait
+   1602   11419   11419   11419 ?             -1 Ssl   1000   1:03 /usr/libexec/gnome-terminal-server
+  11419   11446   11446   11446 pts/0      17325 Ss    1000   0:00 bash
+  10922   11850    1790    1790 ?             -1 Sl    1000   0:04 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=28 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=2843366298 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+      2   11925       0       0 ?             -1 I        0   0:00 [kworker/4:2-events]
+   1790   11929    1790    1790 ?             -1 SLl   1000   0:17 /usr/share/code/code --unity-launch --enable-crashpad
+  11929   11933    1790    1790 ?             -1 S     1000   0:00 /usr/share/code/code --type=zygote --no-zygote-sandbox --enable-crashpad --enable-crashpad
+  11929   11934    1790    1790 ?             -1 S     1000   0:00 /usr/share/code/code --type=zygote --enable-crashpad --enable-crashpad
+  11934   11936    1790    1790 ?             -1 S     1000   0:00 /usr/share/code/code --type=zygote --enable-crashpad --enable-crashpad
+   1602   11949   11948   11948 ?             -1 Sl    1000   0:00 /usr/share/code/chrome_crashpad_handler --monitor-self-annotation=ptype=crashpad-handler --no-rate-limit --database=/home/liupeng/.config/Code/Crashpad --url=appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=bc3a4b6b-4fa4-4a22-a45e-35c46924402a&iid=bc3a4b6b-4fa4-4a22-a45e-35c46924402a&sid=bc3a4b6b-4fa4-4a22-a45e-35c46924402a --annotation=_companyName=Microsoft --annotation=_productName=VSCode --annotation=_version=1.73.1 --annotation=lsb-release=Ubuntu 22.04.1 LTS --annotation=plat=Linux --annotation=prod=Electron --annotation=ver=19.0.17 --initial-client-fd=41 --shared-client-connection
+  11933   11963    1790    1790 ?             -1 Sl    1000   0:26 /usr/share/code/code --type=gpu-process --enable-crashpad --crashpad-handler-pid=11949 --enable-crash-reporter=d8e5f050-026c-41eb-9049-43640886920e,no_channel --user-data-dir=/home/liupeng/.config/Code --gpu-preferences=WAAAAAAAAAAgAAAIAAAAAAAAAAAAAAAAAABgAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAABAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=0,i,15717416877941269849,5314025190385900045,131072 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess
+  11929   11993    1790    1790 ?             -1 Sl    1000   0:01 /usr/share/code/code --type=utility --utility-sub-type=network.mojom.NetworkService --lang=zh-CN --service-sandbox-type=none --enable-crashpad --crashpad-handler-pid=11949 --enable-crash-reporter=d8e5f050-026c-41eb-9049-43640886920e,no_channel --user-data-dir=/home/liupeng/.config/Code --standard-schemes=vscode-webview,vscode-file --secure-schemes=vscode-webview,vscode-file --bypasscsp-schemes --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --streaming-schemes --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,15717416877941269849,5314025190385900045,131072 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess --enable-crashpad
+  11929   12021    1790    1790 ?             -1 Sl    1000   1:25 /usr/share/code/code --type=renderer --enable-crashpad --crashpad-handler-pid=11949 --enable-crash-reporter=d8e5f050-026c-41eb-9049-43640886920e,no_channel --user-data-dir=/home/liupeng/.config/Code --standard-schemes=vscode-webview,vscode-file --secure-schemes=vscode-webview,vscode-file --bypasscsp-schemes --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --streaming-schemes --app-path=/usr/share/code/resources/app --no-sandbox --no-zygote --enable-blink-features=HighlightAPI --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=4 --launch-time-ticks=2971839742 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,15717416877941269849,5314025190385900045,131072 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess --vscode-window-config=vscode:b05f1c8b-fd6d-4eb8-911e-2645c8f50387 --enable-crashpad
+  11929   12065    1790    1790 ?             -1 Sl    1000   0:31 /usr/share/code/code --ms-enable-electron-run-as-node --inspect-port=0 /usr/share/code/resources/app/out/bootstrap-fork --type=extensionHost --skipWorkspaceStorageLock
+  11929   12077    1790    1790 ?             -1 Sl    1000   0:15 /usr/share/code/code --type=renderer --enable-crashpad --crashpad-handler-pid=11949 --enable-crash-reporter=d8e5f050-026c-41eb-9049-43640886920e,no_channel --user-data-dir=/home/liupeng/.config/Code --standard-schemes=vscode-webview,vscode-file --secure-schemes=vscode-webview,vscode-file --bypasscsp-schemes --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --streaming-schemes --app-path=/usr/share/code/resources/app --no-sandbox --no-zygote --node-integration-in-worker --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=5 --launch-time-ticks=2972536904 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,15717416877941269849,5314025190385900045,131072 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess --vscode-window-config=vscode:55b152cd-6c3c-4950-98b7-c13366a4fa3e --vscode-window-kind=shared-process --enable-crashpad
+  12077   12101    1790    1790 ?             -1 Sl    1000   0:09 /usr/share/code/code --ms-enable-electron-run-as-node /usr/share/code/resources/app/out/bootstrap-fork --type=ptyHost --logsPath /home/liupeng/.config/Code/logs/20230403T165156
+  12077   12141    1790    1790 ?             -1 Sl    1000   0:05 /usr/share/code/code --ms-enable-electron-run-as-node /usr/share/code/resources/app/out/bootstrap-fork --type=fileWatcher
+  12065   12171    1790    1790 ?             -1 Sl    1000   0:02 /usr/share/code/code --ms-enable-electron-run-as-node /usr/share/code/resources/app/extensions/json-language-features/server/dist/node/jsonServerMain --node-ipc --clientProcessId=12065
+      2   12222       0       0 ?             -1 I        0   0:12 [kworker/u32:0-flush-259:0]
+  12065   12223    1790    1790 ?             -1 Sl    1000   0:07 /home/liupeng/.vscode/extensions/ms-vscode.cpptools-1.13.7-linux-x64/bin/cpptools
+   1602   12273    1790    1790 ?             -1 Sl    1000   0:01 /home/liupeng/.vscode/extensions/ms-vscode.cpptools-1.13.7-linux-x64/bin/cpptools-srv 12223 {E7751DBE-BDB2-4630-B494-156F9E45C6DC}
+  12101   12358   12358   12358 pts/1      12358 Ss+   1000   0:00 /usr/bin/bash --init-file /usr/share/code/resources/app/out/vs/workbench/contrib/terminal/browser/media/shellIntegration-bash.sh
+  12101   12519   12519   12519 pts/2      12519 Ss+   1000   0:00 /usr/bin/bash
+      2   12938       0       0 ?             -1 D<       0   0:11 [kworker/u33:2+i915_flip]
+      2   13058       0       0 ?             -1 I        0   0:00 [kworker/10:2-events]
+  10922   13081    1790    1790 ?             -1 Sl    1000   0:02 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=40 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=4089757974 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   13093    1790    1790 ?             -1 Sl    1000   0:33 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=41 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=4090128796 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+      2   13199       0       0 ?             -1 I        0   0:00 [kworker/6:2-events]
+      2   13632       0       0 ?             -1 I        0   0:00 [kworker/11:2-events]
+      2   14752       0       0 ?             -1 I<       0   0:07 [kworker/u33:1-i915_flip]
+      2   15823       0       0 ?             -1 I        0   0:06 [kworker/u32:2-events_power_efficient]
+      2   16056       0       0 ?             -1 I        0   0:00 [kworker/1:0-events]
+      2   16130       0       0 ?             -1 I        0   0:00 [kworker/4:1-mm_percpu_wq]
+      2   16199       0       0 ?             -1 I        0   0:00 [kworker/5:0-events]
+      2   16210       0       0 ?             -1 I        0   0:00 [kworker/14:0-events]
+      2   16400       0       0 ?             -1 I        0   0:00 [kworker/9:0-mm_percpu_wq]
+      2   16425       0       0 ?             -1 I        0   0:00 [kworker/3:1-mm_percpu_wq]
+      2   16663       0       0 ?             -1 I        0   0:00 [kworker/2:1-mm_percpu_wq]
+      2   16668       0       0 ?             -1 I        0   0:00 [kworker/14:1]
+      2   16684       0       0 ?             -1 I        0   0:00 [kworker/12:0]
+      2   16702       0       0 ?             -1 I        0   0:00 [kworker/7:1-mm_percpu_wq]
+      2   16703       0       0 ?             -1 I        0   0:00 [kworker/6:1-mm_percpu_wq]
+      2   16704       0       0 ?             -1 I        0   0:01 [kworker/u32:1-events_power_efficient]
+      2   16737       0       0 ?             -1 I        0   0:00 [kworker/5:2]
+      2   16751       0       0 ?             -1 I        0   0:01 [kworker/u32:4-i915]
+      2   16759       0       0 ?             -1 I        0   0:00 [kworker/0:1-events]
+      2   16786       0       0 ?             -1 I        0   0:00 [kworker/1:1-events]
+      2   16847       0       0 ?             -1 I        0   0:00 [kworker/10:1-events]
+      2   16850       0       0 ?             -1 I        0   0:00 [kworker/3:0-mm_percpu_wq]
+      2   16943       0       0 ?             -1 I        0   0:00 [kworker/2:2-events]
+      2   16972       0       0 ?             -1 I        0   0:00 [kworker/1:2-events]
+      2   16976       0       0 ?             -1 I        0   0:00 [kworker/9:3-events]
+      2   16989       0       0 ?             -1 I        0   0:00 [kworker/8:0-events]
+      2   17052       0       0 ?             -1 I        0   0:00 [kworker/1:3-events]
+      2   17067       0       0 ?             -1 I        0   0:00 [kworker/9:1-events]
+  10922   17089    1790    1790 ?             -1 Sl    1000   0:16 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=45 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=7456435608 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+  10922   17105    1790    1790 ?             -1 Sl    1000   0:00 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=10909 --enable-crash-reporter=93635621-e7bf-4391-a99c-5fb3946851b7, --change-stack-guard-on-fork=enable --lang=zh-CN --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=46 --time-ticks-at-unix-epoch=-1680508944383776 --launch-time-ticks=7458331412 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=0,i,14934047524329871651,3106527885143778069,131072
+      2   17127       0       0 ?             -1 I        0   0:00 [kworker/6:0]
+      2   17168       0       0 ?             -1 I        0   0:00 [kworker/u32:3-events_unbound]
+      2   17169       0       0 ?             -1 I        0   0:00 [kworker/0:2]
+      2   17170       0       0 ?             -1 I        0   0:00 [kworker/2:0-events]
+      2   17195       0       0 ?             -1 I        0   0:00 [kworker/14:2-mm_percpu_wq]
+      2   17280       0       0 ?             -1 I        0   0:00 [kworker/8:2-mm_percpu_wq]
+      2   17292       0       0 ?             -1 I        0   0:00 [kworker/5:1-events]
+  11446   17325   17325   11446 pts/0      17325 S+    1000   0:00 ./ps
+  17325   17326   17325   11446 pts/0      17325 R+    1000   0:00 ps -axj
