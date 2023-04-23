@@ -1,0 +1,25 @@
+class Celsius {
+public:
+    Celsius(double temp) : m_temp(temp) {}
+    operator Fahrenheit() const {
+        return Fahrenheit(m_temp * 9 / 5 + 32);
+    }
+private:
+    double m_temp;
+};
+
+class Fahrenheit {
+public:
+    Fahrenheit(double temp) : m_temp(temp) {}
+    operator Celsius() const {
+        return Celsius((m_temp - 32) * 5 / 9);
+    }
+private:
+    double m_temp;
+};
+
+int main() {
+    Celsius c(100.0);
+    Fahrenheit f = c;  // Celsius 隐式转换为 Fahrenheit
+    return 0;
+}
