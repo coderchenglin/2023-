@@ -1,0 +1,71 @@
+#include <atomic>
+#include <condition_variable>
+#include <memory>
+#include <mutex>
+#include <queue>
+
+// Single-producer, single-consumer Queue
+template <class T>
+class SPSCQueue {
+public:
+    explicit SPSCQueue(int capacity) : capacity_(capacity) {}
+
+    bool Push(std::unique_ptr<T> item) {
+        std::unique_lock<std::mutex> lock(mutex_);
+        if (queue_.size() < capacity_) {
+            queue_.push(std::move(item));
+            cond_var_.notify_one();
+            return true;
+        }
+        return false;
+    }
+
+    std::unique_ptr<T> Pop() {
+        std::unique_lock<std::mutex> lock(mutex_);
+        cond_var_.wait(lock, [this] { return !queue_.empty(); });
+        auto item = std::move(queue_.front());
+        queue_.pop();
+        return item;
+    }
+
+    virtual ~SPSCQueue() {}
+
+private:
+    int capacity_;
+    std::queue<std::unique_ptr<T>> queue_;
+    std::mutex mutex_;
+    std::condition_variable cond_var_;
+};
+
+// Multi-producer, Multi-consumer Queue
+template <class T>
+class MPMCQueue {
+public:
+    explicit MPMCQueue(int capacity) : capacity_(capacity) {}
+
+    bool Push(std::unique_ptr<T> item) {
+        std::unique_lock<std::mutex> lock(mutex_);
+        if (queue_.size() < capacity_) {
+            queue_.push(std::move(item));
+            cond_var_.notify_one();
+            return true;
+        }
+        return false;
+    }
+
+    std::unique_ptr<T> Pop() {
+        std::unique_lock<std::mutex> lock(mutex_);
+        cond_var_.wait(lock, [this] { return !queue_.empty(); });
+        auto item = std::move(queue_.front());
+        queue_.pop();
+        return item;
+    }
+
+    virtual ~MPMCQueue() {}
+
+private:
+    int capacity_;
+    std::queue<std::unique_ptr<T>> queue_;
+    std::mutex mutex_;
+    std::condition_variable cond_var_;
+};
