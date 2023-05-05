@@ -1,0 +1,13 @@
+void* operator new(size_t size) {
+    while (true) {
+        void* mem = malloc(size);
+        if (mem != nullptr) {
+            return mem;
+        }
+        std::new_handler handler = std::get_new_handler();
+        if (handler == nullptr) {
+            throw std::bad_alloc();
+        }
+        handler();
+    }
+}
