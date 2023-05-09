@@ -1,0 +1,457 @@
+//#include<stdio.h>
+//int a = 0;
+//
+//int main()
+//{
+//	int a = 1;
+//
+//	printf("%d\n", a);
+//
+//	// ::域作用限定符
+//	printf("%d\n", ::a);
+//
+//	return 0;
+//}
+
+//#include <stdio.h>
+//#include <stdlib.h>
+//
+//// 不影响变量生命周期，只是限定域，编译查找规则
+//// 默认查找规则。先在局部找，再全局找
+//namespace bit
+//{
+//	int rand = 10;
+//	int x = 1;
+//}
+//
+//void func()
+//{
+//	printf("%p\n", rand);
+//	printf("%d\n", bit::x);
+//	printf("%d\n", bit::rand);
+//}
+//
+//int main()
+//{
+//	func();
+//	printf("%p\n", rand);
+//
+//	return 0;
+//}
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// 避免命名冲突
+//namespace bit
+//{
+//	int rand = 10;
+//	int x = 1;
+//
+//	int Add(int left, int right)
+//	{
+//		return left + right;
+//	}
+//
+//	struct Node
+//	{
+//		struct Node* next;
+//		int val;
+//	};
+//}
+//
+//namespace byte
+//{
+//	int Add(int left, int right)
+//	{
+//		return left*10 + right*10 ;
+//	}
+//
+//	struct Node
+//	{
+//		struct Node* next;
+//		struct Node* prev;
+//		int val;
+//	};
+//}
+//
+//namespace N1
+//{
+//	int a;
+//	int b;
+//	int Add(int left, int right)
+//	{
+//		return left + right;
+//	}
+//
+//	namespace N2
+//	{
+//		int c;
+//		int d;
+//		int Sub(int left, int right)
+//		{
+//			return left - right;
+//		}
+//	}
+//}
+//
+//
+//int main()
+//{
+//	printf("%d\n", bit::Add(1, 2));
+//	struct bit::Node node;
+//
+//	struct byte::Node dnode;
+//
+//	N1::a = 1;
+//	N1::N2::c = 2;
+//
+//	return 0;
+//}
+
+// std C++官方库内容定义的命名空间
+//3. 同一个工程中允许存在多个相同名称的命名空间,编译器最后会合成同一个命名空间中。
+// ps：一个工程中的Stack.h和上面Queue.h中两个N1会被合并成一个
+#include "Queue.h"
+#include "Stack.h"
+
+//namespace N1
+//{
+//	int a = 0;
+//	namespace N1
+//	{
+//		int b = 0;
+//	}
+//}
+//
+//int main()
+//{
+//	bit::StackPush(NULL, 1);
+//	bit::QueuePush(NULL, 1);
+//
+//	// N1::a;
+//	// N1::b;
+//
+//	return 0;
+//}
+
+//#include <iostream>
+//
+//int main()
+//{
+//	std::cout << "hello world" << std::endl;
+//	std::cout << "hello world" << std::endl;
+//	std::cout << "hello world" << std::endl;
+//
+//	return 0;
+//}
+
+//#include <iostream>
+//
+//using namespace std;
+//// 用起来就方便了，命名的隔离墙拆了
+//// 日常练习，小程序，这么用可以，项目最好不要这么用
+//
+//int cout = 0;
+//
+//int main()
+//{
+//	cout << "hello world" << endl;
+//	cout << "hello world" << endl;
+//	std::cout << "hello world" << std::endl;
+//
+//	return 0;
+//}
+
+//#include <iostream>
+//// 指定展开 -- 常用展开，自己定义的时候避免跟常用重名即可
+//using std::cout;
+//
+//int main()
+//{
+//	cout << "hello world" << std::endl;
+//	cout << "hello world" << std::endl;
+//	std::cout << "hello world" << std::endl;
+//
+//	return 0;
+//}
+
+//#include <iostream>
+//using namespace std;
+//
+//int main()
+//{
+//	// 可以自动识别变量的类型，相比c的优势printf / scanf
+//	// 哪个方便就用哪个
+//
+//	// << 流插入运算符
+//	cout << "Hello world!!!" << endl;
+//	cout << "Hello world!!!" << '\n';
+//
+//	int a;
+//	double b;
+//	char c;
+//
+//	// >> 流提取运算符
+//	cin >> a;
+//	cin >> b >> c;
+//	cout << a << endl;
+//	cout << b <<" "<<c<<endl;
+//
+//	printf("%.1f\n", b);
+//	cout <<"int:"<<a <<" "<<" double:"<< b <<" char:" << c << endl;
+//	printf("int:%d double:%f char:%c", a, b, c);
+//
+//	return 0;
+//}
+
+#include <iostream>
+using namespace std;
+
+//void Func(int a = 0)
+//{
+//	cout << a << endl;
+//}
+
+//int main()
+//{
+//	Func();
+//	Func(10);
+//
+//	return 0;
+//}
+
+// 全缺省
+//void Func(int a = 10, int b = 20, int c = 30)
+//{
+//	cout << "a = " << a << endl;
+//	cout << "b = " << b << endl;
+//	cout << "c = " << c << endl;
+//}
+//
+//int main()
+//{
+//	Func();
+//	Func(1);
+//	Func(1, 2);
+//	// Func(1, ,2); 不支持
+//	Func(1, 2, 3);
+//}
+
+// 半缺省/部分缺省 -- 只能从右往左连续缺省
+// void Func(int a, int b = 10, int c = 20)
+////void Func(int a, int c, int b = 10)
+//{
+//	cout << "a = " << a << endl;
+//	cout << "b = " << b << endl;
+//	cout << "c = " << c << endl;
+//}
+//
+//int main()
+//{
+//	Func(1);
+//	Func(1, 2);
+//	Func(1, 2, 3);
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	// 不知道要插入多少数据
+//	bit::ST st1;
+//	bit::StackInit(&st1);
+//
+//	// 知道要插入100个数据
+//	bit::ST st2;
+//	bit::StackInit(&st2, 100);
+//
+//	return 0;
+//}
+
+// 函数重载 函数名相同，参数不同（个数、类型、顺序）
+//int add(int x, int y)
+//{
+//	return x + y;
+//}
+//
+//double add(double x, double y)
+//{
+//	return x + y;
+//}
+//
+//void swap(int* px, int* py)
+//{
+//	int tmp = *px;
+//	*px = *py;
+//	*py = tmp;
+//}
+//
+//void swap(double* px, double* py)
+//{
+//	double tmp = *px;
+//	*px = *py;
+//	*py = tmp;
+//}
+//
+//int main()
+//{
+//	cout << add(1, 2) << endl;
+//	cout << add(1.1, 2.2) << endl;
+//
+//	int a = 0, b = 1;
+//	swap(&a, &b);
+//
+//	double c = 1.1, d = 2.2;
+//	swap(&c, &d);
+//
+//	// 怎么调用到，后面会讲 -- 知道自动识别类型本质函数重载支持的
+//	// ostream& operator<< (int val);
+//	// ostream& operator<< (double val);
+//	cout << a;
+//	cout << c;
+//
+//	return 0;
+//}
+
+// 2、参数个数不同
+//void f()
+//{
+//	cout << "f()" << endl;
+//}
+//
+//void f(int a)
+//{
+//	cout << "f(int a)" << endl;
+//}
+////
+////// 顺序不同是形参类型顺序不同
+//void f(int a, char b)
+//{
+//	cout << "f(int a,char b)" << endl;
+//}
+//
+//void f(char b, int a)
+//{
+//	cout << "f(char b, int a)" << endl;
+//}
+//
+//void f(int a, int b)
+//{
+//	cout << "f(int a,char b)" << endl;
+//}
+//
+//void f(int b, int a)
+//{
+//	cout << "f(int a,char b)" << endl;
+//}
+
+// 21:11继续
+//int main()
+//{
+//	f();
+//	f(1);
+//	f(0, 'A');
+//	f('A', 1);
+//
+//	return 0;
+//}
+
+// 构成函数重载 -- f()调用会报错，存在歧义
+//void f()
+//{
+//	cout << "f()" << endl;
+//}
+//
+//void f(int a = 0, char b = 1)
+//{
+//	cout << "f(int a,char b)" << endl;
+//}
+//
+//int main()
+//{
+//	f(10);
+//	f(10, 20);
+//
+//	f(); // 歧义  二义性
+//
+//	return 0;
+//}
+
+// _z1ifii
+//int f(int a, int b)
+//{
+//	cout << "f(int a,char b)" << endl;
+//	return 0;
+//}
+//
+//// _z1cfii
+//char f(int b, int a)
+//{
+//	cout << "f(int a,char b)" << endl;
+//	return 'A';
+//}
+//
+//// 返回值不同，不构成重载原因，并不是函数名修饰规则
+//// 真正原因是调用时的二义性，无法区分，调用时不指定返回值类型
+//int main()
+//{
+//	f(1, 1);
+//	f(2, 2);
+//
+//	return 0;
+//}
+
+void swap(int& m, int& n)
+{
+	int tmp = m;
+	m = n;
+	n = tmp;
+}
+
+//struct ListNode
+//{
+//	struct ListNode* next;
+//	int val;
+//};
+//
+////void SlistPushBack(struct ListNode** pphead, int x)
+//void SlistPushBack(struct ListNode*& phead, int x)
+//{}
+
+typedef struct ListNode
+{
+	struct ListNode* next;
+	int val;
+}LTNode, *PLTNode;
+
+//void SlistPushBack(struct ListNode** pphead, int x)
+//void SlistPushBack(struct ListNode*& phead, int x)
+void SlistPushBack(PLTNode& phead, int x)
+{}
+
+int main()
+{
+	int a = 10;
+	int& ra = a; // 引用
+	int& x = a;
+	int& y = x;
+
+	x++;
+	y++;
+	a++;
+
+	int cc = 1, dd = 2;
+	swap(cc, dd);
+
+
+	//int* p = &a; // 取地址
+
+	struct ListNode* plist = NULL;
+	SlistPushBack(plist, 1);
+	SlistPushBack(plist, 2);
+
+
+	return 0;
+}
