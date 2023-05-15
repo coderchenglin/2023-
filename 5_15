@@ -1,0 +1,492 @@
+#include<iostream>
+using namespace std;
+
+class Person
+{
+public :
+	void PrintPersonInfo()
+	{}
+
+	char _name[20];
+	char _gender[3];
+	int _age;
+};
+
+
+//类对象模型
+//1. 如何计算类对象的大小?
+//class A
+//{
+//public:
+//	void PrintA()
+//	{
+//		cout << _a << endl;
+//	}
+//
+//private:
+//	char _a;
+//};
+//
+//class B
+//{
+//public:
+//	void PrintB()
+//	{
+//		cout << endl;
+//	}
+//
+//
+//};
+//
+//int main()
+//{
+//	A aa;
+//	cout << sizeof(A) << endl;     //1   ->只计算成员变量的大小,  没有成员函数的大小
+//	cout << sizeof(aa) << endl;    //1
+//
+//	cout << sizeof(B) << endl;     //1   -> 如果没有成员变量,至少需要1字节,来标识存在
+//
+//	return 0;
+//}
+
+
+//2.类对象的存储方式
+
+//只保存成员变量,成员函数存放在  公共的代码段  (c : 常量区)(代码段)
+
+//即对象里面是没有存储成员函数的,  调用成员函数时,编译器会直接去到公共代码段查找
+
+
+
+
+//构造函数  特征如下:
+//1.函数名和类名相同
+//2.无返回值
+//3.对象实例化时,编译器自动调用对应的构造函数
+//4.构造函数可以重载
+
+
+//class Date
+//{
+//public:
+//	//Date(int year = 1, int month = 1, int day = 1)
+//	//{
+//	//	_year = year;
+//	//	_month = month;
+//	//	_day = day;
+//	//}
+//
+//	void Print()
+//	{
+//		cout << _year << '-' << _month << '-' << _day << endl;
+//	}
+// 
+// //Date类的析构函数不用写
+// 
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//
+//int main()
+//{
+//	//无参的构造:不要写 括号()
+//	Date d1;
+//	Date d2;
+////	Date d3();   //这样写会报警告 : 未调用原型函数(是否是有意用变量定义的?)
+//	//Date d1(2022, 9, 21);   //定义+初始化
+//	//Date d2(2023, 5, 15);
+//	d1.Print();
+//	d2.Print();
+//}
+
+
+//构造函数可以重载,但是不要同时定义  全缺省和无参 的构造函数
+
+
+//再练一个,写一个栈
+//class Stack
+//{
+//public:
+//	Stack(int capacity = 4)
+//	{
+//		_a = (int*)malloc(sizeof(int) * capacity);
+//		if (_a == nullptr)
+//		{
+//			perror("malloc fail");
+//			exit(-1);
+//		}
+//
+//		_top = 0;
+//		_capacity = capacity;
+//	}
+//
+//	void Push(int x)
+//	{
+//		//....
+//		//扩容
+//		_a[_top++] = x;
+//	}
+//
+//	~Stack()
+//	{
+//		free(_a);
+//		_a = nullptr;
+//		_top = _capacity = 0;
+//	}
+//
+//private:
+//	int* _a;
+//	int _top;
+//	int _capacity;
+//};
+//
+//
+//int main()
+//{
+//	Stack s1(10);
+//}
+
+
+
+//析构函数
+//与构造函数功能相反,析构函数不是完成对象本身的销毁,,局部对象销毁工作是由编译器完成的
+// 
+//而对象在销毁时会自动调用析构函数,完成对象中资源的清理工作
+//与destroy功能相似
+
+//特性:
+//1.析构函数名是在类名前面加上字符~
+//2.无参数,无返回值类型
+//3.一个类只能有一个析构函数.若未显示定义,系统会自动生成默认的析构函数.
+//注意:析构函数不能重载
+//4.对象声明周期结束时. c++编译系统自动调用析构函数
+
+
+
+//1.局部对象    ---    函数结束就销毁了
+//2.
+
+//class A
+//{
+//public:
+//	A()
+//	{
+//		_a = 0;
+//		cout << "A()构造函数" << endl;
+//	}
+//
+//private:
+//	int _a;
+//};
+//
+//class Date
+//{
+//public:
+//	void Print()
+//	{
+//		cout << _year << '-' << _month << '-' << _day << endl;
+//	}
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//
+//	A _aa;
+//};
+//
+//int main()
+//{
+//	Date a;     //对内置类型不做处理,对自定义类型处理
+//
+//	return 0;
+//}
+
+//class Stack {
+//public:
+//	void Push(int a)
+//	{
+//
+//	}
+//
+//private:
+//	int _a;
+//};
+//
+//
+////这里MyQueue类的成员变量都是自定义类型,Stack类型
+////所以不用写默认构造函数了
+////也不用写析构函数了,直接使用默认生成的(调用Stack的析构函数)
+//class MyQueue 
+//{
+//public:
+//	void Push(int x)
+//	{
+//		_pushST.Push(x);
+//	}
+//
+//	Stack _pushST;
+//	Stack _popST;
+// size_t _size = 0;      //这里不是初始化,这里给的是缺省值  
+//                                 //这是c++11打的补丁,因为默认构造无法对内置类型进行初始化
+//};
+//
+//int main()
+//{
+//	MyQueue mq;
+//	mq.Push(1);
+//
+//	return 0;
+//}
+
+
+//面向需求:编译器生成的就可以满足,就不用自己写,不满足就需要自己写.
+//Date Stack的构造函数就需要自己写
+//MyQueue就不需要自己写,默认生成的就可以
+
+//Stack的析构函数,需要我们自己写
+//MyQueue Date就不需要我们自己写析构函数,默认生成的就可以用
+
+
+
+//为解决内置类型默认构造函数不进行初始化的情况,c++11打了一个补丁,可以给成员变量给缺省值
+
+//默认构造函数
+//无参的构造函数 和 全缺省的构造函数 还有我们没写编译器默认生成的构造函数, 都称为默认构造函数,
+//并且默认构造函数只能有一个.      原因:存在二义性,编译时会报:有多一个默认构造
+
+//不传参数,就可以调用的构造函数,  就叫默认构造函数
+
+
+///////////////////////////////////////////////////////////////////////////
+
+//默认构造函数:对内置类型不处理,对自定义类型成员 调用它的默认构造函数
+
+
+
+
+//4.拷贝构造函数
+//特征:
+//1.拷贝构造函数是   构造函数的一个<重载>形式
+//2.拷贝构造函数的   参数只有一个  ,且必须是类类型对象的引用,使用传值方式编译器直接报错,因为会引发无穷递归调用
+
+//class Date
+//{
+//public:
+//	Date(int year = 1, int month = 1, int day = 1)
+//	{
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//
+//	//拷贝构造:
+//	
+////	Date(Date d)    // 报错:   传值会引发无穷递归
+//	//Date(const Date& d)        //这里传的必须是Date的引用
+//	//	                                    //这里有个小点:加上const会更好  可以防止赋值的时候,写反了的情况
+//	//{
+//	//	_year = d._year;
+//	//	_month = d._month;
+//	//	_day = d._day;
+//
+//	//	cout << "Date拷贝构造" << endl;
+//	//}
+//
+//	void Print()
+//	{
+//		cout << _year << '-' << _month << '-' << _day << endl;
+//	}
+// 
+// //Date类的析构函数不用写
+// 
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+
+////观察下面两函数 
+////结论:  传值传参会调用拷贝构造
+//
+////传值传参:
+//void Func1(Date d)
+//{
+//	cout << "Func1()" << endl;
+//}
+//
+////传引用传参
+//void Func2(Date& d)
+//{
+//	cout << "Func2()" << endl;
+//}
+//
+//int main()
+//{
+//	//Date d1(2022, 9, 22);   //构造
+//
+//	////拷贝一份d1
+//	//Date d2(d1);    //拷贝构造 -- 拷贝初始化
+//
+//	Date d1(2022, 9, 22);
+//	Func1(d1);
+//	Func2(d1);
+//
+//	//这里把拷贝构造函数屏蔽了,编译器默认生成的拷贝构造也够用
+//	Date d2(2023, 5, 15);
+//	Date d3(d2);
+//	d3.Print();
+//
+//	return 0;
+//}
+
+
+
+//深浅拷贝:   Date类使用浅拷贝就可以,即系统默认生成的就可以
+// Stack类就需要使用深拷贝
+// 原因:Stack类,在初始化时(拷贝构造时), _a变量使用malloc函数开了空间
+// 而如果使用系统默认生成的拷贝构造函数,会将_a开的空间的地址也拷贝过来
+// 那么在析构的时候,同一块空间就会被析构两次,系统就会崩溃
+
+//所以深拷贝,需要自己写,很简单,就开一个和原本类对象 用malloc开一个一样大小的空间.
+
+
+
+//深拷贝案例:
+//class Stack
+//{
+//public:
+//	Stack(int capacity = 4)
+//	{
+//		int* _a = (int*)malloc(sizeof(int) * capacity);
+//		if (_a == nullptr)
+//		{
+//			perror("malloc fail");
+//			exit(1);
+//		}
+//
+//		_top = 0;
+//		_capacity = capacity;
+//	}
+//
+//
+//	//深拷贝:
+//	Stack(const Stack& st)
+//	{
+//		_a = (int*)malloc(sizeof(int) * st._capacity);   //开一个同样大小的空间
+//		if (_a == nullptr)
+//		{
+//			perror("malloc fail");
+//			exit(-1);
+//		}
+//		memcpy(_a, st._a, sizeof(int) * st._top);  //使用mymcpy函数进行内容复制
+//	}
+//
+//	//析构函数
+//	~Stack()
+//	{
+//		free(_a);
+//	}
+//
+//
+//private:
+//	int* _a;
+//	int _top;
+//	int _capacity;
+//};
+
+
+//深拷贝总结:
+//需要写析构函数的类,都需要写深拷贝的拷贝构造     如Stack
+//反之,不需要写析构函数的雷,就不需要写深拷贝        如Date    MyQueue
+
+
+
+
+//运算符重载:
+//c++为了增强代码的可读性, 引入了<运算符重载>, 运算符重载是具有特殊函数名的函数,
+//也具有起返回值类型, 函数名字以及参数列表    与普通的函数类似
+//
+//函数名字为:关键字operator后面接需要重载的运算符符号
+//函数原型:    回值类型 operator操作符(参数列表)
+//
+//注意:
+//	不能通过连接其他符号来创建新的操作符 : 比如 operator@
+//	重载操作符必须有一个 <类类型>  参数
+//	用于内置类型的运算符,其含义不能改变,例如:内置的整形+,不能改变其含义
+//	作为类成员函数重载时,起形参看起来比操作数数目少1,因为成员函数的第一个参数为隐藏的this指针
+//	.*    ::    sizeof    ?:    .    注意这5个运算符不能重载.这个经常在笔试选择题中出现.
+
+
+
+class Date
+{
+public:
+	Date(int year = 1, int month = 1, int day = 1)
+	{
+		_year = year;
+		_month = month;
+		_day = day;
+	}
+
+	//拷贝构造:
+	
+	//Date(Date d)    // 报错:   传值会引发无穷递归
+	Date(const Date& d)        //这里传的必须是Date的引用
+		                                    //这里有个小点:加上const会更好  可以防止赋值的时候,写反了的情况
+	{
+		_year = d._year;
+		_month = d._month;
+		_day = d._day;
+
+		cout << "Date拷贝构造" << endl;
+	}
+
+	void Print()
+	{
+		cout << _year << '-' << _month << '-' << _day << endl;
+	}
+ 
+ //Date类的析构函数不用写
+ 
+	//bool operator==(const Date& d1, const Date& d2) // 报错:此运算符函数的参数太多
+	bool operator==(const Date& d2)     //   运算符重载 函数  放在类里面,有一个隐藏的this指针
+	{
+		return this->_year == d2._year
+			   && this->_month == d2._month
+			   && this->_day == d2._day;
+	}
+
+
+	int _year;
+	int _month;
+	int _day;
+};
+
+//这样写的前提是,这些成员变量的属性是public,而不是private
+
+//但正常情况下,我们的成员变量都是private的,怎么办呢?
+//方法:  1.写一个getyear()函数
+//          2.放到类里面
+//bool operator==(const Date& d1, const Date& d2)
+//{
+//	return d1._year == d2._year
+//	    && d1._month == d2._month
+//	    && d1._day == d2._day;
+//}
+
+
+
+int main()
+{
+	Date d1(2022, 9, 22);
+	Date d2(2023, 1, 1);
+	cout << (d1 == d2) << endl;     // 0
+
+	return 0;
+}
