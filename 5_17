@@ -1,0 +1,333 @@
+//#include<iostream>
+//
+//using namespace std;
+//
+////运算符重载
+//
+//
+//class Date
+//{
+//public:
+//	Date(int year = 1, int month = 1, int day = 1)   //默认构造函数
+//	{
+//		_year = year;
+//		_day = day;
+//		_month = month;
+//	}
+//
+//	int GetMonthDay(int year,int month)   //获得每个月的天数
+//	{
+//		static int MonthDayArray[13] = { 31,28,31,30,31,30,31,31,30,31,30,31 };   //优化:static,不用每次进来都创建一个数组
+//		if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0))
+//		{
+//			return 29;     //注意,这里不要改原来数组的值
+//		}
+//		else
+//		{
+//			return MonthDayArray[month];
+//		}
+//	}
+//
+//	Date operator==(Date& d1)
+//	{
+//		return this->_year == d1._year
+//			&& this->_month == d1._month
+//			&& this->_day == d1._day;
+//	}
+//
+//	Date& operator+=(int day)   //出了作用域*this还在,所以可以使用传引用返回
+//	{
+//		_day += day;
+//		while (_day>GetMonthDay(_year,_month))
+//		{
+//			_day -= GetMonthDay(_year, _month);
+//			_month++;
+//			if (_month == 13)
+//			{
+//				_month = 1;
+//				_year++;
+//			}
+//		}
+//
+//		return *this;
+//	}
+//
+//
+//	//复用  operaotr+=   -> 这里不改变原值,因为除了作用域ret这个临时变量不再了,只能使用传值返回
+//	Date operator+(int day)   // +是不改变原变量的,+=改变原值
+//	{
+//		Date ret(*this);    //这里用到了  拷贝构造
+//		ret += day;      //这里复用了 operator+=
+//		return ret;
+//	}
+//
+//	void Print()
+//	{
+//		cout << _year << '-' << _month << '-' << _day  << endl;
+//	}
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//int main()
+//{
+//	Date d1(2022, 9, 22);
+//	Date d2(2023, 1, 1);
+//
+//	d1 += 50;
+//	d1.Print();
+//
+//	return 0;
+//}
+
+
+////////////////////////////////////////////////////////////////
+//写一个完整的日期类,要求:
+
+//1.GetMonthDay
+//2.要求能判断日期初始化是否合法
+//3.打印函数
+//4.operator+  , operator+=      -,-=
+//5.operator==  > < >= <= !=
+//6.赋值重载
+//7.前置++,后置++,前置--,后置--
+
+
+#include<iostream>
+using namespace std;
+
+//日期类:写一个日期类,
+//函数包括
+
+
+
+//自己写一个赋值重载
+//class Stack
+//{
+//public:
+//	Stack(int capacity = 100)
+//	{
+//		_a = (int*)malloc(sizeof(int) * capacity);
+//		if (_a == nullptr)
+//		{
+//			perror("malloc fali");
+//			exit(1);
+//		}
+//		_top = 0;
+//		_capacity = capacity;
+//	}
+//
+//	void Push(int x)
+//	{
+//		_a[_top++] = x;
+//		
+//	}
+//
+//	~Stack()
+//	{
+//		free(_a);
+//	}
+//
+//
+//private:
+//	int* _a;
+//	int _top;
+//	int _capacity;
+//};
+//
+//
+//int main()
+//{
+//	Stack s1;
+//	s1.Push(1);
+//	s1.Push(2);
+//
+//	Stack s2;
+//	s2.Push(10);
+//	s2.Push(20);
+//	
+//	s2 = s1;
+//	
+//
+//	return 0;
+//}
+
+
+
+class Date
+{
+public:
+	Date& operator++()   //前置++
+	{
+		_day++;
+		if (_day > GetMonthDay(_year, _month))
+		{
+			_day = 0;
+			_month++;
+			if (_month == 13)
+			{
+				_month = 1;
+				_year++;
+			}
+		}
+
+		return *this;
+	}
+	
+
+	Date operator++(int i)  // 后置++
+	{
+		Date ret(*this);
+		++(*this);
+		return ret;
+	}
+
+	Date& operator=(const Date& d)
+	{
+		this->_year = d._year;
+		this->_month = d._month;
+		this->_day = d._day;
+		return *this;
+	}
+
+
+	bool operator>=(const Date& d)
+	{
+		return *this > d || *this == d;
+	}
+
+	bool operator<=(const Date& d)
+	{
+		return !(*this > d);
+	}
+
+	bool operator!=(const Date& d)
+	{
+		return !(*this == d);
+	}
+
+
+	bool operator>(const Date& d)
+	{
+		if (this->_year > d._year)
+		{
+			return true;
+		}
+		else if (this->_year == d._year && this->_month > d._month)
+		{
+			return true;
+		}
+		else if (this->_year == d._year && this->_month == d._month && this->_day > d._day)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+
+	int operator==(const Date& d)
+	{
+		return this->_year == d._year && this->_month == d._month && this->_day == d._day;
+	}
+
+	Date& operator-=(int day)
+	{
+		_day -= day;
+		while (_day <= 0)
+		{
+			_month--;
+			if (_month == 0)
+			{
+				_month = 12;
+				_year--;
+			}
+			day += GetMonthDay(_year,_month);
+		}
+
+		return *this;
+	}
+
+	Date operator-(int day)
+	{
+		Date ret(*this);
+		ret -= day;
+		return ret;
+	}
+
+	Date& operator+=(int day)
+	{
+		_day += day;
+		while (_day >= GetMonthDay(_year,_month))
+		{
+			day -= GetMonthDay(_year, _month);
+			_month--;
+			if (_month == 0)
+			{
+				_month = 12;
+				_year--;
+			}
+		}
+
+		return *this;
+	}
+
+	Date operator+(int day)    //这里只能使用传值返回
+	{
+		Date ret(*this);   //拷贝构造
+		ret += day;     //复用 operator+=
+
+		return ret;
+	}
+
+	void Print()
+	{
+		cout << _year << '-' << _month << '-' << _day << endl;
+	}
+
+	Date(int year,int month,int day)
+	{
+		_year = year;
+		_month = month;
+		_day = day;
+		if (_year < 0 || _month <= 0 || _day<0 || _day>GetMonthDay(_year, _month))
+		{
+			cout << "错误日期" << endl;
+		}
+	}
+
+	int GetMonthDay(int year, int month)
+	{
+		static int MonthDayArray[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+		if ((year % 4 == 0 && year % 100 != 4) || year % 400 == 0)
+		{
+			return 29;
+		}
+
+		return MonthDayArray[month];
+	}
+
+private:
+	int _year;
+	int _month;
+	int _day;
+};
+
+int main()
+{
+	Date d1(2021, 5, 17);
+	Date d2(2023, 5, 12);
+	(++d1).Print();
+	(d1++).Print();
+	d1.Print();
+
+	//cout << (d1 > d2) << endl;
+
+	return 0;
+}
+
+
+
+
