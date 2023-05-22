@@ -161,3 +161,300 @@ using namespace std;
 
 
 //友元
+
+//友元函数
+//class Date
+//{
+//	//友元函数的声明:    函数的声明前加一个 friend,  可以在类的任意位置写
+//	friend ostream& operator<<(ostream& _cout, const Date& d);
+//	friend istream& operator>>(istream& _cin, Date& d);
+//public:
+//	Date(int year = 1900, int month = 1, int day = 1)
+//		:_year(year)
+//		,_month(month)
+//		, _day(day)
+//	{}
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//ostream& operator<<(ostream& _cout, const Date& d)
+//{
+//	_cout << d._year << "-" << d._month << "-" << d._day;
+//	return _cout;
+//}
+//
+//istream& operator>>(istream& _cin, Date& d)
+//{
+//	_cin >> d._year;
+//	_cin >> d._month;
+//	_cin >> d._day;
+//
+//	return _cin;
+//}
+
+
+
+//友元类:
+//class Time
+//{
+//	//友元类的声明  在类的声明前加 friend
+//	friend class Date;
+//
+//public:
+//	Time(int hour = 0,int minute = 0,int second = 0)
+//		:_hour(hour)
+//		,_minute(minute)
+//		,_second(second)
+//	{}
+//
+//private:
+//	int _hour;
+//	int _minute;
+//	int _second;
+//};
+//
+//class Date
+//{
+//	Date(int year = 1900, int month = 1, int day = 1)
+//		:_year(year)
+//		,_month(month)
+//		,_day(day)
+//	{}
+//
+//	void SetTimeOfDate(int hour, int minute, int second)
+//	{
+//		// 重点:直接访问时间类私有的成员变量
+//		_t._hour = hour;
+//		_t._minute = minute;
+//		_t._second = second;
+//	}
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//	Time _t;
+//};
+
+
+
+//1.友元类的所有成员函数都可以是另一个类的友元函数,都可以访问另一个类中的非公有成员
+//2.友元关系是单向的,不具有交换性
+//3.友元关系不能传递
+//      C是B的友元,B是A的友元,   不代表C是A的友元
+//4.友元关系不能继承
+
+
+
+//4.内部类   --     java喜欢用,c++不喜欢用    ---    了解一下就行
+
+//在A类中定义了一个B类
+//class A
+//{
+//public:
+//	void func(const B& b)
+//	{
+//		cout << b._b << endl;
+//	}
+//
+//private:
+//	int _a;
+//	static int k;
+//
+//public:
+//	class B     //B天生就是A的友元  ---  可以访问A类的普通变量以及静态变量
+//	{
+//	public:
+//		int _b;
+//
+//		void foo(const A& a)
+//		{
+//			cout << k << endl;      //OK
+//			cout << a._a << endl;  //OK
+//		}
+//	};
+//
+//};
+
+//B类定义在A类中和定义在外面,是一样的   相当于两个独立的类
+//B类的访问受A的类域和访问限定符的限制
+
+//class A
+//{
+//public:
+//    void func()
+//    {
+//        B b;
+//        cout << b._b << endl;
+//    }
+//private:
+//    int _a;
+//    static int k;
+//
+//public:
+//    class B
+//    {
+//
+//    public:
+//        int _b;
+//
+//        B(int b = 1)
+//            :_b(b)
+//        {}
+//
+//        void foo(const A& a)
+//        {
+//            cout << k << endl;
+//            cout << a._a << endl;
+//        }
+//    };
+//
+//};
+//
+//int main()
+//{
+//	A aa1;
+//	//  猜猜sizeof(A)   sizeof(aa1)是多大    
+//	cout << sizeof(A) << endl;    //4
+//	cout << sizeof(aa1) << endl;    //4
+//	//说明A对象中没有B对象
+//
+//	//B bb;      //不能直接定义B类对象
+//	A::B bb;     //指定就可以了   --   前提是B类是设为公有才能访问,如果是私有,那么只有A类内部能使用
+//   
+//    aa1.func();
+//}
+//
+////若B类是A类的内部类,那么B天生就是A的友元类
+
+
+
+//用内部类写刚才那道oj题
+//class Solution
+//{
+//public:
+//	class Sum
+//	{
+//	public:
+//		Sum()
+//		{
+//			_ret += _i;
+//			++_i;
+//		}
+//	};
+//
+//	int Sum_Solution(int n)
+//	{
+//		Sum arr[n];    //调用n次构造函数
+//		return _ret;
+//	}
+//	//Sum类是外部类Solution类的友元,可以直接访问外部类的static静态变量,不需要外部类的对象/类名
+//
+//
+//private:
+//	static int _i;
+//	static int _ret;
+//};
+//
+//int Solution::_i = 1;
+//int Solution::_ret = 0;
+
+
+
+
+class A
+{
+public:
+	A(int a = 1)
+		:_a(a)
+	{}
+
+private:
+	int _a;
+};
+//
+//A F()
+//{
+//	//A ret(10)
+//	//return ret;
+//
+//	//简化成一下代码,可以免去构造一个无用的对象 ---  如果这个对象,只是为了用一下就不需要了的话
+//	return A(10);
+//}
+//
+////匿名对象
+//int main()
+//{
+//	//有名对象:
+//	A aa0;
+//	A aa1(1);
+//	A aa2 = 2;
+//
+//	//匿名对象:   --   生命周期在当前这一行
+//	A();
+//	A(3);
+//
+//	return 0;
+// }
+
+
+
+//void f1(A aa)
+//{
+//
+//}
+//
+//A f2()
+//{
+//	A aa;
+//	return aa;
+//}
+//
+//A f3()
+//{
+//	/*A aa = 10;
+//	return aa;*/
+//
+//	//写成下面这样:
+//	return A(10);
+//}
+//
+//int main()
+//{
+//	//优化场景1
+//	A aa1 = 1;    // A tmp(1) + A aa1(tmp)    ->    优化     A aa1(1)
+//	                     //  构造  + 拷贝构造          ->                  直接构造
+//
+//	//下面这个不能优化
+//	A aa2;       //   构造
+//	f1(aa2);     //   (传值传参)拷贝构造
+//
+//	//优化场景2
+//	f1(A(1));       //   (匿名)构造  + (传值传参)拷贝构造    ->    优化        直接构造
+//	f1(1);            //构造(临时变量) + 拷贝构造     ->    优化   直接构造
+//
+//	//优化场景3:
+//	//无法优化
+//	f2();              //                                                                      构造 + 拷贝构造
+//
+//	//但这样就优化了:
+//	A ret = f2();   //构造 + 拷贝构造(传值返回)  + 拷贝构造    ->  构造  +  拷贝构造  (后两步合二为一)
+//
+//	//这样就优化不了了      --     所以尽量按上面那样写
+//	A ret;    //构造
+//	ret = f2();    //   构造+拷贝构造+赋值重载
+//
+//
+//	//极致优化 :
+//	A ret = f3();   // 拷贝构造 + 拷贝构造 + 拷贝构造  ->   优化:    直接构造
+//
+//	return 0;
+//}
+
+
+//<深度探索c++对象模型>
+
