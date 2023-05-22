@@ -1,0 +1,208 @@
+//c++ class9
+
+#include<iostream>
+
+using namespace std;
+
+
+//输出某个日期,是这一年的第多少天
+//int main()
+//{
+//	int year, month, day;
+//	cin >> year >> month >> day;
+//
+//	int monthDay1_N[13] = { 0,31,59,90,120,151,181,212,243,273,304,334,365 };
+//
+//	//每个月的天数和 + 天数
+//	int n = monthDay1_N[month - 1] + day;
+//
+//
+//	if (month > 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
+//	{
+//		n += 1;
+//	}
+//
+//	cout << n << endl;
+//
+//	return 0;
+//}
+
+
+
+//数据段(静态区)  :  全局数据,静态数据
+//代码段(常量区)  :  可执行代码,只读常量
+
+int globalVar = 1;                           //数据段(静态区)     --  全局数据
+static int staticGlobalVar = 1;        //数据段(静态区)      --  静态数据
+
+void Test()
+{
+	//这个变量,是存在  数据段(静态区) 的
+	static int staticVar = 1;               //数据段(静态区)    --    静态数据
+
+	//以下 这些 <变量> 都是存在栈上的
+	int localVar = 1;                   
+	int num1[10] = { 1,2,3,4 };
+	char char2[] = "abcd";               //"abcd" 存在代码段(常量区)      -->   将 常量区 的"abcd"常量字符,拷贝到这个数组中
+	const char* pChar3 = "abcd";   //"abcd" 存在代码段(常量区)      -->   这个指针,直接指向 常量区 的"abcd"常量字符
+	int* ptr1 = (int*)malloc(sizeof(int) * 4);                     //以下三条,变量都是存在栈上的,开的空间是在堆上的
+	int* ptr2 = (int*)calloc(4,sizeof(int));
+	int* ptr3 = (int*)realloc(ptr2, sizeof(int) * 4);
+
+	free(ptr1);
+	free(ptr3);
+}
+
+//注意!!!!
+//我们写的这些代码,是存在文件上的,文件是存在磁盘上的
+//这里所指的代码,是编译器经过,编译,链接,编译成二进制指令,形成.exe可执行文件,这个还是存在磁盘上的
+//运行起来以后,才叫进程  ,运行起来以后,才会把这些东西,加载到<虚拟进程地址空间>的各个区域
+
+
+//1G
+//1024MB
+//1024*1024KB
+//1024*1024*1024Byte       1G == 2^30 Byte
+
+
+
+//    new/delete
+
+//class A
+//{
+//public:
+//	A(int a = 1)
+//		:_a(a)
+//	{
+//		cout << "A():" << this << endl;
+//	}
+//
+//	~A()
+//	{
+//		cout << "~A():" << this << endl;
+//	}
+//
+//private:
+//	int _a;
+//};
+//
+//int main()
+//{
+//	//new的语法:
+//	//()->初始化    []->对象个数
+//	
+//	//new 相比 malloc/free
+//	//对于内置类型而言,除了用法的区别,没有其他的区别  不过写法更简洁了
+//
+//	int* p1 = new int;   //不会进行初始化
+//	delete p1;
+//
+//	int* p2 = new int(0);   //初始化为0
+//	delete p2;
+//
+//	int* p3 = new int[10];   //不会初始化
+//	delete[] p3;
+//
+//	int* p4 = new int[10]{1,2,3,4 };   //类似初始化数组,初始化前4个,后面初始化为0
+//	int* p5 = new int[10]{0};   //初始化为0
+//
+//	delete[] p4;
+//	delete[] p5;
+//
+//
+//	//对于自定义类型  --  除了空间管理,还会调用构造函数和析构函数
+//	A* ptr = new A;    //A():015FDE00    -> 会调用构造函数
+//	A* ptr2 = (A*)malloc(sizeof(A));    //->  不会调用构造函数
+//
+//	delete ptr;   //~A():00DBE568    -> 会调用析构函数
+//	free(ptr2);    //                                 不会调用析构函数
+//
+//
+//	//原则注意! -->   new/delete 一定要匹配着使用!   new[]要配合delete[]使用
+//
+//	//如这两行代码会报错 -- 不止是内存泄漏   
+//	A* ptr3 = new A[10];
+//	delete ptr3;
+//
+//	return 0;
+//}
+
+
+struct ListNode
+{
+	ListNode* _next;
+	int _val;
+
+	//写一个构造函数   --   不用再写BuyNode()了
+	ListNode(int val = 0)   //值默认初始化为0,指针指向空
+		:_next(nullptr)
+		, _val(val)
+	{}
+};
+//
+//int main()
+//{
+//	ListNode* n1 = new ListNode(1);   //自动调用构造函数(构造函数自动初始化)
+//	ListNode* n2 = new ListNode(2);
+//	ListNode* n3 = new ListNode(3);
+//	ListNode* n4 = new ListNode(4);
+//
+//	n1->_next = n2;
+//
+//	return 0;
+//}
+
+
+////try - catch      抛异常
+//int main()
+//{
+//	try
+//	{
+//		while (1)
+//		{
+//			//new失败 抛异常   --    不需要检查返回值
+//			char* p1 = new char[1024 * 1024 * 1024];
+//			cout << (void*)p1 << endl;
+//
+//			//下面都不需要
+//			//if (p1)
+//			//{
+//			//	cout << (void*)p1 << endl;
+//			//}
+//			//else
+//			//{
+//			//	cout << "申请失败" << endl;
+//			//	break;
+//			//}
+//		}
+//	}
+//
+//	catch (exception& e)
+//	{
+//		cout << e.what() << endl;
+//	}
+//}
+
+
+
+//new/delete 底层机制
+
+//new:
+//1. operator new     ->    malloc   (封装malloc,申请内存失败,会抛异常)
+//      使用方法  :  跟malloc一致
+//2.调用构造函数
+
+//注意: operator new 不是new的重载  --  名字取的不太好
+
+//delete:
+//1.operator delete     ->     free
+//2.调用析构函数
+
+//int main()
+//{
+//	ListNode* p = new ListNode;
+//
+//	return 0;
+//}
+
+
