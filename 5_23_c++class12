@@ -1,0 +1,138 @@
+//c++class12
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <list>
+
+using namespace std;
+
+//迭代器  --  iterator    --    是一个,像指针一样的东西(行为上)
+
+//迭代器 会用一个,其他都会用
+//   []  只有string和vector 支持
+void test_string()
+{
+	string s1("hello world");
+	string::iterator it1 = s1.begin();    //begin返回它第一个位置的迭代器
+	while (it1 != s1.end())
+	{
+		(*it1)++;
+		++it1;
+	}
+
+	it1 = s1.begin();
+	while (it1 != s1.end())    //  s1.end()   是最后一个字符的下一个位置
+	{
+		cout << *it1 << "  ";
+		++it1;
+	}
+	cout << endl;
+
+	//范围for
+	//for (auto i : s1)
+	//{
+	//	cout << i << "  ";
+	//}
+	//cout << endl;
+}
+
+void test_vector()
+{
+	//vector也是一种类模板
+	vector<int> v{1, 2, 3};
+	vector<int>::iterator vit = v.begin();
+	while (vit != v.end())
+	{
+		cout << *vit << "  ";   // 1,2,3
+		vit++;
+	}
+
+	cout << endl;
+}
+
+void test_list()
+{
+	//vector也是一种类模板
+	list<int> lt;
+	list<int>::iterator ltit = lt.begin();
+	while (ltit != lt.end())
+	{
+		cout << *ltit << "  ";   // 1,2,3
+		ltit++;
+	}
+
+	cout << endl;
+}
+
+
+void test_string3()
+{
+	string s1("1234");
+	string::iterator it = s1.begin();
+	while (it != s1.end())
+	{
+		cout << *it << "  ";
+		++it;
+	}
+	cout << endl;
+
+	//反向迭代器  用法:
+	//auto rit = s1.rbegin();        //和下面这个代码等价    --   但是不熟悉之前最好不要用auto
+	//看到   s1.rbegin() 就是反向迭代器
+	string::reverse_iterator rit = s1.rbegin();
+	while (rit != s1.rend())
+	{
+		cout << *rit << "  ";
+		++rit;           //反向迭代器,  ++就是倒着走
+	}
+	cout << endl;
+}
+
+void Print(const string& s)  
+{
+	//const迭代器     --     const_iterator   --    这是迭代器的一种类型(用来保护*it,不是it)
+	//const迭代器的意义   :  const迭代器保护的是it指向的内容,而不是it本身
+	string::const_iterator it = s.begin();
+	//const string::iterator it1 = s.begin();   这样写,这个const保护的是it1这个指针,但是我it1指针是要++的
+	while (it != s.end())
+	{
+		cout << *it << "  ";
+		++it;
+	}
+	cout << endl;
+
+	//const反向迭代器
+	string::const_reverse_iterator rit = s.rbegin();
+	while (rit != s.rend())
+	{
+		cout << *rit << "  ";
+		++rit;
+	}
+	cout << endl;
+}
+
+int main()
+{
+	//test_string();
+
+	//test_vector();
+	//test_string3();
+
+	string s1("abcd");
+	Print(s1);
+
+	return 0;
+}
+
+
+//普通for循环 使用方括号[]来访问很爽,不过并不适用所有的容器
+// string可以暂时使用[],挺好用的
+//所以迭代器,iterator才是走遍天下的访问方式
+
+
+
+//四种迭代器类型:
+//iterator begin();    const_iterator begin() const;
+//reverse_iterator rbegin();   const_reverse_itrator rbegin() const;
+
