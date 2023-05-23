@@ -313,7 +313,47 @@ int main()
 	st2.Push(2);
 }
 
+#define N 10
 
+template<class T>
+class Array     //  库里面有一个小写的array  方法一:改为大写Array  方法二:写进命名空间中
+{
+public:
+	//T& operator[](size_t i)            // 出了作用域,a1[i] 还在  ,   返回它的别名,可以对他进行读写
+	inline T& operator[](size_t i)     //传引用返回,再加上内敛  效率拉满
+	{
+		//这个数组可以做到百分之百查到 越界行为   连读都能查到
+		assert(i < N);
+
+		return _a[i];
+	}
+
+private:
+	T _a[N];
+	size_t _size;
+};
+
+int main()
+{
+	Array<int>a1;
+	for (size_t i = 0; i < N; ++i)
+	{
+		a1[i] = i;           //           a1.operator[](i) = i;
+	}
+
+	for (size_t i = 0; i < N; ++ i)
+	{
+		a1[i]++;          //可以进行读写操作
+	}
+
+	for (size_t i = 0; i < N; ++i)
+	{
+		cout << a1[i] << "  ";   // 1  2  3  4  5  6  7  8  9  10
+	} 
+	cout << endl;
+
+	return 0;
+}
 
 
 
