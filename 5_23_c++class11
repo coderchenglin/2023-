@@ -1,0 +1,488 @@
+//c++class10
+
+#include <iostream>
+#include<assert.h>
+
+using namespace std;
+
+class A
+{
+public:
+	A(int a = 0)
+		:_a(a)
+	{
+		cout << "A():" << this << endl;
+	}
+
+	~A()
+	{
+		cout << "~A():" << this << endl;
+	}
+
+private:
+	int _a;
+};
+
+//int main()
+//{
+//	A* p1 = new A;
+//
+//	A* p2 = new A[10];
+//
+//	return 0;
+//}
+
+
+
+
+
+//定位new表达式(placement-new) (了解)
+
+//定位new表达式是  :  在已分配的原始内存空间中调用构造函数初始化一个对象
+//
+//使用格式:
+//new(palce_address) type 或者 new(place_address) type(initializer-list)
+//place_address 必须是一个指针,initializer-list是类型的初始化列表
+//
+//使用场景:
+//定位new表达式在实际中,一般是配合内存池使用.因为内存池分配出的内存没阳初始化,
+//所以如果是自定义类型的对象,需要使用new的定义表达式进行显示调构造函数进行初始化
+
+
+//int main()
+//{
+//	A* p3 = (A*)malloc(sizeof(A));     // malloc  不会初始化
+//	if (p3 == nullptr)
+//	{
+//		perror("malloc fail");
+//		exit(-1);
+//	}
+//
+//	//定位new   --  对p3指向的空间,显示调用构造函数初始化
+//	new(p3)A(1);  
+//
+//	//p3->~A();     //析构函数可以显示调用!  
+//	//                      //但是构造函数不能显示调用,只能使用   定位new
+//	//free(p3);
+//
+//	//上面3行可以直接写成:
+//	delete p3;        //因为本质上就是  : 析构 + free
+//
+//	return 0;
+//}
+
+
+//新概念 : 进程池       stl就是用的进程池      (相当于村长家的水窖)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//模板
+
+//虽然c++支持了重载,但是我们还是得写不同的函数
+//如Swap函数,交换int , double ,char  等,就要写3个Swap函数,只是参数不同
+
+ //template  - 模板
+
+
+//template<class T>        --     class和typename没有任何区别
+
+////函数模板
+//template<typename T>
+//void Swap(T& left, T& right)
+//{
+//	T temp = left;
+//	left = right; 
+//	right = temp;
+//}
+//
+//int main()
+//{
+//	//下面这个三个Swap() 调用的是三个不同函数,真正调用时,会将T转换成对应不同的类型
+//	int a = 1, b = 2;
+//	Swap(a, b);
+//
+//	double c = 1.1, d = 2.2;
+//	Swap(c, d);
+//
+//	char e = 'e', f = 'b';
+//	Swap(e, f);
+//
+//	return 0;
+//}
+
+
+
+//template<typename T>
+//T Add(const T& left, const T& right)
+//{
+//	return left + right;
+//}
+//
+//
+//int main()
+//{
+//	int a1 = 10, a2 = 20;
+//	double d1 = 10.1, d2 = 20.2;
+//
+//	//以下四种是 自动推演实例化
+//	cout << Add(a1, a2) << endl;
+//	cout << Add(d1, d2) << endl;
+//
+//	//cout << Add(a1, d2) << endl;                //报错,在模板实例化的时候就报错了,T不可能同时既是int类型又是double类型
+//	cout << Add((double)a1, d2) << endl;     //这里可以强制类型转换的前提是,模板函数参数必须是const引用,
+//																	  //因为强转相当于产生一个临时变量然后赋值,而临时变量具有常性
+//	cout << Add(a1, (int)d2) << endl;
+//
+//	//显示实例化 
+//	cout << Add<double>(a1, d2) << endl;   //当然前提也是,   前面参数是const引用
+//	cout << Add<int>(a1, d2) << endl;
+//}
+
+
+
+//template<class T1,class T2>
+//T1 Add(const T1& left, const T2& right)
+//{
+//	return left + right;
+//}
+
+//像这样写模板,那么就可以像下面这样写了
+//cout << Add(a1, d2) << endl;
+
+/////////////////////////////////////////////////////////////////////////////
+
+////专门处理int的加法函数
+//int Add(int left, int right)
+//{
+//	return left + right;
+//}
+//
+////通用加法函数
+//template<typename T>
+//T Add(T left, T right)
+//{
+//	return left + right;
+//}
+//
+////上面这两个函数,是可以同时存在的
+////如果调用,会优先调用,我们自己写好的
+
+
+////////////////////////////////////////////////////////////////////////////////////
+ 
+//typedef int STDateType;
+//
+//class Stack
+//{
+//public:
+//	Stack(int capacity)
+//	{
+//		cout << "Stack(int capacity = )" << capacity << endl;
+//
+//		_a = (int*)malloc(sizeof(int) * capacity);
+//		if (_a == nullptr)
+//		{
+//			perror("malloc fail");
+//			exit(-1);
+//		}
+//
+//		_top = 0;
+//		_capacity = capacity;
+//	}
+//
+//	//深拷贝  (拷贝构造)
+//	Stack(const Stack& st)
+//	{
+//		cout << "Stack(const Stack& st)" << endl;
+//
+//		_a = (int*)malloc(sizeof(int) * st._capacity);
+//		if (_a == nullptr)
+//		{
+//			perror("malloc fail");
+//			exit(-1);
+//		}
+//		memcpy(_a, st._a, sizeof(int) * st._top);
+//		_top = st._top;
+//		_capacity = st._capacity;
+//	}
+//
+//	//st1 = st2
+//	//st1 = st1
+//
+//	//赋值拷贝  (也要用深拷贝)
+//	Stack& operator=(const Stack& st)
+//	{
+//		cout << "     Stack& operator=(const Stack& st)" << endl;
+//		if (this != &st)
+//		{
+//			free(_a);
+//			_a = (int*)malloc(sizeof(int) * st._capacity);
+//			if (_a == nullptr)
+//			{
+//				perror("malloc fail");
+//				exit(-1);
+//			}
+//			memcpy(_a, st._a, sizeof(int) * st._top);
+//			_top = st._top;
+//			_capacity = st._capacity;
+//		}
+//
+//		return *this;
+//	}
+//
+//	~Stack()
+//	{
+//		cout << "~Stack()" << endl;
+//
+//		free(_a);
+//		_a = nullptr;
+//		_top = _capacity = 0;
+//	}
+//
+//	void Push(int x)
+//	{
+//		//...
+//		//扩容
+//		_a[_top++] = x;
+//	}
+//
+//private:
+//	int* _a;
+//	int _capacity;
+//	int _top;
+//};
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//类模板   --   一般没有推演的时机,    --     全部显示实例化
+//函数模板    --  实参传递给形参,推演模板参数
+
+//template<typename T>
+//
+//class Stack
+//{
+//public:
+//	Stack(int capacity = 4)
+//	{
+//		cout << "Stack(int capacity = )" << capacity << endl;
+//
+//		_a = (T*)malloc(sizeof(T) * capacity);
+//		if (_a == nullptr)
+//		{
+//			perror("malloc fail");
+//			exit(-1);
+//		}
+//
+//		_top = 0;
+//		_capacity = capacity;
+//	}
+//
+//	
+//
+//	~Stack()
+//	{
+//		cout << "~Stack()" << endl;
+//
+//		free(_a);
+//		_a = nullptr;
+//		_top = _capacity = 0;
+//	}
+//
+//	void Push(const T& x)     //类模板  通常推荐使用  传引用传参,减少自定义类型的拷贝构造
+//	{                                                                             //在不改变的情况下,推荐使用const引用
+//		...
+//		扩容
+//		_a[_top++] = x;
+//	}
+//
+//private:
+//	T* _a;
+//	int _capacity;
+//	int _top;
+//};
+//
+//int main()
+//{
+//	//类模板 统一显示实例化  因为一般没有推演的时机
+//	Stack<double> st1;
+//	st1.Push(1.1);
+//
+//	Stack<int> st2;
+//	st2.Push(2);
+//}
+
+//#define N 10
+//
+//template<class T>
+//class Array     //  库里面有一个小写的array  方法一:改为大写Array  方法二:写进命名空间中
+//{
+//public:
+//	//T& operator[](size_t i)            // 出了作用域,a1[i] 还在  ,   返回它的别名,可以对他进行读写
+//	inline T& operator[](size_t i)     //传引用返回,再加上内敛  效率拉满
+//	{
+//		//这个数组可以做到百分之百查到 越界行为   连读都能查到
+//		assert(i < N);
+//
+//		return _a[i];
+//	}
+//
+//private:
+//	T _a[N];
+//	size_t _size;
+//};
+//
+//int main()
+//{
+//	Array<int>a1;
+//	for (size_t i = 0; i < N; ++i)
+//	{
+//		a1[i] = i;           //           a1.operator[](i) = i;
+//	}
+//
+//	for (size_t i = 0; i < N; ++ i)
+//	{
+//		a1[i]++;          //可以进行读写操作
+//	}
+//
+//	for (size_t i = 0; i < N; ++i)
+//	{
+//		cout << a1[i] << "  ";   // 1  2  3  4  5  6  7  8  9  10
+//	} 
+//	cout << endl;
+//
+//	return 0;
+//}
+
+
+////////////////////////////////////////////////////////
+
+//stl开始
+
+//编码    --    windows上默认是GBK  ,  linux上默认是UTF-8
+//int main()
+//{
+//	char arr1[] = "abcd";
+//	char arr2[] = "apple";
+//	char arr3[] = "加油";     //   两个字符决定一个汉字
+//
+//	arr3[3]--;
+//	arr3[3]--;
+//	arr3[3]++;
+//	arr3[3]++;
+//	arr3[3]++;
+//	arr3[3]++;
+//
+//	return 0;
+//}
+
+
+
+//string   ---  动态增长的字符数组
+
+//简单的底层实现:
+//template<class T>
+//class basic_string
+//{
+//private:
+//	T* _str;
+//	size_t _size;
+//	size_t _capacity;
+//};
+//
+//typedef basic_string<char> string;
+
+
+
+#include <string>
+
+void test_string1()
+{
+	string s1;       //空字符串
+	cout << s1 << endl;
+
+	string s2("湖北省武汉市");    //初始化一个字符串
+	cout << s2 << endl;
+
+	s2 += "武昌区";             // 运算符重载
+	cout << s2 << endl;
+
+	//string s3 = "湖北省武汉市"；
+	//cout << s3 << endl;
+
+	string s4(10, '*');     //   初始化：10个char字符
+	cout << s4 << endl;   
+
+	string s5(s2);        //拷贝构造
+	string s6 = s2;      //拷贝构造
+	cout << s5 << endl;
+	cout << s6 << endl;
+
+	//以上 , 空字符串,用一个  常量字符串构造, 以及拷贝构造,三种构造是最重要的
+
+	string s7("hello world", 7);    //用"hello world"这个字符串的前7个字符  ,  来构造s7
+	cout << s7 << endl;           //hello w
+
+	string s8("hello world", 2, 7);        //从第2个位置,走7个字符  来构造s8      //注意! 如果走7个字符太长了走到了头,那么就直接到string的末尾,不会报错
+	cout << s8 << endl;           //llo wor
+
+	string s9(s7, 2, 3);                         //从第2个位置,走3个字符   来构造s9
+	cout << s9 << endl;           //llo
+
+	string s10(s7, 2);                         //   如果给缺省值,即第三个参数不给,那么直接从第二个开始,一直到string末尾
+	cout << s10 << endl;           //llo w
+
+}
+
+  //operator[]  方括号 -- 返回的是引用  -- 只要越界就会报错
+  // 
+//char& operator[](size_t i)
+//{
+//	return _str[i];
+//}
+
+void test_string2()
+{
+	//写一个小功能demo:实现让这个字符串,每个字符都+1
+	string s1("1234");
+
+	//遍历他的3种方式:
+	//  1.  下标加方括号   operator[]
+	for (size_t i = 0; i < s1.size(); ++i)
+	{
+		s1[i]++;   // 方括号,只要越界就会报错
+	}
+	cout << s1 << endl;   // 2345
+
+	//  2. 范围for
+	for (auto& ch : s1)          //依次取s1的字符,赋值给ch,  所以要用引用&,才能改变s1的值
+	{
+		ch--;
+	}
+	cout << s1 << endl;
+
+	//翻转一下
+	size_t begin = 0, end = s1.size() - 1;
+	while (begin < end)
+	{
+		swap(s1[begin++], s1[end--]);
+	}
+	cout << s1 << endl;
+
+	//迭代器
+	reverse(s1.begin(),s1.end());
+	cout << s1 << endl;
+}
+
+int main()
+{
+	test_string1();
+
+	test_string2();
+
+	return 0;
+}
+
+ 
