@@ -136,3 +136,213 @@ int main()
 //iterator begin();    const_iterator begin() const;
 //reverse_iterator rbegin();   const_reverse_itrator rbegin() const;
 
+//总结:   
+//1.只读功能函数  const
+//2.只写功能函数 非const版本
+//3.读写功能函数  const+非const版本
+
+
+void test_string4()
+{
+	string s("hello world");
+	//这两个是一样的,  不过stl都有size()这个接口,没有length()
+	cout << s.size() << endl;
+	cout << s.length() << endl;
+	cout << s.capacity() << endl;
+
+	//max.size()这个接口没什么用
+	cout << s.max_size() << endl;  //2147483647
+
+	cout << s << endl;
+	s.clear();    //请不清理空间是不一定的
+	cout << s << endl;
+
+	cout << s.capacity() << endl;  //15  说明上面没有清理空间
+}  
+
+//(非重点)
+void test_string5()
+{
+	string str(100, 'x');    
+	cout << "1. capacity of str: " << str.capacity() << endl;    //111
+
+	str.resize(10);   //把大小降成10
+	cout << "2. capacity of str: " << str.capacity() << endl;    //111
+	
+	str.shrink_to_fit();   //让容量大小和大小相同
+	cout << "3. capacity of str: " << str.capacity() << endl;   //15
+
+}
+
+//  重点!!   --   .resize()  /  .reserve()
+void test_string6()
+{
+	string s;   
+	//
+	s.reserve(1000);          // reserve  --  预留,保留     别和reverse搞混了
+	//这个函数接受一个size_t类型的参数new_capacity，表示要为字符串预留的新容量。
+	//它可以用于提前分配足够的内存，以避免在后续的操作中频繁地重新分配内存。          
+
+	size_t sz = s.capacity();
+	cout << "making s grow: \n";
+	for (int i = 0; i < 10000; ++i)
+	{
+		s.push_back('c');
+		if (sz != s.capacity())   // 即如果扩容了的话  --  capacity()改变了
+		{
+			sz = s.capacity();     //把新的capacity大小给到sz
+			cout << "capacity changed:  " << sz << '\n';   //打印新的sz值
+		}
+	}
+}
+
+//int main()
+//{
+//	//test_string4();
+//
+//	//test_string5();
+//
+//	test_string6();  //making s grow:
+//							//capacity changed : 31
+//							//	capacity changed : 47
+//							//	capacity changed : 70
+//							//	capacity changed : 105
+//	 
+//	//g++是严格按照2倍来扩容的,   VS主要是1.5倍扩容
+//
+//	return 0;
+//}
+
+//   .resize()函数可以有3种情况
+// 假设当前数据大小为m   容量为n    ,resize(t)
+//1.  t<m    删除数据
+//2.  m<t<n   插入数据
+//3.  t>n     扩容+插入数据
+
+
+
+//  at() 函数和 []  类似,取下标为pos的字符
+//  区别:  如果发生越界,  at会抛异常
+
+////////////////////////////////////////////////////////
+
+//   .append()函数
+//   += 操作符   ( 这个才是最好用的! )   --  运算符重载+函数重载 :  通过两个特性来支持
+
+//insert()函数  /  erase()函数   这两个用的并不多
+
+//OJ题 : 仅仅翻转字母
+//要求: 给你一个字符串s,所有非英文字母保留在原有位置, 所有英文字母(小写或大写)位置翻转
+//最后返回翻转后的s
+
+//class Solution {
+//public:
+//	string reserseOnlyLetters(string s)
+//	{
+//		size_t begin = 0, end = s.size() - 1;
+//		while (begin < end)
+//		{
+//			while (begin < end && !isalpha(s[begin]))   //防止全是非字母,一路走到头
+//				++begin;
+//			while (begin < end && !isalpha(s[end]))
+//				--end;
+//
+//			swap(s[begin], s[end]);
+//			++begin;
+//			--end;
+//		}
+//
+//		return s;
+//	}
+//
+//};
+//
+//int main()
+//{
+//	Solution solution;        //要先将类实例化  , 再通过成员来访问类的函数
+//	string s("abc123def");
+//
+//	string sret = solution.reserseOnlyLetters(s);
+//	cout << sret << endl;    //fed123cba
+//
+//	return 0;
+//}
+
+
+
+//OJ   字符串相加   (重点!!!)
+
+//给定两个字符串形式的非负整数num1和num2,计算它们的和,并同样以字符串形式返回
+//你不能使用任何内建的用于处理大整数的库(比如BigInteger),也不能直接将输入的字符串转换为整数形式
+
+class Solution
+{
+public:
+	string addstrings(string num1, string num2)
+	{
+		int end1 = num1.size() - 1, end2 = num2.size() - 1;
+		int carry = 0;
+		string retstr;
+		//再次优化:  提前开好大空间
+		retstr.reserve(max(num1.size(), num2.size()) + 1);
+
+		while (end1 >= 0 || end2 >= 0)   //倒着加,两个都结束了才结束
+		{
+			int val1 = end1 >= 0 ? num1[end1] - '0' : 0;    //还没有走完,就   减去字符0,如果走完了,就给数字0
+			int val2 = end2 >= 0 ? num2[end2] - '0' : 0;  
+			int ret = val1 + val2 + carry;
+			//if (ret > 9)
+			//{
+			//	ret -= 10;
+			//	carry = 1;
+			//}
+			//else
+			//{
+			//	carry = 0;
+			//}
+
+			carry = ret / 10;
+			ret %= 10;
+
+			//retstr.insert(0, 1, ret + '0');        //前面定义了一个空字符串,算一位就往字符串  <头插>  一位(先插个位,再插十位,再插百位)
+			//优化:  不用头插,用尾插,然后逆置
+			retstr += ('0' + ret);   //尾插
+			--end1;
+			--end2;
+		}
+		//补上一个进位
+
+		if (carry == 1)
+		{
+			//retstr.insert(0, 1, '1');   //头插
+			//用尾插+逆置
+			retstr += '1';   // 尾插
+		}
+
+		//逆置
+		reverse(retstr.begin(),retstr.end());
+
+		return retstr;
+	}
+};
+
+
+int main()
+{
+	Solution solution;
+	string num1 = "567";
+	string num2 = "678";
+
+	string ret = solution.addstrings(num1, num2);
+	cout << ret << endl;  //1245
+
+	return 0;
+}
+
+//这道题
+//1.首先会把逻辑实现出来
+//2.少用头插,效率低.  可以用尾插+逆置
+//3.可以提前开好空间,减少扩容
+
+
+
