@@ -1,0 +1,302 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <assert.h>
+#include <string>
+
+using namespace std;
+
+//string   ---  增删查改
+
+//  +=   --- 这个操作符是用的最多的
+
+//增  --  insert   --  效率低,用的不多
+
+//删  --  erase  --   效率低,用的不多
+
+//类似于赋值 -- assign   --用的不多,甚至很少
+
+//repalce  --  用的也不多,效率不高
+
+//insert/erase
+void test_string8()
+{
+	string s("hello world");
+
+	//insert用的不多.  因为头插效率很低
+	s.insert(0, "c++ ");
+	cout << s << endl;   //c++ hello world
+
+	s.insert(9, "c++ ");
+	cout << s << endl;    //c++ hello c++ world
+
+	//erase   --  也不推荐使用,  中间或头部的插入删除,效率都不太高
+	s.erase(9, 3);   //从第9个位置开始删,删3个字符
+	cout << s << endl;    //c++ hello  world
+
+	s.erase(0, 3);    //从第0个位置开始删,删3个字符
+	cout << s << endl;  // hello  world
+
+	s.erase(2);    //如果第二个参数不传,默认从pos位置开始删光
+	cout << s << endl;
+
+	//如果删的长度超过的内容的长度, 就一直删到结尾处.  不会报错 .
+
+}
+
+//assign    --  和replace有很大的去别,   assign类比的是赋值(先clear,再覆盖)
+void test_string9()
+{
+	// assign  -- 把原本的字符串清空,用新的字符串覆盖旧的,类似于赋值
+	// 和赋值不一样的地方在于 -- 可以选择新字符串的  <一部分>  来覆盖旧的字符串
+
+	string s1("hello world");
+	string s2("lplplplplplplplplplp");
+	s1.assign(s2);    
+	cout << s1 << endl;   //lplplplplplplplplplp
+	cout << s1.capacity() << endl;   //31
+
+	s1.assign(s2, 1,3);   //把s2字符串,从第1个位置开始,取3个字符,赋值给s1
+	cout << s1 << endl;   //plp
+}
+
+//replace
+void test_string10()
+{
+	string s1("hello world hello world");
+	s1.replace(6,5,"lp");    //从第6个位置开始,取5个字符,用"lp"来替代
+	//即将第二个 "world" 替换为 "lp"
+
+	cout << s1 << endl;   //hello lp hello world
+
+	//实现一个小demo,将s3中所有 空格 全部替换成  "%20"
+	string s3(s1);
+	size_t pos = s3.find(' ');    //  find()函数,找到了返回下标,没找到返回  string::npos
+	while (pos != string::npos)
+	{
+		s3.replace(pos, 1, "20%");    //在pos这个位置,用"20%"来替换掉 1 个字符
+		pos = s3.find(' ',pos+3);    //从pos+3这个位置开始找  (跳过20%这3个字符)
+	}
+	cout << s3 << endl;
+
+	//更好的方式:  效率要高的多,上面那种方式每次替换需要一个个挪动数据,效率低
+	string s4(s1);
+	string ret;
+	//优化 : 提前开好空间
+	ret.reserve(s4.size() * 2);
+
+	for (auto ch : s4)
+	{
+		if (ch != ' ')
+		{
+			ret += ch;     //效率最高的还是+=
+		}
+		else
+		{
+			ret += "20%";
+		}
+	}
+	cout << ret << endl;
+}
+
+
+//c_str()接口:
+//在C++的std::string类中，c_str()函数用于返回一个以null结尾的C风格字符串（字符数组）的指针，
+//该字符串与std::string对象中存储的字符串内容相同。
+
+void test_string11()
+{
+	string file("test.cpp");
+	FILE* fout = fopen(file.c_str(), "r");
+	assert(fout);
+
+	//把文件里的内容读出来
+	char ch = fgetc(fout);
+	while (ch != EOF)
+	{
+		cout << ch;
+		ch = fgetc(fout);
+	}
+	fclose(fout);
+}
+
+
+//substr()函数   --  substr()函数用于从一个字符串中提取子串，即截取字符串的一部分
+//函数原型 : std::string substr(size_t pos = 0, size_t count = npos) const;
+//int main()
+//{
+//	string str = "hello,world";
+//
+//	string substr1 = str.substr(7);   // 从索引7开始提取到末尾
+//	cout << substr1 << endl;  //World!
+//
+//	string substr2 = str.substr(0, 5);  // 从所以0开始提取5个字符
+//	cout << substr2 << endl;  //Hello
+//	
+//	return 0;
+//}
+
+
+
+//写一个demo : 要求取它文件名的后缀
+//利用 .substr()函数  和  .find()函数 或者  .rfind()函数
+void test_string12()
+{
+	string file;
+	cin >> file;
+
+	size_t pos = file.rfind('.');
+	if (pos != string::npos)
+	{
+		//string suffix = file.substr(pos, file.size() - pos);   //从索引pos开始,提取 (总长度-pos) 个字符
+		string suffix = file.substr(pos);            //这里第二个参数也可以不传!   默认提取到结尾    
+
+		cout << suffix << endl;
+	}
+}
+
+
+
+//(用的少)
+//find_first_of() --find_first_of()函数用于在字符串中查找第一个与给定字符序列中的任何字符匹配的字符，并返回其位置索引
+//函数原型   :  size_t find_first_of(const std::string& str, size_t pos = 0) const noexcept;
+//示例代码:
+
+//int main()
+//{
+//	string str = "hello world";
+//
+//	size_t found = str.find_first_of("o");  //查找第一个出现的字符'o'的下标
+//	if (found != string::npos)
+//	{
+//		cout << "Found at index: " << found << endl;   // Found at index : 4
+//	}
+//	else
+//	{
+//		cout << "Not found" << endl;   
+//	}
+//
+//	found = str.find_first_of("oWe");   //查找第一个出现的字符'o',或'W',或'L'的下标
+//	if (found != string::npos)
+//	{
+//		cout << "Found at index: " << found << endl;   // Found at index : 1  
+//	}
+//	else
+//	{
+//		cout << "Not found" << endl;
+//	}
+//
+//
+//	return 0;
+//}
+
+//写一个小demo,将一个字符串中的aeiou全部替换成'*'字符
+//int main()
+//{
+//	string str("Please , replace the vowels in this sentence by asterisks.");
+//	size_t found = str.find_first_of("aeiou");
+//	while (found != string::npos)
+//	{
+//		str[found] = '*';
+//		found = str.find_first_of("aeiou", found + 1);
+//	}
+//
+//	cout << str << endl;
+//
+//	return 0;
+//}
+
+
+//allocator --  空间配置器
+
+//int main()
+//{
+//	//test_string8();
+//
+//	//test_string9();
+//
+//	//test_string10();
+//
+//	//test_string11();
+//
+//	test_string12();
+//
+//	return 0;
+//}
+
+
+
+
+//OJ题
+//字符串中的第一个唯一字符
+//给定一个字符串S,找到它的第一个不重复的字符,并返回它的索引.如果不存在,则返回-1;
+//说明:只包含小写字母
+
+class Solution
+{
+public:
+	int firstUniqChar(string s)
+	{
+		int count[26] = { 0 };
+		//统计次数
+		for (auto ch : s)
+		{
+			count[ch - 'a']++;
+		}
+
+		//遍历找第一个只出现一次的
+		for (size_t i = 0; i < s.size(); ++i)
+		{
+			if (count[s[i] - 'a'] == 1)
+			{
+				return i;
+			}
+		}
+
+		return -1;
+	}
+};
+
+
+
+//getline()   ->     和<<的区别,getline默认以换行结束, <<默认以空格或者换行结束
+// 
+//OJ题
+//字符串最后一个单词的长度
+//计算字符串最后一个单词的长度,单词以空格隔开,字符串长度小于5000.
+
+//输入描述:
+//输入一行,代表要计算的字符串,非空,长度小于5000
+
+//输出描述:
+//输出一个整数,表示输入字符串最后一个单词的长度
+
+//下面是个错误的写法
+//int main()
+//{
+//	string str;
+//	//错误:  //cin >> str;  //注意: 流提取,默认以空格或换行,作为多项输入的间隔
+//	getline(cin, str);   //包含在  <string>头文件  中
+//	size_t pos = str.rfind(' ');
+//	cout << str.size() - pos -1<< endl;  //记得要-1   下标相减,左闭右开就是个数,左闭右闭还得-1
+//
+//	return 0;
+//}
+
+
+//小写和大写字母之间差了32
+//小写a:97  大写A:65
+
+
+
+
+//////////////////////////////////////////////////////////////
+//终于要进入底层啦~
+
+
+
+
+
+
+
+
