@@ -1,0 +1,170 @@
+#pragma once
+
+#include<iostream>
+#include<assert.h>
+
+using namespace std;
+//不套模板
+
+namespace lp
+{
+	class string
+	{
+	public:
+		typedef char* iterator;
+
+		//这只是迭代器其中的一种实现方式,迭代器可能是指针,可能不是指针   使用的时候可以把它看做一个指针
+		iterator begin()
+		{
+			return _str;
+		}
+
+		iterator end()  //最后一个位置的下一个位置
+		{
+			return _str + _size;
+		}
+
+		//初始化
+		string(const char* str)
+			//:_str(str)        //1. 这里初始化不能使用初始化列表(权限的放大)
+			//用下面这样初始化列表来实现,也不太好
+			//:_str(new char[strlen(str)+1])             //最好不要用malloc
+			//,_size(strlen(str))
+			//,_capacity(strlen(str))
+		{
+			_size = strlen(str);
+			_capacity = _size;    //这里选择的是 : 实际空间的大小(不算\0) ,即不'+1'
+			_str = new char[_capacity + 1];   //上面不+1,这里就+1,实际开空间永远比capacity多开一个
+
+			strcpy(_str, str);
+		}
+
+		//返回c式字符串
+		const char* c_str()   //返回c式的字符串,也仍旧是返回这个对象的指针
+		{
+			return _str;    //this->_str
+		}
+		
+		size_t size()
+		{
+			return _size;
+		}
+
+		// []操作符
+		char& operator[](size_t pos)
+		{
+			assert(pos < _size);
+			return _str[pos];
+		}
+
+		//思考一下const对象怎么访问
+		void func(const string& s)
+		{
+			for (size_t i = 0; i < s.size(); ++i)
+			{
+				s[i]++;
+			}
+
+			cout << s.c_str() << endl;
+		}
+
+		//扩容  -- 怎么阔?手动阔,就相当于实现以下realloc的功能
+		void reserve(size_t n)
+		{
+			//逻辑 : 新开一个空间,把内容拷贝进行,释放旧空间
+
+			char* tmp = new char[n + 1];   //开空间
+			strcpy(tmp, _str);      //拷贝内容
+			delete[] _str;     //释放旧空间
+			_str = tmp;    //指针赋值
+
+			//扩容只影响容量,不影响大小
+			_capacity = n;
+		}
+
+
+		void push_back(char ch)  //尾插一个字符,还可以二倍扩容
+		{
+			if (_size == _capacity)   //前面定义_capacity时,存的是真实容量,没有+1
+			{
+				reserve(_capacity * 2);
+			}
+			_str[_size] = ch;
+			++_size;
+			_str[_size] = ' ';
+		}
+
+		void append(const char* str)  //尾插一个 '字符串', 就不能二倍扩容了(因为二倍可能不够)
+		{
+			size_t len = strlen(str);
+			if (_size + len > _capacity)
+			{
+				reserve();
+			}
+		}
+
+		string& operator+=(char ch)
+		{
+			push_back(ch);
+			return *this;
+		}
+
+		string& operator+=(const char* str)
+		{
+			append(str);
+			return *this;
+		}
+
+
+	private:
+		char* _str;
+		size_t _size;
+		size_t _capacity;
+	};
+
+
+
+	void test_string1()
+	{
+		string s1("hello world");
+		cout << s1.c_str() << endl;
+
+		for (size_t i = 0; i < s1.size(); ++i)
+		{
+			s1[i]++;
+		}
+
+		cout << s1.c_str() << endl;
+
+		string::iterator it1 = s1.begin();
+		while (it1 != s1.end())
+		{
+			(*it1)--;
+			++it1;
+		}
+		cout << s1.c_str() << endl;
+
+		//这个范围for在编译的时候,跟上面的代码是一样的! 底层就是用到了迭代器
+		for (auto ch : s1)
+		{
+			cout << ch << " ";
+		}
+		cout << endl;
+	}
+
+	void test_string2()
+	{
+		string s1("hello");
+		s1 += ' ';
+		s1 += "hello world";
+
+		cout << s1.c_str() << endl;
+	}
+
+}
+
+
+
+
+
+
