@@ -1,11 +1,5 @@
 #pragma once
 
-#include<iostream>
-#include<assert.h>
-
-using namespace std;
-//不套模板
-
 namespace lp
 {
 	class string
@@ -13,94 +7,195 @@ namespace lp
 	public:
 		typedef char* iterator;
 
-		//这只是迭代器其中的一种实现方式,迭代器可能是指针,可能不是指针   使用的时候可以把它看做一个指针
 		iterator begin()
 		{
 			return _str;
 		}
 
-		iterator end()  //最后一个位置的下一个位置
+		iterator end()
 		{
 			return _str + _size;
 		}
 
-		//初始化
-		string(const char* str)
-			//:_str(str)        //1. 这里初始化不能使用初始化列表(权限的放大)
-			//用下面这样初始化列表来实现,也不太好
-			//:_str(new char[strlen(str)+1])             //最好不要用malloc
-			//,_size(strlen(str))
-			//,_capacity(strlen(str))
+		/*	string()
+			{
+			_str = new char[1];
+			_str[0] = '\0';
+			_capacity = _size = 0;
+			}*/
+
+		// '\0'
+		// "\0"
+		// ""
+		string(const char* str = "")
 		{
 			_size = strlen(str);
-			_capacity = _size;    //这里选择的是 : 实际空间的大小(不算\0) ,即不'+1'
-			_str = new char[_capacity + 1];   //上面不+1,这里就+1,实际开空间永远比capacity多开一个
+			_capacity = _size;
+			_str = new char[_capacity + 1];
 
 			strcpy(_str, str);
 		}
 
-		//返回c式字符串
-		const char* c_str()   //返回c式的字符串,也仍旧是返回这个对象的指针
+		void swap(string& s)
 		{
-			return _str;    //this->_str
+			std::swap(_str, s._str);
+			std::swap(_size, s._size);
+			std::swap(_capacity, s._capacity);
 		}
-		
-		size_t size()
+
+		// 现代写法
+		// s2(s1)
+		string(const string& s)
+			:_str(nullptr)
+			, _size(0)
+			, _capacity(0)
+		{
+			string tmp(s._str); // 构造函数
+			//this->swap(tmp);
+			swap(tmp);
+		}
+
+		// s2(s1)
+		// 传统写法
+		/*string(const string& s)
+		{
+		_str = new char[s._capacity + 1];
+		_capacity = s._capacity;
+		_size = s._size;
+
+		strcpy(_str, s._str);
+		}*/
+
+		// s1 = s3;
+		/*string& operator=(const string& s)
+		{
+			if (this != &s)
+			{
+				char* tmp = new char[s._capacity + 1];
+				strcpy(tmp, s._str);
+
+				delete[] _str;
+				_str = tmp;
+
+				_size = s._size;
+				_capacity = s._capacity;
+			}
+
+			return *this;
+		}*/
+
+		// s1 = s3;
+		//string& operator=(const string& s)
+		//{
+		//	if (this != &s)
+		//	{
+		//		//string tmp(s._str);
+		//		string tmp(s);
+		//		swap(tmp);
+		//	}
+
+		//	return *this;
+		//}
+
+		// s1 = s3;
+		string& operator=(string s)
+		{
+			swap(s);
+			return *this;
+		}
+
+		~string()
+		{
+			delete[] _str;
+			_str = nullptr;
+			_size = _capacity = 0;
+		}
+
+		const char* c_str() const
+		{
+			return _str;
+		}
+
+		size_t size() const
 		{
 			return _size;
 		}
 
-		// []操作符
+		size_t capacity() const
+		{
+			return _capacity;
+		}
+
+		// 普通对象：可读可写
 		char& operator[](size_t pos)
 		{
 			assert(pos < _size);
 			return _str[pos];
 		}
 
-		//思考一下const对象怎么访问
-		void func(const string& s)
+		// const对象：只读
+		const char& operator[](size_t pos) const
 		{
-			for (size_t i = 0; i < s.size(); ++i)
-			{
-				s[i]++;
-			}
-
-			cout << s.c_str() << endl;
+			assert(pos < _size);
+			return _str[pos];
 		}
 
-		//扩容  -- 怎么阔?手动阔,就相当于实现以下realloc的功能
 		void reserve(size_t n)
 		{
-			//逻辑 : 新开一个空间,把内容拷贝进行,释放旧空间
+			if (n > _capacity)
+			{
+				char* tmp = new char[n + 1];
+				strcpy(tmp, _str);
+				delete[] _str;
+				_str = tmp;
 
-			char* tmp = new char[n + 1];   //开空间
-			strcpy(tmp, _str);      //拷贝内容
-			delete[] _str;     //释放旧空间
-			_str = tmp;    //指针赋值
-
-			//扩容只影响容量,不影响大小
-			_capacity = n;
+				_capacity = n;
+			}
 		}
 
-
-		void push_back(char ch)  //尾插一个字符,还可以二倍扩容
+		void resize(size_t n, char ch = '\0')
 		{
-			if (_size == _capacity)   //前面定义_capacity时,存的是真实容量,没有+1
+			if (n > _size)
 			{
-				reserve(_capacity * 2);
+				reserve(n);
+				for (size_t i = _size; i < n; ++i)
+				{
+					_str[i] = ch;
+				}
+
+				_size = n;
+				_str[_size] = '\0';
 			}
+			else
+			{
+				_str[n] = '\0';
+				_size = n;
+			}
+		}
+
+		void push_back(char ch)
+		{
+			if (_size == _capacity)
+			{
+				size_t newCapacity = _capacity == 0 ? 4 : _capacity * 2;
+				reserve(newCapacity);
+			}
+
 			_str[_size] = ch;
 			++_size;
-			_str[_size] = ' ';
+			_str[_size] = '\0';
 		}
 
-		void append(const char* str)  //尾插一个 '字符串', 就不能二倍扩容了(因为二倍可能不够)
+		void append(const char* str)
 		{
 			size_t len = strlen(str);
 			if (_size + len > _capacity)
 			{
-				reserve();
+				reserve(_size + len);
 			}
+
+			strcpy(_str + _size, str);
+			_size += len;
 		}
 
 		string& operator+=(char ch)
@@ -115,14 +210,205 @@ namespace lp
 			return *this;
 		}
 
+		string& insert(size_t pos, char ch)
+		{
+			assert(pos <= _size);
 
+			if (_size == _capacity)
+			{
+				size_t newCapacity = _capacity == 0 ? 4 : _capacity * 2;
+				reserve(newCapacity);
+			}
+
+			// 挪动数据
+			/*int end = _size;
+			while (end >= (int)pos)
+			{
+			_str[end + 1] = _str[end];
+			--end;
+			}*/
+
+			size_t end = _size + 1;
+			while (end > pos)
+			{
+				_str[end] = _str[end - 1];
+				--end;
+			}
+
+			_str[pos] = ch;
+			++_size;
+
+			return *this;
+		}
+
+		string& insert(size_t pos, const char* str)
+		{
+			size_t len = strlen(str);
+			if (_size + len > _capacity)
+			{
+				reserve(_size + len);
+			}
+
+			/*	int end = _size;
+				while (end >= (int)pos)
+				{
+				_str[end + len] = _str[end];
+				--end;
+				}*/
+
+			size_t end = _size + len;
+			while (end > pos + len - 1)
+			{
+				_str[end] = _str[end - len];
+				--end;
+			}
+
+			strncpy(_str + pos, str, len);
+			_size += len;
+
+			return *this;
+		}
+
+		// 休息到16：04继续
+		string& erase(size_t pos, size_t len = npos)
+		{
+			assert(pos < _size);
+
+			if (len == npos || pos + len >= _size)
+			{
+				_str[pos] = '\0';
+				_size = pos;
+			}
+			else
+			{
+				strcpy(_str + pos, _str + pos + len);
+				_size -= len;
+			}
+
+			return *this;
+		}
+
+		size_t find(char ch, size_t pos = 0) const
+		{
+			assert(pos < _size);
+			while (pos < _size)
+			{
+				if (_str[pos] == ch)
+				{
+					return pos;
+				}
+
+				++pos;
+			}
+
+			return npos;
+		}
+
+		// kmp
+		// 聪明 or 努力
+		size_t find(const char* str, size_t pos = 0) const
+		{
+			assert(pos < _size);
+			const char* ptr = strstr(_str + pos, str);
+			if (ptr == nullptr)
+			{
+				return npos;
+			}
+			else
+			{
+				return ptr - _str;
+			}
+		}
+
+		void clear()
+		{
+			_size = 0;
+			_str[0] = '\0';
+		}
 	private:
 		char* _str;
 		size_t _size;
 		size_t _capacity;
+
+		const static size_t npos = -1;
+
+		/*const static size_t N = 10;
+		int a[N];*/
+		//const static double x;
 	};
 
+	ostream& operator<<(ostream& out, const string& s)
+	{
+		for (size_t i = 0; i < s.size(); ++i)
+		{
+			out << s[i];
+		}
 
+		return out;
+	}
+
+	istream& operator>>(istream& in, string& s)
+	{
+		s.clear();
+		//char ch = in.get();
+		//while (ch != ' ' && ch != '\n')
+		//{
+		//	s += ch;
+		//	//in >> ch;
+		//	ch = in.get();
+		//}
+ 
+		char buff[128] = {'\0'};
+		size_t i = 0;
+		char ch = in.get();
+		while (ch != ' ' && ch != '\n')
+		{
+			if (i == 127)
+			{
+				// 满了
+				s += buff;
+				i = 0;
+			}
+
+			buff[i++] = ch;
+
+			ch = in.get();
+		}
+
+		if (i > 0)
+		{
+			buff[i] = '\0';
+			s += buff;
+		}
+
+		return in;
+	}
+
+	//const double string::x = 1.1;
+
+	/*void func(const string& s)
+	{
+	for (size_t i = 0; i < s.size(); ++i)
+	{
+	cout << s[i] << " ";
+	}
+	cout << s.c_str() << endl;
+
+	string::iterator it1 = s.begin();
+	while (it1 != s.end())
+	{
+	(*it1)--;
+
+	++it1;
+	}
+	cout << s.c_str() << endl;
+
+	for (auto ch : s)
+	{
+	cout << ch << " ";
+	}
+	cout << endl;
+	}*/
 
 	void test_string1()
 	{
@@ -133,18 +419,17 @@ namespace lp
 		{
 			s1[i]++;
 		}
-
 		cout << s1.c_str() << endl;
 
 		string::iterator it1 = s1.begin();
 		while (it1 != s1.end())
 		{
 			(*it1)--;
+
 			++it1;
 		}
 		cout << s1.c_str() << endl;
 
-		//这个范围for在编译的时候,跟上面的代码是一样的! 底层就是用到了迭代器
 		for (auto ch : s1)
 		{
 			cout << ch << " ";
@@ -156,15 +441,136 @@ namespace lp
 	{
 		string s1("hello");
 		s1 += ' ';
-		s1 += "hello world";
+		s1 += '!';
+		s1 += '!';
 
+		s1 += "world hello world";
+
+		cout << s1.c_str() << endl;
+
+		string s2;
+		s2 += 'x';
+
+		cout << s2.c_str() << endl;
+	}
+
+	void test_string3()
+	{
+		string s1("helloworld");
+		cout << s1.c_str() << endl;
+
+		s1.insert(5, ' ');
+		cout << s1.c_str() << endl;
+
+		s1.insert(0, 'x');
+		cout << s1.c_str() << endl;
+
+		string s2("helloworld");
+		cout << s2.c_str() << endl;
+		s2.insert(5, " + ");
+		cout << s2.c_str() << endl;
+
+		s2.insert(0, "hello ");
+		cout << s2.c_str() << endl;
+
+		s2.insert(0, "x");
+		cout << s2.c_str() << endl;
+
+		string s3;
+		s3.insert(0, "");
+		cout << s3.c_str() << endl;
+	}
+
+	void test_string4()
+	{
+		string s1("hello hello world");
+		s1.erase(0, 6);
+		cout << s1.c_str() << endl;
+
+		s1.erase(5);
 		cout << s1.c_str() << endl;
 	}
 
+	void test_string6()
+	{
+		string s1("hello world");
+		s1.resize(5);
+		cout << s1.size() << endl;
+		cout << s1.capacity() << endl;
+		cout << s1.c_str() << endl << endl;
+
+		string s2("hello world");
+		//s2.resize(15);
+		s2.resize(15, 'x');
+		cout << s2.size() << endl;
+		cout << s2.capacity() << endl;
+		cout << s2.c_str() << endl << endl;
+
+		string s3("hello world");
+		s3.resize(20, 'x');
+		cout << s3.size() << endl;
+		cout << s3.capacity() << endl;
+		cout << s3.c_str() << endl << endl;
+	}
+
+	void test_string7()
+	{
+	/*	std::string s1("hello world");
+		cout << s1 << endl;
+		cout << s1.c_str() << endl;
+
+		s1.insert(5, 1, '\0');
+		cout << s1.size() << endl;
+		cout << s1.capacity() << endl;
+
+		cout << s1 << endl;
+		cout << s1.c_str() << endl;*/
+
+		string s1("hello world");
+		cout << s1 << endl;
+		cout << s1.c_str() << endl;
+
+		s1.insert(5, '\0');
+		cout << s1.size() << endl;
+		cout << s1.capacity() << endl;
+
+		cout << s1 << endl;
+		cout << s1.c_str() << endl;
+
+		/*	char ch1, ch2;
+			cin >> ch1 >> ch2;*/
+
+		cin >> s1;
+		cout << s1 << endl;
+
+
+		string s2;
+		cin >> s2;
+		cout << s2 << endl;
+
+		string s3;
+		cin >> s3;
+		cout << s3 << endl;
+	}
+
+	void test_string8()
+	{
+		string s1("hello world");
+		string s2(s1);
+
+		cout << s1 << endl;
+		cout << s2 << endl;
+
+		string s3("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		s1 = s3;
+		cout << s1 << endl;
+		cout << s3 << endl;
+
+		s1.swap(s2);
+		swap(s1, s2);
+
+
+		int i(10);  int i = 10;
+		int j = int();
+	}
 }
-
-
-
-
-
-
