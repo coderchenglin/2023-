@@ -1,0 +1,324 @@
+#pragma once
+#include <iostream>
+#include <assert.h>
+#include <string>
+
+using namespace std;
+//1.构造函数
+namespace lp
+{
+	class string
+	{
+	public:
+		//1.构造函数
+		string(const char* str = "")
+		{
+			_size = strlen(str);
+			_capacity = _size;
+			_str = new char[_capacity + 1];
+
+			strcpy(_str, str);
+		}
+		//2.迭代器
+		typedef char* iterator;
+		iterator begin()
+		{
+			return _str;
+		}
+
+		iterator end()
+		{
+			return _str + _size; //最后一个字符的下一个字符
+		}
+		
+		//3.构造函数现代写法
+		void swap(string& s)
+		{
+			std::swap(_str, s._str);
+			std::swap(_size, s._size);
+			std::swap(_capacity, s._capacity);
+		}
+
+		string(const string& s)
+			:_str(nullptr)
+			, _size(0)
+			, _capacity(0)
+		{
+			string tmp(s._str);  //构造函数
+			//this -> swap(tmp)
+			swap(tmp);
+		}
+
+		//4.现代版本赋值重载
+		string& operator=(string s)
+		{
+			swap(s);
+			return *this;
+		}
+
+		//5.析构函数
+		~string()
+		{
+			delete[] _str;
+			_str = nullptr;
+			_size = _capacity = 0;
+		}
+
+		//6.返回c式字符串
+		const char* c_str() const
+		{
+			return _str;
+		}
+
+		//7.返回string大小
+		size_t size() const
+		{
+			return _size;
+		}
+
+		//8.返回string容量
+		size_t capacity()
+		{
+			return _capacity;
+		}
+
+		//9.[]运算符重载
+		//普通对象:可读可写
+		char& operator[](size_t pos)
+		{
+			assert(pos < _size);
+			return _str[pos];
+		}
+
+		//const对象:只读
+		const char& operator[](size_t pos) const
+		{
+			assert(pos < _size);
+			return _str[pos];
+		}
+
+		//10.扩容(只阔不缩)
+		void reserve(size_t n)
+		{
+			if (n > _capacity)
+			{
+				//重新开一块更大的空间,释放旧空间,赋值指针
+				char* tmp = new char[n + 1];
+				strcpy(tmp, _str);
+				delete[] _str;
+				_str = tmp;
+
+				_capacity = n;
+			}
+		}
+
+		//11.resize函数
+		void resize(size_t n, char ch = '\0')
+		{
+			//插入(需要扩容就扩容,不需要就不阔,直接插入)
+			if (n > _size)
+			{
+				reserve(n);
+				for (size_t i = _size; i < n; ++i)
+				{
+					_str[i] = ch;
+				}
+
+				_size = n;
+				_str[_size] = '\0';  //别忘了最后加上'\0'
+			}
+			else
+			{
+				_str[n] = '\0';
+				_size = n;
+			}
+		}
+
+		//12.尾插字符
+		void push_back(char ch)
+		{
+			//阔2倍
+			if (_size == _capacity)
+			{
+				size_t newCapacity = _capacity == 0 ? 4 : _capacity * 2;
+				reserve(newCapacity);
+			}
+
+			_str[_size] = ch;
+			++_size;
+			_str[_size] = '\0';   //别忘了最后加上'\0'
+		}
+
+		//13.尾插字符串
+		void append(const char* str)
+		{
+			size_t len = strlen(str);
+			if (_size + len > _capacity)
+			{
+				reserve(_size + len);
+			}
+
+			strcpy(_str + _size, str);
+			_size += len;
+		}
+
+		//14. 运算符重载+=
+		string& operator+=(char ch)
+		{
+			push_back(ch);
+			return *this;
+		}
+
+		string& operator+=(const char* str)
+		{
+			append(str);
+			return *this;
+		}
+
+		//15.insert函数(插入字符)
+		string& insert(size_t pos, char ch)
+		{
+			assert(pos <= _size);
+
+			if (_size == _capacity)
+			{
+				size_t newCapacity = _capacity == 0 ? 4 : _capacity * 2;
+				reserve(newCapacity);
+			}
+
+			size_t end = _size + 1;
+			while (end > pos)
+			{
+				_str[end] = _str[end - 1];
+				--end;
+			}
+
+			_str[pos] = ch;
+			++_size;
+
+			return *this;
+		}
+		//(插入字符串)
+		string& insert(size_t pos, const char* str)
+		{
+			size_t len = strlen(str);
+			if (_size + len > _capacity)
+			{
+				reserve(_size + len > _capacity);
+			}
+
+			size_t end = _size + len;
+			while (end > pos + len - 1)
+			{
+				_str[end] = _str[end - len];
+			}
+
+			strncpy(_str + pos, str, len);
+			_size += len;
+
+			return *this;
+		}
+
+		//16.erase 函数
+		string& erase(size_t pos, size_t len = npos)
+		{
+			assert(pos < _size);
+
+			if (len == npos || pos + len >= _size)
+			{
+				_str[pos] = '\0';
+				_size = pos;
+			}
+			else
+			{
+				strcpy(_str + pos, _str + pos + len);
+				_size -= len;
+			}
+
+			return *this;
+		}
+
+		//17.find函数(字符)
+		size_t find(char ch, size_t pos = 0) const
+		{
+			assert(pos < _size);
+			while (pos < _size)
+			{
+				if (_str[pos] == ch)
+				{
+					return pos;
+				}
+
+				++pos;
+			}
+		}
+
+		size_t find(const char* str, size_t pos = 0) const
+		{
+			assert(pos < _size);
+			const char* ptr = strstr(_str + pos, str);
+			if (ptr == nullptr)
+			{
+				return npos;
+			}
+			else
+			{
+				return ptr - _str;
+			}
+		}
+
+		//18.清理函数
+		void clear()
+		{
+			_size = 0;
+			_str[0] = '\0';
+		}
+
+	private:
+		char* _str;
+		int _size;
+		int _capacity;
+	};
+
+	//19.流插入运算符重载
+	ostream& operator<<(ostream& out, const string& s)
+	{
+		for (size_t i = 0; i < s.size(); ++i)
+		{
+			out << s[i];
+		}
+
+		return out;
+	}
+
+	//20.流提取运算符重载
+	istream& operator>>(istream& in, string& s)
+	{
+		s.clear();
+
+		char buff[128] = {'\0'};
+		size_t i = 0;
+		char ch = in.get();
+		while (ch != ' ' && ch != '\n')
+		{
+			if (i == 127)
+			{
+				//满了
+				s += buff;
+				i = 0;
+			}
+			buff[i++] = ch;
+
+			ch = in.get();
+		}
+
+		if (i > 0)
+		{
+			buff[i] = '\0';
+			s += buff;
+		}
+
+		return in;
+	}
+
+}
