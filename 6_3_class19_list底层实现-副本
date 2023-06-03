@@ -1,0 +1,387 @@
+#pragma once
+
+#include <assert.h>
+
+namespace lp
+{
+	//结点
+	template<class T>
+	struct list_node
+	{
+		list_node* _next;
+		list_node* _prev;
+		T _data;
+		//构造函数 初始化
+		list_node(const T& x)
+			:_next(nullptr)
+			,_prev(nullptr)
+			,_data(x)
+		{}
+	};
+
+	// const迭代器 : 跟普通迭代器的区别：遍历，不能用*it修改数据
+	template<class T>
+	struct __list_const_iterator
+	{
+		typedef list_node<T> node;
+		node* _pnode;
+
+		__list_const_iterator(node* p)
+			:_pnode(p)
+		{}
+
+		const T& operator*()
+		{
+			return _pnode->_data;
+		}
+
+		__list_const_iterator<T>& operator++()
+		{
+			_pnode = _pnode->_next;
+			return *this;
+		}
+
+		__list_const_iterator<T>& operator--()
+		{
+			_pnode = _pnode->_prev;
+			return *this;
+		}
+
+		bool operator!=(const __list_const_iterator<T>& it)
+		{
+			return _pnode != it._pnode;
+		}
+	};
+
+	//迭代器  --- 用 类封装+运算符重载 实现
+	template<class T>
+	struct __list_iterator
+	{
+		typedef list_node<T> node;
+		node* _pnode;  //定义一个头结点
+
+		__list_iterator(node* p)
+			:_pnode(p)
+		{}
+
+		T& operator*()
+		{
+			return _pnode->_data;
+		}
+
+		__list_iterator<T> operator++()
+		{
+			_pnode = _pnode->_next;
+			return *this;
+		}
+
+		__list_iterator<T> operator--()
+		{
+			_pnode = _pnode->_prev;
+			return *this;
+		}
+
+		bool operator!= (const __list_iterator<T>& it)
+		{
+			return _pnode != it._pnode;
+		}
+	};
+
+	//链表功能实现
+	template<class T>
+	class list
+	{
+		typedef list_node<T> node;
+	public:
+		typedef __list_iterator<T> iterator; 
+		typedef __list_const_iterator<T> const_iterator;
+
+		const_iterator begin() const
+		{
+			return const_iterator(_head->_next);
+		}
+
+		const_iterator end() const
+		{
+			return const_iterator(_head);
+		}
+
+		iterator begin()  //第一个有效数据的位置 -> head的next
+		{
+			return iterator(_head->_next);  //直接返回一个匿名对象
+		}
+
+		iterator end()    //注意! : end是最后一个数据的下一个位置(也就是哨兵位的头结点自己!!不是头结点的prev)
+		{
+			//这种就是定义有名对象后返回
+			//iterator it(_head);
+			//return it;
+			return iterator(_head);
+		}
+
+		//初始化一个双向带头循环链表 (一个自己指向自己的结点)
+		list()
+		{
+			_head = new node(T()); // 注意! : 这个地方要掉用T类型的默认构造来初始化,不能用0,-1等
+			_head->_next = _head;
+			_head->_prev = _head;
+		}
+
+		void empty_initialize()
+		{
+			_head = new node(T());
+			_head->_next = _head;
+			_head->_prev = _head;
+		}
+
+		//拷贝构造 - 传统写法
+		//lt2(lt1)
+		//list(list<T>& lt)
+		//{
+		//	empty_initialize()
+
+		//	for (const auto& e : lt)  //lt是const对象,const对象只能const迭代器来遍历
+		//	{
+		//		push_back(e);
+		//	}
+		//}
+		
+		//拷贝构造传统另一种写法(复用)  --  和现代写法已经差别不大了
+		//list(list<T>& lt)
+		//{
+		//	empty_initialize();
+
+		//	for (const auto& e : lt)
+		//	{
+		//		push_back(e);
+		//	}
+		//}
+
+		//赋值重载
+		//首先防止自己给自己赋值
+		list<T>& operator=(const list<T>& lt)
+		{
+			if (this != &lt)
+			{
+				this->clear();
+
+				for (const auto& e : lt)
+				{
+					this->push_back(e);
+				}
+			}
+
+			return *this;
+		}
+
+
+
+		//析构是把链表都销毁掉,包括头结点
+		~list()
+		{
+			clear();
+
+			delete _head;
+			_head = nullptr;
+		}
+
+		//删除所有元素数据,除了哨兵位的头结点
+		void clear()
+		{
+			iterator it  = begin();
+			while (it != end())
+			{
+				it = erase(it);
+			}
+		}
+
+		void push_back(const T& x)
+		{
+		//	node* newnode = new node(x);    //定义+初始化 一个新的结点
+		//	node* tail = _head->_prev;      //拿到指向最后一个元素的指针
+		//	// _head         tail    newnode
+		//	tail->_next = newnode;
+		//	newnode->_next = _head;
+		//	newnode->_next = _head;
+		//	_head->_prev = newnode;
+
+			//复用insert
+			insert(end(), x);
+		}
+
+		void push_front(const T& x)
+		{
+			insert(begin(), x);
+		}
+
+		void pop_back()
+		{
+			erase(--end());
+		}
+
+		void pop_front()
+		{
+			erase(begin());
+		}
+
+		iterator insert(iterator pos, const T& x)
+		{
+			node* newnode = new node(x);
+			node* cur = pos._pnode;  //拿到pos位置的指针 //这里为什么能拿到_pnode? 因为我们是用struct定义的,相当于public成员变量
+			node* prev = cur->_prev;  //拿到pos位置前一个位置的指针
+
+			//prev newnode cur
+			prev->_next = newnode;
+			newnode->_prev = prev;
+			newnode->_next = cur;
+			cur->_prev = newnode;
+
+			return iterator(newnode);
+		}
+
+		iterator erase(iterator pos)
+		{
+			assert(pos != end());  //不能把哨兵位干掉了  // 这里之前c语言解决不了
+
+			node* prev = pos._pnode->_prev;
+			node* next = pos._pnode->_next;
+
+			prev->_next = next;
+			next->_prev = prev;
+
+			delete pos._pnode;
+
+			return iterator(next);
+		}
+
+
+	private:
+		node* _head; 
+	};
+
+	void test_list1()
+	{
+		list<int> lt;  //定义一个双向带头循环结点(自己指向自己)
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+
+		//迭代器属于内嵌类型
+		list<int>::iterator it = lt.begin();
+		while (it != lt.end())   //迭代器这里统一用!= 而不是 < ,因为vector是连续的物理空间,list不是
+		{
+			cout << *it << " ";
+			++it;
+		}
+		cout << endl;
+
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+	void test_list2()
+	{
+		list<int> lt;  //定义一个双向带头循环结点(自己指向自己)
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+		lt.push_back(5);
+		lt.push_back(6);
+		lt.pop_back();
+		lt.pop_back();
+		lt.pop_front();
+		lt.pop_front();
+
+		list<int>::iterator it = lt.begin();
+		while (it != lt.end())
+		{
+			cout << *it << " ";
+			++it;
+		}
+		cout << endl;
+	}
+
+	void test_list3()
+	{
+		list<int> lt;  //定义一个双向带头循环结点(自己指向自己)
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+		lt.push_back(5);
+
+		list<int> lt1(lt);
+		for (auto e : lt1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		lt.clear();
+	}
+
+	void print_list(const list <int>& lt)
+	{
+		list<int>::const_iterator it = lt.begin();  //const_iterator 和iterator 是由两个类实现的
+		while (it != lt.end())
+		{
+			//(*it) += 2;  //const迭代器,不能写,只能读
+			cout << *it << " ";
+			++it;
+		}
+	}
+
+	void test_list4()
+	{
+		list<int> lt1;
+		lt1.push_back(1);
+		lt1.push_back(2);
+		lt1.push_back(3);
+		lt1.push_back(4);
+
+		list<int>::iterator it = lt1.begin();
+		while (it != lt1.end())
+		{
+			(*it) += 2; // 可以写
+			cout << *it << " ";
+			++it;
+		}
+		cout << endl;
+
+		print_list(lt1);
+	}
+}
+
+
+
+
+
+//iterator  --  像指针一样,拥有下面两个特性
+//1. 解引用
+//2. ++/--
+
+//原生指针,数组结构正好支持迭代器行为,但是链表不行
+//我们可以用 类封装+运算符重载支持
+
+
+
+
+//const迭代器
+//首先,const迭代器的目的是,遍历访问const对象,不能修改const对象的值.  不是让迭代器本身不能修改.迭代器本身是必须要可以修改的,比如++什么的
+
+//const迭代器,本质就是 *运算符的返回值是 const T&(const引用) ,而不是 T&(引用).  *运算符重载的返回值是 引用就可以修改,是const引用就不能修改
+//就是operator*() 和const迭代器不同,其他和普通迭代器一样
+//说白了就是,可以遍历,不能用*lt修改数据
+
+
+//注意,这是三个类:
+//vector<int>
+//vector<string>
+//vector<vector<int>>
+
+
