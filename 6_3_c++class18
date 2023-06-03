@@ -1,0 +1,127 @@
+#pragma once
+
+namespace lp
+{
+	//结点
+	template<class T>
+	struct list_node
+	{
+		list_node* _next;
+		list_node* _prev;
+		T _data;
+
+		list_node(const T& x)
+			:_next(nullptr)
+			,_prev(nullptr)
+			,_data(x)
+		{}
+	};
+
+	template<class T>
+	struct __list_iterator
+	{
+		typedef list_node<T> node;
+		node* _pnode; 
+
+		__list_iterator(node* p)
+			:_pnode(p)
+		{}
+
+		T& operator*()
+		{
+			return _pnode->_data;
+		}
+
+		__list_iterator<T> operator++()
+		{
+			_pnode = _pnode->_next;
+			return *this;
+		}
+
+		bool operator!= (const __list_iterator<T>& it)
+		{
+			return _pnode != it._pnode;
+		}
+
+	};
+
+	//链表功能实现
+	template<class T>
+	class list
+	{
+		typedef list_node<T> node;
+	public:
+		typedef __list_iterator<T> iterator;
+
+		iterator begin()  //第一个有效数据的位置 -> head的next
+		{
+			return iterator(_head->_next);  //直接返回一个匿名对象
+		}
+
+		iterator end()    //注意! : end是最后一个数据的下一个位置(也就是哨兵位的头结点自己!!不是头结点的prev)
+		{
+			//这种就是定义有名对象后返回
+			//iterator it(_head);
+			//return it;
+			return iterator(_head);
+		}
+
+		list()
+		{
+			_head = new node(T()); // 这个地方要掉T类型的默认构造来初始化,不能用0,-1等
+			_head->_next = _head;
+			_head->_prev = _head;
+		}
+
+		void push_back(const T& x)
+		{
+			node* newnode = new node(x);
+			node* tail = _head->_prev;
+			// _head         tail    newnode
+			tail->_next = newnode;
+			newnode->_next = _head;
+			newnode->_next = _head;
+			_head->_prev = newnode;
+
+
+		}
+
+	private:
+		node* _head; 
+
+	};
+
+	void test_list1()
+	{
+		list<int> lt;
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+
+		//迭代器属于内嵌类型
+		list<int>::iterator it = lt.begin();
+		while (it != lt.end())   //迭代器这里统一用!= 而不是 < ,因为vector是连续的物理空间,list不是
+		{
+			cout << *it << " ";
+			++it;
+		}
+		cout << endl;
+
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+}
+
+
+//iterator  --  像指针一样,拥有下面两个特性
+//1. 解引用
+//2. ++/--
+
+//原生指针,数组结构正好支持迭代器行为,但是链表不行
+//我们可以用 类封装+运算符重载支持
+
