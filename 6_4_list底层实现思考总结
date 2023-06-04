@@ -1,0 +1,275 @@
+#pragma once
+
+#include <assert.h>
+#include <iostream>
+using namespace std;
+
+//list结点
+
+//list迭代器
+
+//链表功能
+//1.初始化 一个带头双向循环的链表(哨兵位的头结点)
+//2.析构函数
+//3.clear
+//4.insert/erase
+//5.push_back/push_front/pop_back/pop_front 复用
+//6.拷贝构造/赋值重载
+//7.成员变量:一个指向头结点的指针
+
+
+namespace lp
+{
+	//结点
+	template<class T>  //类模板,里面的数据类型,是用模板实例化出来的
+	struct list_node
+	{
+		list_node* _next;
+		list_node* _prev;
+		T _data;
+
+		//构造函数 初始化
+		list_node(const T& x)
+			:_next(nullptr)
+			,_prev(nullptr)
+			,_data(x)
+		{}
+	};
+
+	//迭代器
+	template<class T,class Ref>   //增加一个模板参数,实现const迭代器
+	struct __list_iterator
+	{
+		typedef list_node<T> node;
+		node* _pnode;   //定义一个指向头结点的指针
+		typedef __list_iterator<T,Ref> Self;
+
+		//构造函数
+		__list_iterator(node* p)
+			:_pnode(p)
+		{}
+		
+		//运算符重载
+		//*本来的作用,是拿到这个结点,但是我们重载,使功能变成拿到这个结点里存的数据
+		Ref operator*()
+		{
+			return _pnode->_data;
+		}
+
+		Self& operator++()  //传的是引用,出了作用域,迭代器还在
+		{
+		//	return _pnode->_next;       //这样写是错的,我要返回的是一个 迭代器类型, _pnode是一个指针,是迭代器类型里的一个变量
+			_pnode = _pnode->_next;
+			return *this; 
+		}
+
+		Self& operator--()
+		{
+			_pnode = _pnode->_prev;
+			return *this;
+		}
+
+		bool operator!=(const __list_iterator<T>& it) const
+		{
+			return _pnode != it._pnode;
+		}
+	};
+
+
+	//链表功能实现
+	template<class T>   //类模板
+	class list
+	{
+		typedef list_node<T> node;
+	public:
+		//用同一个类模板,两个参数  在调用的时候,根据实例化的不同,实现出两个不同的类型 -- 即iterator和const_iterator 是同一个模板实例化出的两个不同的类型
+		typedef __list_iterator<T, T&> iterator;
+		typedef __list_iterator<T, const T&> const_iterator;
+		//构造函数 - 初始化一个带头双向循环链表
+		list()
+		{
+			_head = new node(T());
+			_head->_next = _head;
+			_head->_prev = _head;
+		}
+
+		//初始化一个带头双向循环链表  --  用于后面复用
+		void empty_initialize()
+		{
+			_head = new node(T());
+			_head->_next = _head;
+			_head->_prev = _head;
+		}
+
+
+		//拷贝构造
+		//lt2(lt1)
+		list(const list<T>& lt)
+		{
+			empty_initialize();
+
+			for (const auto& e : lt)
+			{
+				push_back(e);
+			}
+		}
+
+		//赋值重载
+		//首先防止自己给自己赋值
+		list<T>& operator=(const list<T>& lt)
+		{
+			if (this != &lt)
+			{
+				clear();
+
+				for (const auto& e : lt)
+				{
+					push_back(e);
+				}
+			}
+			return *this;
+		}
+		
+
+		iterator begin()  //第一个有效数据的迭代器
+		{
+			//用有名对象返回
+			//iterator it(_head->_next);
+			//return it;
+
+			return iterator(_head->_next);  //临时用第一个结点创造一个iterator的匿名对象
+		}
+
+		iterator end()
+		{
+			return iterator(_head);
+		}
+
+		const_iterator begin() const
+		{
+			return iterator(_head->_next); 
+		}
+
+		const_iterator end() const
+		{
+			return iterator(_head);
+		}
+
+		//插入/删除
+		iterator insert(iterator pos, const T& x)
+		{
+			node* newnode = new node(x);  //先new一个新结点 (会自动调用node的构造函数)
+			node* cur = pos._pnode;
+			node* prev = cur->_prev;
+
+			//prev newnode cur
+			prev->_next = newnode;
+			newnode->_prev = prev;
+			newnode->_next = cur;
+			cur->_prev = newnode;
+
+			return iterator(newnode);  //返回新插入结点位置的迭代器
+		}
+
+		iterator erase(iterator pos)
+		{
+			assert(pos != end()); // pos是一个迭代器,end()函数返回的也是一个迭代器
+
+			node* prev = pos._pnode->_prev;
+			node* next = pos._pnode->_next;
+
+			prev->_next = next;
+			next->_prev = prev;
+
+			return iterator(next); //返回删除位置的下一个结点的迭代器
+		}
+
+		void push_front(const T& x)
+		{
+			insert(begin(), x);
+		}
+
+		void push_back(const T& x)
+		{
+			insert(end(), x);
+		}
+
+		void pop_front()
+		{
+			erase(begin());
+		}
+
+		void pop_back()
+		{
+			erase(--end());
+		}
+
+		void clear()
+		{
+			iterator it = begin();
+			while (it != end())
+			{
+				it = erase(it);
+			}
+
+		}
+
+		//析构函数
+		~list()
+		{
+			clear();
+
+			delete _head;
+		}
+
+
+	private:
+		node* _head;  //首先实现一个链表,需要的成员函数,就是一个指向头结点的指针
+	};
+
+}
+
+
+
+
+
+//1.首先,写一个链表的结点结构
+//  (1)结点的成员变量 : 两个结点类型的指针,指向前一个结点和后一个结点
+//                     一个存储数据的 模板类型的成员
+//  (2)写一个类似于 BuyNode的函数,即创建一个结点,把指针初始化为nullptr,数据用传进来的x进行初始化
+//
+//2.第二,实现一个链表的功能
+//  (1)需要的成员函数,就是一个指向头结点的指针
+//	(2)写一个构造函数 -> 用一个(T类型的默认构造) T() 来初始化这个结点,然后,让他的_next和_prev_都指向自己
+//      即初始化一个带头双向循环链表
+//  (3)实现 插入/删除 需要先实现迭代器
+
+//3.第三,实现一个list迭代器
+//  (1)写一个构造函数
+//	(2)一个迭代器的功能 : 1.能*  2.能++ (功能类似于指针)  返回的是一个迭代器类型
+//  (3)收获 : 迭代器中,operator++的返回值,是迭代器类型!应该返回*this,而不是_pnode,_pnode是一个指针
+
+//4.重新回去写链表功能
+//  (1)实现迭代器的begin和end  (后面会写const迭代器)
+//	(2)实现insert/erase ,erase需要用end()
+//	(3)复用insert/erase 实现头尾插入删除
+//  (4)clear()函数的实现,需要用begin和end迭代器
+//  (5)实现~list(),复用clear()
+
+//5. 实现拷贝构造和赋值重载(没用const迭代器的版本)
+
+//6. 最后实现const迭代器版本,完善拷贝构造和赋值重载
+
+//struct list_node
+//{
+//	list_node* _next;
+//	list_node* _prev;
+//	T _data;
+//};
+
+
+
+//思考 : 1.迭代器中,operator++的返回值,是迭代器类型!应该返回*this,而不是_pnode,_pnode是一个指针
+
+
+
