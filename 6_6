@@ -1,0 +1,445 @@
+#pragma once
+#include<iostream>
+#include<vector>
+#include<string>
+#include<assert.h>
+
+using namespace std;
+
+
+namespace lp
+{
+	template<class T>
+	class vector
+	{
+	public:
+		typedef T* iterator;
+		typedef const T* const_iterator;
+
+		iterator begin()
+		{
+			return _start;
+		}
+
+		iterator end()
+		{
+			return _finish;
+		}
+
+		const_iterator begin() const
+		{
+			return _start;
+		}
+
+		const_iterator end() const
+		{
+			return _finish;
+		}
+
+		T& operator[](size_t pos)
+		{
+			assert(pos < size());
+			return _start[pos];
+		}
+
+		T& operator[](size_t pos) const
+		{
+			assert(pos < size());
+			return _start[pos];
+		}
+
+
+		vector()
+			:_start(nullptr)
+			,_finish(nullptr)
+			,_endofstorage(nullptr)
+		{}
+
+		////传统写法的另一种写法
+		//vector(const vector<T>& v)
+		//	:_start(nullptr)
+		//	, _finish(nullptr)
+		//	, _endofstorage(nullptr)
+		//{
+		//	reserve(v.capacity());
+		//	for (const auto& e : v)  //这里要加&!!  
+		//	{
+		//		push_back(e);
+		//	}
+		//}
+
+
+
+		//拷贝构造 - 现代写法
+		
+		//迭代器区间构造
+		template <class InputIterator>
+		vector(InputIterator first, InputIterator last)
+			:_start(nullptr)
+			, _finish(nullptr)
+			, _endofstorage(nullptr)
+		{
+			while (first != last)
+			{
+				push_back(*first);  //再次体会,这个first是个迭代器(指针),用*,不是下标
+				++first;
+			}
+		}
+
+		vector(const vector<T>& v)    // string有一个带参的构造(壮丁),我们这里使用迭代器区间构造,上面实现了
+			:_start(nullptr)
+			, _finish(nullptr)
+			, _endofstorage(nullptr)
+		{
+			vector<T> tmp(v.begin(), v.end());
+			swap(tmp);
+		}
+
+		//赋值拷贝
+		vector<T>& operator=(vector<T> v)  //有一定的缺陷 : v1 = v1; 时.  但不会报错,且一般不会自己给自己赋值,所以可以容忍;
+		{                           //且参数这里,不能用引用! 要不然把v2自己换个v1了
+			swap(v);
+			return *this;
+		}
+
+		//另一个构造函数  用n个val赋值
+		vector(int n, const T& val = T())
+			:_start(nullptr)
+			, _finish(nullptr)
+			, _endofstorage(nullptr)
+		{
+			reserve(n);
+			for (size_t i = 0; i < n; ++i)
+			{
+				push_back(val);
+			}
+
+		}
+
+
+		~vector()
+		{
+			delete[] _start;
+			_start = _finish = _endofstorage = nullptr;
+		}
+
+
+		//扩容
+		void reserve(size_t n)
+		{
+			if (n > capacity())
+			{
+				size_t oldSize = size();
+				//实现思路 : 开一块空间,拷贝数据,拷贝指针
+				T* tmp = new T[n];  //c++中尽量用new,因为new会自动初始化,尤其是自定义类型必须要初始化
+				//因为如果一开始,capacity为0,start为空nullptr,为空就不用拷贝数据了
+				if (_start)
+				{
+					//memcpy(tmp, _start, sizeof(T) * oldSize); // 拷贝数据    //这里有一个深层次的浅拷贝问题(memcpy本质是浅拷贝)  
+					//下面这里是最神奇的地方!!
+					for (size_t i = 0; i < oldSize; ++i)
+					{
+						tmp[i] = _start[i];  //这里是一个赋值拷贝!!!!调用的是 operator=
+					}
+
+					delete[] _start;  //释放旧空间
+				}
+
+				_start = tmp;  //拷贝指针
+				//_finish = _start + size();   这个写法是错的 因为_start改变后,size()的返回值也变了
+
+				_finish = tmp + oldSize;   //所以把原来的size保存下来,oldSize
+				_endofstorage = _start + n;
+
+			}
+		}
+
+		void resize(size_t n,T val = T())
+		{
+			//三种情况,分两类
+			if (n > capacity())
+			{
+				reserve(n);
+			}
+
+			if (n > size())
+			{
+				while (_finish < _start + n)
+				{
+					*_finish = val;
+					++_finish;
+				}
+			}
+			//注意这里不需要挨个挨个删除数据,直接改变_finish就行了
+			else
+			{
+				_finish = _start + n;
+			}
+
+		}
+
+		size_t size() const
+		{
+			return _finish - _start;
+		}
+
+		size_t capacity() const
+		{
+			return _endofstorage - _start;
+		}
+
+		void push_back(const T& x)
+		{
+			if (_finish == _endofstorage)
+			{
+				//2倍阔
+				size_t newCapacity = capacity() == 0 ? 4 : capacity() * 2;
+				reserve(newCapacity);
+			}
+
+			*_finish = x;
+			++_finish;
+		}
+
+		void pop_back()
+		{
+			//检查,和stl保持一直
+			//assert(!empty()); //不为空
+
+			--_finish();
+		}
+
+		//第一种迭代器失效  --  扩容导致pos失效了  --  所以要更新pos
+		iterator insert(iterator pos, const T& val)
+		{
+			assert(pos >= _start);
+			assert(pos <= _finish);
+
+			//注意! 扩容是异地阔 pos的地址已经不在新的start和finish之间了, pos需要更新处理
+			if (_finish == _endofstorage)
+			{
+				size_t len = pos - _start; // 计算pos的相对位置
+
+				size_t newCapacity = capacity() == 0 ? 4 : capacity() * 2;
+				reserve(newCapacity);
+
+				pos = _start + len;   //注意pos是传值引用,形参的改变不会影响实参
+
+				return pos;  //但是我们可以用返回值
+			}
+
+			iterator end = _finish - 1;
+			while (end >= pos)
+			{
+				*(end + 1) = *end;
+				--end;
+			}
+
+			*pos = val;
+			++_finish;
+		}
+
+		iterator erase(iterator pos)   //和库里面保持一致,返回iterator (更新pos的位置,在g++下不报错,在VS下强制检查,会报错)
+		{
+			assert(pos >= _start);
+			assert(pos < _finish);
+
+			//挨个挪动数据
+			iterator begin = pos + 1;
+			while (begin < _finish)  //_finish是指向最后一个元素的下一个位置 
+			{
+				//_start[begin - 1] = _start[begin];  //begin是迭代器(指针),不是下标!
+				*(begin-1) = *(begin);  //因为用的是迭代器(指针),所以我们用 解引用*
+				++begin;
+			}
+
+			--_finish;
+
+			return pos;
+		}
+
+		void swap(vector<T>& v)
+		{
+			std::swap(_start, v._start);
+			std::swap(_finish, v._finish);
+			std::swap(_endofstorage, v._endofstorage);
+		}
+
+		void clear()
+		{
+			_finish = _start;  //这里不能置为空  clear只是把内容请了,开的空间不变,_capacity还是不变
+		}
+
+
+	private:
+		iterator _start;
+		iterator _finish;
+		iterator _endofstorage;
+	};
+
+	void test_vector6()
+	{
+		vector<int> v;
+		v.push_back(1);
+		v.push_back(2);
+		v.push_back(3);
+
+		v.insert(v.end(), 4);
+		v.insert(v.end(), 5);
+		v.insert(v.end(), 6);
+		v.insert(v.end(), 7);
+
+		for (auto e : v)
+		{
+			cout << e << " ";  // 1 2 3 4 -842150451 6 7
+		}
+		cout << endl;
+	}
+
+	void test_vector7()
+	{
+		vector<int> v;
+		v.push_back(1);
+		v.push_back(2);
+		v.push_back(3);
+		v.push_back(4);
+
+		vector<int>::iterator it = find(v.begin(), v.end(), 3);
+		if (it != v.end())
+		{
+			v.erase(it);
+		}
+
+		//这里it还能继续用嘛?  --  不能!可能迭代器失效(野指针)  --  而且越界不一定被检查出来(更恐怖)
+		//(*it)++;
+
+		for (auto e : v)
+		{
+			cout << e << " ";  // 1 2 3 4 -842150451 6 7
+		}
+		cout << endl;
+	}
+
+	//要求删除所有偶数
+	void test_vector8()
+	{
+		vector<int> v;
+		v.push_back(1);
+		v.push_back(2);
+		v.push_back(2);
+		v.push_back(3);
+		v.push_back(4);
+		v.push_back(5);
+
+		vector<int>::iterator it = v.begin();
+		while (it != v.end())
+		{
+			if (*it % 2 == 0)
+			{
+				v.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+		for (auto e : v)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+
+	void test_vector9()
+	{
+		vector<int> v;
+		v.push_back(1);
+		v.push_back(2);
+		v.push_back(2);
+		v.push_back(3);
+		v.push_back(4);
+		v.push_back(5);
+
+		vector<int> v1(v);   //拷贝构造
+
+		for (auto e : v1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		vector<int> v2;
+		v2.push_back(10);
+		v2.push_back(20);
+
+		v1 = v2;
+		for (auto e : v1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+
+	void test_vector10()
+	{
+		vector<int> v(10,5);	//这里会报一个编译错误: 非法寻址
+		//vector(InputIterator first, InputIterator last)  1
+		//vector(size_t n, const T & val = T())            2
+
+		//本来想调用2,但是调用成1了,结果就是对int进行解引用,非法寻址
+
+		//解决方案,多实现几个函数重载 
+		//vector(int n, const T & val = T());
+		//vector(size_t n, const T & val = T());
+	}
+
+
+
+	//深层次的深拷贝
+	//用自己实现的vector来过 杨辉三角 题
+	class Solution
+	{
+	public:
+		vector<vector<int>> generate(int numRows)
+		{
+			vector<vector<int>> vv;
+			vv.resize(numRows);
+			for (size_t i = 0; i < vv.size(); ++i)
+			{
+				vv[i].resize(i + 1, 0);
+				vv[i][0] = vv[i][vv[i].size() - 1] = 1;
+			}
+
+			for (size_t i = 0; i < vv.size(); ++i)
+			{
+				for (size_t j = 0; j < vv[i].size(); ++j)
+				{
+					if (vv[i][j] == 0)
+					{
+						vv[i][j] = vv[i - 1][j] + vv[i - 1][j - 1];
+					}
+				}
+			}
+			return vv;
+		}
+	};
+
+	void test_vector11()
+	{
+		vector<vector<int>> vvRet = Solution().generate(5);
+
+		for (size_t i = 0; i < vvRet.size(); ++i)
+		{
+			for (size_t j = 0; j < vvRet[i].size(); ++j)
+			{
+				cout << vvRet[i][j] << " ";
+			}
+			cout << endl;
+		}
+	}
+
+}
+
