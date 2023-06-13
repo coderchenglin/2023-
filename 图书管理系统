@@ -1,0 +1,204 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_TITLE_LENGTH 50
+#define MAX_AUTHOR_LENGTH 50
+
+// 图书信息结构体
+typedef struct {
+    char title[MAX_TITLE_LENGTH];
+    char author[MAX_AUTHOR_LENGTH];
+    int year;
+} Book;
+
+// 链表节点结构体
+typedef struct Node {
+    Book book;
+    struct Node* next;
+} Node;
+
+Node* head = NULL; // 链表头指针
+
+// 添加图书
+void addBook() {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    printf("请输入图书的标题: ");
+    scanf("%s", newNode->book.title);
+    printf("请输入图书的作者: ");
+    scanf("%s", newNode->book.author);
+    printf("请输入图书的出版年份: ");
+    scanf("%d", &(newNode->book.year));
+
+    newNode->next = head;
+    head = newNode;
+
+    printf("图书添加成功!\n");
+}
+
+// 保存图书信息到文件
+void saveToFile() {
+    FILE* file = fopen("books.txt", "w");
+    if (file == NULL) {
+        printf("无法打开文件!\n");
+        return;
+    }
+
+    Node* current = head;
+    while (current != NULL) {
+        fprintf(file, "%s,%s,%d\n", current->book.title, current->book.author, current->book.year);
+        current = current->next;
+    }
+
+    fclose(file);
+    printf("图书信息保存成功!\n");
+}
+
+// 从文件中读取图书信息
+void loadFromFile() {
+    FILE* file = fopen("books.txt", "r");
+    if (file == NULL) {
+        printf("无法打开文件!\n");
+        return;
+    }
+
+    char title[MAX_TITLE_LENGTH];
+    char author[MAX_AUTHOR_LENGTH];
+    int year;
+
+    while (fscanf(file, "%[^,],%[^,],%d\n", title, author, &year) == 3) {
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        strcpy(newNode->book.title, title);
+        strcpy(newNode->book.author, author);
+        newNode->book.year = year;
+
+        newNode->next = head;
+        head = newNode;
+    }
+
+    fclose(file);
+    printf("图书信息加载成功!\n");
+}
+
+// 修改图书信息
+void updateBook() {
+    char title[MAX_TITLE_LENGTH];
+    printf("请输入要修改的图书标题: ");
+    scanf("%s", title);
+
+    Node* current = head;
+    while (current != NULL) {
+        if (strcmp(current->book.title, title) == 0) {
+            printf("请输入修改后的作者: ");
+            scanf("%s", current->book.author);
+            printf("请输入修改后的出版年份: ");
+            scanf("%d", &(current->book.year));
+            printf("图书信息修改成功!\n");
+            return;
+        }
+        current = current->next;
+    }
+
+    printf("找不到该图书!\n");
+}
+
+// 删除图书
+void deleteBook() {
+    char title[MAX_TITLE_LENGTH];
+    printf("请输入要删除的图书标题: ");
+    scanf("%s", title);
+
+    Node* current = head;
+    Node* prev = NULL;
+
+    while (current != NULL) {
+        if (strcmp(current->book.title, title) == 0) {
+            if (prev == NULL) {
+                head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            free(current);
+            printf("图书删除成功!\n");
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+
+    printf("找不到该图书!\n");
+}
+
+// 显示所有图书
+void displayAllBooks() {
+    Node* current = head;
+
+    if (current == NULL) {
+        printf("暂无图书信息!\n");
+        return;
+    }
+
+    printf("所有图书信息:\n");
+    while (current != NULL) {
+        printf("标题: %s, 作者: %s, 出版年份: %d\n",
+               current->book.title, current->book.author, current->book.year);
+        current = current->next;
+    }
+}
+
+// 释放链表内存
+void freeList() {
+    Node* current = head;
+    Node* next;
+
+    while (current != NULL) {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+}
+
+int main() {
+    int choice;
+
+    loadFromFile(); // 从文件中加载图书信息
+
+    do {
+        printf("\n图书管理系统\n");
+        printf("1. 添加图书\n");
+        printf("2. 保存图书信息到文件\n");
+        printf("3. 修改图书信息\n");
+        printf("4. 删除图书\n");
+        printf("5. 显示所有图书\n");
+        printf("0. 退出\n");
+        printf("请选择操作: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addBook();
+                break;
+            case 2:
+                saveToFile();
+                break;
+            case 3:
+                updateBook();
+                break;
+            case 4:
+                deleteBook();
+                break;
+            case 5:
+                displayAllBooks();
+                break;
+            case 0:
+                printf("谢谢使用，再见!\n");
+                break;
+            default:
+                printf("无效的选项，请重新选择!\n");
+        }
+    } while (choice != 0);
+
+    freeList(); // 释放链表内存
+
+    return 0;
+}
