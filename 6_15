@@ -1,0 +1,433 @@
+#include<iostream>
+#include <array>
+#include <string>
+using namespace std;
+
+// #define N 1000
+
+// 静态数组
+// 非类型模板参数 -- 常量
+template<class T, size_t N>
+class Array
+{
+private:
+	T _a[N];
+};
+
+//int main()
+//{
+//	Array<int, 10> a1;        // 10
+//	Array<double, 1000> a2;     // 1000
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	int a1[10];
+//	array<int, 10> a2;
+//	array<int, 100> a3;
+//
+//	// 对于越界的检查
+//	// 越界读不检查
+//	// 越界写  抽查
+//	cout << a1[10] << endl;
+//	cout << a1[11] << endl;
+//
+//	//a1[10] = 0;
+//	a1[15] = 0;
+//
+//	// C++11  array
+//	cout << a2[10] << endl;
+//	cout << a2[11] << endl;
+//
+//	//a2[10] = 0;
+//	//a2[15] = 0;
+//
+//	return 0;
+//}
+
+//template<class T, double N>
+//void Func(const T& x)
+//{
+//	cout << N << endl;
+//}
+
+//template<class T, size_t N>
+//void Func(const T& x)
+//{
+//	cout << N << endl;
+//}
+//
+//int main()
+//{
+//	int N = 100;
+//	Func<int, N>(1);
+//
+//	return 0;
+//}
+
+class Date
+{
+public:
+	Date(int year = 1900, int month = 1, int day = 1)
+		: _year(year)
+		, _month(month)
+		, _day(day)
+	{}
+
+	bool operator<(const Date& d)const
+	{
+		return (_year < d._year) ||
+			(_year == d._year && _month < d._month) ||
+			(_year == d._year && _month == d._month && _day < d._day);
+	}
+
+	bool operator>(const Date& d)const
+	{
+		return (_year > d._year) ||
+			(_year == d._year && _month > d._month) ||
+			(_year == d._year && _month == d._month && _day > d._day);
+	}
+
+	friend ostream& operator<<(ostream& _cout, const Date& d)
+	{
+		_cout << d._year << "-" << d._month << "-" << d._day;
+		return _cout;
+	}
+
+private:
+	int _year;
+	int _month;
+	int _day;
+};
+
+// 函数模板 -- 参数匹配
+template<class T>
+bool Less(T left, T right)
+{
+	return left < right;
+}
+
+// 针对某些类型进行特殊处理 -- Date*
+//template<>
+//bool Less<Date*>(Date* left, Date* right)
+//{
+//	return *left < *right;
+//}
+
+bool Less(Date* left, Date* right)
+{
+	return *left < *right;
+}
+
+//int main()
+//{
+//	cout << Less(1, 2) << endl;   // 可以比较，结果正确
+//
+//	Date d1(2022, 7, 7);
+//	Date d2(2022, 7, 8);
+//	cout << Less(d1, d2) << endl;  // 可以比较，结果正确
+//
+//	Date* p1 = &d1;
+//	Date* p2 = &d2;
+//	cout << Less(p1, p2) << endl;  // 可以比较，结果错误
+//
+//	return 0;
+//}
+
+template<class T1, class T2>
+class Data
+{
+public:
+	Data() { cout << "Data<T1, T2>" << endl; }
+private:
+	T1 _d1;
+	T2 _d2;
+};
+
+// 全特化
+template<>
+class Data<double, char>
+{
+public:
+	Data() { cout << "Data<double, char>" << endl; }
+}; 
+
+// 半特化、偏特化
+template<class T1>
+class Data<T1, char>
+{
+public:
+	Data() { cout << "Data<T1, char>" << endl; }
+};
+
+// 10:45继续
+
+// 参数类型进一步限制
+template<class T1, class T2>
+class Data<T1*, T2*>
+{
+public:
+	Data() { cout << "Data<T1*, T2*>" << endl; }
+};
+
+template<class T1, class T2>
+class Data<T1&, T2&>
+{
+public:
+	Data() { cout << "Data<T1&, T2&>" << endl; }
+};
+
+//int main()
+//{
+//	Data<int, int> d1;
+//	Data<double, double> d2;
+//	Data<double, char> d3;
+//	Data<char, char> d4;
+//
+//	Data<char*, char*> d5;
+//	Data<char, int*> d6;
+//	Data<double*, int*> d7;
+//
+//	Data<double&, int&> d8;
+//
+//	return 0;
+//}
+
+//class Person
+//{
+//public:
+//	void Print()
+//	{
+//		cout << "name:" << _name << endl;
+//		cout << "age:" << _age << endl;
+//	}
+//protected:
+//	string _name = "peter"; // 姓名
+//private:
+//	int _age = 18;  // 年龄
+//};
+//
+//// 继承后父类的Person的成员（成员函数+成员变量）都会变成子类的一部分。这里体现出了Student和Teacher复用了Person的成员。下面我们使用监视窗口查看Student和Teacher对象，可以看到变量的复用。调用Print可以看到成员函数的复用。
+//class Student : public Person
+//{
+//public:
+//	void Func()
+//	{
+//		cout << "name:" << _name << endl;
+//		//cout << "age:" << _age << endl;
+//	}
+//protected:
+//	int _stuid; // 学号
+//};
+//
+//class Teacher : public Person
+//{
+//protected:
+//	int _jobid; // 工号
+//};
+//
+//int main()
+//{
+//	Student s;
+//	Teacher t;
+//	s.Print();
+//	t.Print();
+//
+//	return 0;
+//}
+
+//class Person
+//{
+//protected:
+//	string _name; // 姓名
+//	string _sex;  // 性别
+//public:
+//	int	_age;	 // 年龄
+//};
+//
+//class Student : public Person
+//{
+//public:
+//	int _No; // 学号
+//};
+//
+//int main()
+//{
+//	Person p;
+//	Student s;
+//
+//	// 中间不存在类型转换
+//	p = s;
+//
+//	Person& rp = s;
+//	rp._age = 1;
+//
+//	Person* ptrp = &s;
+//	ptrp->_age++;
+//
+//	int i = 1;
+//	double d = 2.2;
+//	i = d;
+//	const int& ri = d;
+//
+//
+//	return 0;
+//}
+//
+//
+//class Person
+//{
+//protected:
+//	string _name = "小李子"; // 姓名
+//	int _num = 111; 	   // 身份证号
+//};
+//
+//class Student : public Person
+//{
+//public:
+//	void Print()
+//	{
+//		cout << " 姓名:" << _name << endl;
+//		cout << " 学号:" << _num<< endl;
+//		cout << " 身份证号:" << Person::_num << endl;
+//	}
+//protected:
+//	int _num = 999; // 学号
+//};
+
+// 两个func什么关系
+// 重载  重写  重定义/隐藏  编译报错
+// ->重定义/隐藏 
+// 父类和子类的同名成员函数，函数名相同就构成隐藏
+//class A
+//{
+//public:
+//	void fun()
+//	{
+//		cout << "A::func()" << endl;
+//	}
+//};
+//class B : public A
+//{
+//public:
+//	void fun(int i)
+//	{
+//		cout << "B::func(int i)->" << i << endl;
+//	}
+//};
+//
+//void Test()
+//{
+//	B b;
+//	b.fun(10);
+//};
+
+/////////////////////////////////////////////////
+// 编译报错
+//class A
+//{
+//public:
+//	void fun()
+//	{
+//		cout << "A::func()" << endl;
+//	}
+//};
+//class B : public A
+//{
+//public:
+//	void fun(int i)
+//	{
+//		cout << "B::func(int i)->" << i << endl;
+//	}
+//};
+//
+//void Test()
+//{
+//	B b;
+//	//b.fun();
+//	b.A::fun();
+//};
+//
+//int main()
+//{
+//	Test();
+//
+//	return 0;
+//}
+
+class Person
+{
+public:
+	Person(const char* name)
+		: _name(name)
+	{
+		cout << "Person()" << endl;
+	}
+
+	Person(const Person& p)
+		: _name(p._name)
+	{
+		cout << "Person(const Person& p)" << endl;
+	}
+
+	Person& operator=(const Person& p)
+	{
+		cout << "Person operator=(const Person& p)" << endl;
+		if (this != &p)
+			_name = p._name;
+
+		return *this;
+	}
+
+	~Person()
+	{
+		cout << "~Person()" << endl;
+	}
+protected:
+	string _name; // 姓名
+};
+
+// 派生类中
+// 1、构造函数，父类成员调用父类的构造函数完成初始化
+class Student : public Person
+{
+public:
+	Student(const char*name, int num)
+		:Person(name)
+		, _num(num)
+	{}
+
+	Student(const Student& s)
+		:Person(s)
+		, _num(s._num)
+	{}
+
+	Student& operator=(const Student& s)
+	{
+		if (this != &s)
+		{
+			Person::operator=(s);
+			_num = s._num;
+		}
+
+		return *this;
+	}
+
+protected:
+	int _num; //学号
+};
+
+int main()
+{
+	Student s1("张三", 18);
+	Student s2(s1);
+
+	Student s3("李四", 20);
+
+	s1 = s3;
+
+
+	return 0;
+}
