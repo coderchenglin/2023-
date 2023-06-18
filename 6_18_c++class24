@@ -1,0 +1,426 @@
+#include <iostream>
+using namespace std;
+
+//1.非类型模板参数
+
+//#define N 10
+
+////静态数组
+//template<class T,size_t N = 10> //非类型模板参数(是一个整形常量)
+//class Array
+//{
+//private:
+//	T _a[N];
+//};
+//
+//int main()
+//{
+//	int a1[10];
+//	Array<int,10> a1;         //10
+//	Array<double,1000> a2;    //1000
+//
+//	//和原生数组最大的区别在于,它可以把越界读和越界写都能查出来
+//
+//	//a1[10] = 10;
+//
+//	return 0;
+//}
+
+
+////template<class T, double N>  // 非类型模板参数不能用double,只能用整形!常量!
+//template<class T,int N>
+//void Func(const T& x)
+//{
+//	cout << N << endl;
+//}
+//
+//int main()
+//{
+//	Func<int, 100>(1);  //有非类型模板参数,用显示实例化
+//	//Func<int, 10.1>(1);
+//
+//	//int N = 100;
+//	//Func<int, N>(1);//不能给变量
+//
+//
+//
+//	return 0;
+//}
+
+
+//2.模板的特化
+
+//class Date
+//{
+//public:
+//	Date(int year = 1900, int month = 1, int day = 1)
+//		: _year(year)
+//		, _month(month)
+//		, _day(day)
+//	{}
+//	bool operator<(const Date& d)const
+//	{
+//		return (_year < d._year) ||
+//			(_year == d._year && _month < d._month) ||
+//			(_year == d._year && _month == d._month && _day < d._day);
+//	}
+//	bool operator>(const Date& d)const
+//	{
+//		return (_year > d._year) ||
+//			(_year == d._year && _month > d._month) ||
+//			(_year == d._year && _month == d._month && _day > d._day);
+//	}
+//	friend ostream& operator<<(ostream& _cout, const Date& d)
+//	{
+//		_cout << d._year << "-" << d._month << "-" << d._day;
+//		return _cout;
+//	}
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//
+//// 函数模板 -- 参数匹配
+//template<class T>
+//bool Less(T left, T right)
+//{
+//	return left < right;
+//}
+//
+////针对某些类型进行特殊处理 -- Date*
+
+////函数模板的特化
+//template<>        //这里就不写具体的类型了
+//bool Less<Date*>(Date* left, Date* right)   //这里对<Date*>进行模板的特化
+//{
+//	return *left < *right;
+//}
+//
+//
+//int main()
+//{
+//	cout << Less(1, 2) << endl; // 可以比较，结果正确
+//	Date d1(2022, 7, 7);
+//	Date d2(2022, 7, 8);
+//	cout << Less(d1, d2) << endl; // 可以比较，结果正确
+//	Date* p1 = &d1;
+//	Date* p2 = &d2;
+//	cout << Less(p1, p2) << endl; // 可以比较，结果错误
+//	//这里比较的是两个 地址 的大小
+//	return 0;
+//}
+
+
+//template<class T1,class T2>
+//class Data
+//{
+//public:
+//	Data()
+//	{
+//		cout << "Data<T1,T2>" << endl;
+//	}
+//private:
+//	T1 _d1;
+//	T2 _d2;
+//};
+//
+////类模板的特化
+//template<>
+//class Data<double,double>
+//{
+//public:
+//	Data()
+//	{
+//		cout << "Data<double,double>" << endl;
+//	}
+//
+//};
+//
+//int main()
+//{
+//	Data<int, int> d1;
+//	Data<double, double>d2;
+//
+//	return 0;
+//}
+
+
+
+
+////半特化/偏特化
+//template<class T1>
+//class Data<T1, char>
+//{
+//public:
+//	Data()
+//	{
+//		cout << "Data<T1,char>" << endl;
+//	}
+//};
+
+//偏特化的另一种作用:
+//对参数类型进一步限制  -- 必须两个都是指针 是什么类型的指针无所谓  
+//template<class T1,class T2>
+//class Data<T1*, T2*>
+//{
+//public:
+//	Data()
+//	{
+//		cout << "Data<T1*,T2*>" << endl;
+//	}
+//};
+//
+//template<class T1, class T2>
+//class Data<&T1, &T2>
+//{
+//public:
+//	Data()
+//	{
+//		cout << "Data<T1&,T2&>" << endl;
+//	}
+//};
+
+
+
+//模板建议不要分离编译,都放在xxx.h文件中
+
+//模板的总结:
+//优点:
+//1.模板复用了代码,节省资源,更快的迭代开发,c++的标准模板库(STL)因此而产生
+//2.增强了代码的灵活性
+//
+//缺点:
+//1.模板会导致代码膨胀问题,也会导致编译时间变长
+//2.出现模板编译错误时,错误信息非常凌乱,不易定位错误
+
+
+
+#include<string>
+
+////继承
+//class Person
+//{
+//public:
+//	void Print()
+//	{
+//		cout << "name:" << _name << endl;
+//		cout << "age:" << _age << endl;
+//	}
+////protected:
+//	string _name = "peter";  //姓名
+//	int _age = 18;   //年龄
+//};
+//
+//
+//class Student : public Person  //以公有方式继承Person类
+//{
+//protected:
+//	int _stuid;  //学号
+//};
+//
+//class Teacher : public Person
+//{
+//protected:
+//	int _jobid; //工号
+//};
+//
+////int main()
+////{
+////	Person p;
+////	Student s;
+////	Teacher t;
+////	p.Print();
+////	s.Print();
+////	t.Print();
+////
+////	return 0;
+////}
+//
+//
+//
+//int main()
+//{
+//	Person p;
+//	Student s;
+//
+//	//中间不存在类型转换  --  意味着中间不产生临时变量
+//	p = s; // 这里存在一个切片 -- 子类中的变量可以直接赋值给父类
+//	Person& rp = s;  //这里可以,因为不用产生临时变量,直接赋值
+//	rp._age++;
+//
+//	Person* ptrp = &s;
+//	ptrp->_age++;
+//
+//
+//	int i = 1;
+//	double d = 2.2;
+//	i = d;
+//	//int& ri = d; //报错 double隐式类型转换为int,会产生临时变量,临时变量具有常性
+//
+//	return 0;
+//}
+
+
+
+
+//隐藏/重定义
+//当子类和父类中有同名成员,子类中会将父类中的成员隐藏
+//class Person
+//{
+//protected:
+//	string _name = "小李子";  //姓名
+//	int _num = 111;
+//};
+//
+//class Student : public Person
+//{
+//public:
+//	void print()
+//	{
+//		cout << "姓名: " << _name << endl;
+//		cout << "学号: " << _num << endl;    //这里默认访问的是自己的,而不是父类的
+//		cout << "身份证号: " <<Person:: _num << endl;  //可以使用域限定符访问父类中的
+//	}
+//
+//protected:
+//	int _num = 999; //学号
+//};
+//
+//int main()
+//{
+//	Student s;
+//	s.print();
+//}
+
+
+
+//两个func什么关系
+//重载 重写 重定义/隐藏 编译报错
+
+//函数名相同就构成隐藏! 不用管参数
+//class A
+//{
+//public:
+//	void fun()
+//	{
+//		cout << "A::func()" << endl;
+//	}
+//};
+//
+//class B : public A
+//{
+//public:
+//	void fun(int i)
+//	{
+//
+//		cout << "B::func(int i)->" << i << endl;
+//	}
+//
+//};
+//
+//void Test()
+//{
+//	B b;
+//	//b.fun();
+//	b.A::fun();  //A::func()
+//}
+//
+//int main()
+//{
+//	Test();
+//
+//	return 0;
+//}
+
+
+class Person
+{
+public:
+	//构造函数
+	Person(const char* name = "peter")
+		:_name(name)
+	{
+		cout << "Person()" << endl;
+	}
+
+	//拷贝构造
+	Person(const Person& p)
+		:_name(p._name)
+	{
+		cout << "Person(const Person& p)" << endl;
+	}
+
+	//赋值重载
+	Person& operator=(const Person& p)
+	{
+		cout << "Person operator=(const person& p)" << endl;
+		if (this != &p)
+			_name = p._name;
+
+		return *this;
+	}
+
+	//析构函数
+	~Person()
+	{
+		cout << "~Person()" << endl;
+	}
+protected:
+	string _name;
+};
+
+class Student : public Person
+{
+public:
+	Student(const char* name, int num)
+		//_name(name)  //报错! 不能再初始化列表直接初始化父类的,必须要去调用父类的构造函数!
+		:Person(name)  //这里必须调用父类的构造函数来初始化
+		, _num(num)
+	{
+		cout << "Student()" << endl;
+	}
+
+	Student(const Student& s)
+		:Person(s)  // 这里就用到了前面的知识 子类可以直接赋值给 - 父类,父类的引用,父类的指针
+		, _num(s._num)
+	{
+		cout << "Student(const Student& s" << endl;
+	}
+
+	Student& operator = (const Student& s)
+	{
+		cout << "Student& operator= (const Student& s)" << endl;
+		if (this != &s)
+		{
+			//operator=(s);  //这里出现了隐藏,相当于自己调用自己了!
+			Person::operator=(s);
+			_num = s._num;
+		}
+
+		return *this;
+	}
+
+protected:
+	int _num;
+};
+
+int main()
+{
+	Student s1("张三",18);
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
