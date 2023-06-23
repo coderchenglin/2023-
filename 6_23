@@ -1,0 +1,310 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+//class Person
+//{
+//protected:
+//	string _name; // 姓名
+//	string _sex;  // 性别
+//	int	_age;	 // 年龄
+//};
+//
+//class Student : public Person
+//{
+//public:
+//	int _No; // 学号
+//};
+//
+//int main()
+//{
+//	int i = 11;
+//	double d = i;
+//	const double& rd = i;
+//
+//	Student s;
+//	Person p = s;
+//	Person& rp = s;
+//
+//
+//	return 0;
+//}
+
+//class Person
+//{
+//public:
+//	Person(const char* name = "peter")
+//		: _name(name)
+//	{
+//		cout << "Person()" << endl;
+//	}
+//
+//	Person(const Person& p)
+//		: _name(p._name)
+//	{
+//		cout << "Person(const Person& p)" << endl;
+//	}
+//
+//	Person& operator=(const Person& p)
+//	{
+//		cout << "Person operator=(const Person& p)" << endl;
+//		if (this != &p)
+//			_name = p._name;
+//
+//		return *this;
+//	}
+//
+//	~Person()
+//	{
+//		cout << "~Person()" << endl;
+//		delete[] p;
+//	}
+//protected:
+//	string _name; // 姓名
+//
+//	int* p = new int[10];
+//};
+//
+//class Student : public Person
+//{
+//public:
+//	Student(const char* name)
+//		:Person(name)
+//		, _num(1)
+//		//, _address("西安")
+//	{
+//	}
+//
+//	Student(const Student& s)
+//		: Person(s)
+//		, _num(s._num)
+//	{
+//		cout << "Student(const Student& s)" << endl;
+//	}
+//
+//	Student& operator= (const Student& s)
+//	{
+//		cout << "Student& operator= (const Student& s)" << endl;
+//		if (this != &s)
+//		{
+//			Person::operator =(s);
+//			_num = s._num;
+//		}
+//		return *this;
+//	}
+//
+//	// 第一怪：1、子类析构函数和父类析构函数构成隐藏关系。（由于多态关系需求，所有析构函数都会特殊处理成destructor函数名）
+//	// 第二怪：子类先析构，父类再析构。子类析构函数不需要显示调用父类析构，子类析构后会自动调用父类析构
+//	~Student()
+//	{
+//		//Person::~Person();
+//
+//		cout << "~Student()" << endl;
+//	}
+//
+//protected:
+//	int _num; //学号
+//	//string _address;
+//};
+//
+//int main()
+//{
+//	Student s("张三");
+//
+//	return 0;
+//}
+
+
+// 友元关系不继承
+//class Student;
+//class Person
+//{
+//public:
+//	friend void Display(const Person& p, const Student& s);
+//protected:
+//	string _name; // 姓名
+//};
+//
+//class Student : public Person
+//{
+//public:
+//	friend void Display(const Person& p, const Student& s);
+//protected:
+//	int _stuNum; // 学号
+//};
+//
+//void Display(const Person& p, const Student& s)
+//{
+//	cout << p._name << endl;
+//	cout << s._stuNum << endl;
+//}
+//
+//void main()
+//{
+//	Person p;
+//	Student s;
+//	Display(p, s);
+//}
+
+//class Person
+//{
+//public:
+//	Person() { ++_count; }
+//
+//	void Print()
+//	{
+//		cout << this << endl;
+//		//cout << _name << endl;
+//		//cout << _count << endl;
+//	}
+//
+////protected:
+//	string _name; // 姓名
+//public:
+//	static int _count; // 统计人的个数。
+//};
+//
+//int Person::_count = 0;
+//
+//class Student : public Person
+//{
+//protected:
+//	int _stuNum; // 学号
+//};
+//
+//// 静态成员属于整个类，所有对象。同时也属于所有派生类及对象
+//int main()
+//{
+//	Person p;
+//	Student s;
+//	p._name = "张三";
+//	s._name = "李四";
+//	p._count++;
+//	s._count++;
+//	cout << p._count << endl;
+//	cout << s._count << endl;
+//	cout << &p._count << endl;
+//	cout << &s._count << endl;
+//	cout << Person::_count << endl;
+//	cout << Student::_count << endl;
+//
+//	Person* ptr = nullptr;
+//	//cout << ptr->_name << endl;  // no
+//	ptr->Print();                // ok
+//	cout << ptr->_count << endl; // ok
+//
+//	(*ptr).Print();             // ok
+//	cout << (*ptr)._count << endl; // ok
+//
+//	return 0;
+//}
+
+///////////////////////////////////////////////////////////////////////////////
+
+//class Person
+//{
+//public:
+//	string _name; // 姓名
+//	// id 家庭住址 身份证号码
+//};
+//
+//class Student : virtual public Person
+//{
+//protected:
+//	int _num; //学号
+//};
+//
+//class Teacher : virtual public Person
+//{
+//protected:
+//	int _id; // 职工编号
+//};
+//
+//class Assistant : public Student, public Teacher
+//{
+//protected:
+//	string _majorCourse; // 主修课程
+//};
+//
+//// 数据冗余/二义性
+//int main()
+//{
+//	Assistant a;
+//	a._name = "小张";
+//	a.Student::_name = "张三";
+//	a.Teacher::_name = "张老师";
+//
+//	return 0;
+//}
+
+//class A
+//{
+//public:
+//	int _a;
+//};
+//
+//class B : virtual public A
+//{
+//public:
+//	int _b;
+//};
+//
+//
+//class C : virtual public A
+//{
+//public:
+//	int _c;
+//};
+//
+//class D : public B, public C
+//{
+//public:
+//	int _d;
+//};
+//
+//int main()
+//{
+//	D d;
+//	d._b = 1;
+//	d._c = 2;
+//	d._d = 3;
+//	d.B::_a = 4;
+//	d.C::_a = 5;
+//	d._a = 6;
+//
+//	B b;
+//	b._a = 1;
+//	b._b = 2;
+//	B* ptr = &b;
+//	ptr->_a = 10;
+//	ptr->_b = 11;
+//
+//	ptr = &d;
+//	ptr->_a = 20;
+//	ptr->_b = 21;
+//
+//	return 0;
+//}
+
+// 继承
+class X
+{
+	int _x;
+};
+
+class Y : public X
+{
+	int _y;
+};
+
+// 组合
+class M
+{
+	int _m;
+};
+
+class N
+{
+	M _mm;
+	int _n;
+};
