@@ -1,0 +1,11 @@
+total 68
+drwxrwxr-x  2 chenglin chenglin  4096 Jul 20 20:04 .
+drwxrwxr-x 17 chenglin chenglin  4096 Jul 20 15:59 ..
+-rwxrwxr-x  1 chenglin chenglin  8648 Jul 20 16:06 dup2
+-rw-rw-r--  1 chenglin chenglin   412 Jul 20 16:25 dup2.c
+-rw-rw-rw-  1 chenglin chenglin    38 Jul 20 16:31 log.txt
+-rwxrwxr-x  1 chenglin chenglin 13824 Jul 20 20:04 myshell
+-rw-rw-r--  1 chenglin chenglin  5581 Jul 20 20:04 myshell.c
+-rw-rw-rw-  1 chenglin chenglin     0 Jul 20 20:05 test.txt
+-rwxrwxr-x  1 chenglin chenglin  8664 Jul 20 16:30 输入重定向
+-rw-rw-r--  1 chenglin chenglin   440 Jul 20 16:31 输入重定向.c
