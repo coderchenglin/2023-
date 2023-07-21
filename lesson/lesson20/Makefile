@@ -1,5 +1,5 @@
-main:main.c
-	gcc -o main main.c -g
+main:main.c myStdio.c
+	gcc -o $@ $^ -std=c99
 
 .PHONY:clean
 clean:
