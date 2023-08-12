@@ -1,0 +1,6 @@
+apple:苹果
+banana:香蕉
+hello:你好
+bite:比特
+goodman:你是一个好人
+success:除了成功，别无选择

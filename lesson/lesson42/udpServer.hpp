@@ -20,9 +20,9 @@ namespace Server
     static const string defaultIp = "0.0.0.0"; //TODO
     static const int gnum = 1024;
 
-    enum {USAGE_ERR = 1, SOCKET_ERR, BIND_ERR};
+    enum {USAGE_ERR = 1, SOCKET_ERR, BIND_ERR, OPEN_ERR};
 
-    typedef function<void (string,uint16_t,string)> func_t;
+    typedef function<void (int,string,uint16_t,string)> func_t;
 
     class udpServer
     {
@@ -77,7 +77,7 @@ namespace Server
 
                     cout << clientip <<"[" << clientport << "]# " << message << endl;
                     // 我们只把数据读上来就完了吗？对数据做处理
-                    _callback(clientip, clientport, message);
+                    _callback(_sockfd, clientip, clientport, message);
                 }
             }
         }
