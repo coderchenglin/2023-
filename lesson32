@@ -1,0 +1,427 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+
+//int main()
+//{
+//	map<string, string> dict;
+//	dict.insert(pair<string, string>("排序", "sort"));
+//	dict.insert(pair<string, string>("左边", "left"));
+//	dict.insert(pair<string, string>("右边","right")); //匿名对象
+//	dict.insert(make_pair("字典", "dictionary")); //make_pair() 是一个模板函数,可以自动识别
+//
+//	//map<string, string>::iterator it = dict.begin();
+//	auto it = dict.begin();
+//
+//	//while (it != dict.end())
+//	//{
+//	//	//cout << (*it).first << ":" << (*it).second << endl;
+//	//	cout << it->first << ":" << it->second << endl;
+//	//	++it;
+//	//}
+//	//cout << endl;
+//		
+//	for (auto kv : dict)
+//	{
+//		cout << kv.first << ":" << kv.second << endl;
+//	}
+//	string arr[] = { "苹果","西瓜","香蕉","苹果","西瓜","苹果" };
+//
+//	//统计次数
+//	//map<string, int> countMap;
+//	//for (auto& e : arr)
+//	//{
+//	//	auto it = countMap.find(e);
+//	//	if (it == countMap.end())
+//	//	{
+//	//		countMap.insert(make_pair(e, 1));
+//	//	}
+//	//	else
+//	//	{
+//	//		it->second++;  //用迭代器,用->
+//	//	}
+//	//}
+//
+//	//统计次数
+//	map<string, int> countMap;
+//	for (auto& e : arr)
+//	{
+//		countMap[e]++;
+//		//[]本质调用的是insert()函数
+//		//insert()函数的返回值,是一个pare对象
+//		//它包含了两个值：
+//		//第一个值是一个迭代器，指向插入或尝试插入元素的位置。
+//		//第二个值是一个布尔值，表示插入是否成功。
+//		//如果插入成功，这个布尔值将为true，如果插入失败（因为元素已经存在于map中），这个布尔值将为false。
+//
+//		//[]兼具,1.插入 2.查找 3.修改  的功能
+//		//key不在就是插入,在就是查找
+//	}
+//
+//	for (const auto& kv : countMap)
+//	{
+//		cout << kv.first << ":" << kv.second << endl;
+//	}
+//
+//	 
+//	return 0;
+//}
+
+
+
+//优先级队列
+
+#include <queue>
+//
+//int main()
+//{
+//	//创建一个优先级队列,元素类型为整形,默认以降序排序 , 大的优先级更高
+//	priority_queue<int> pq;
+//
+//	//插入元素
+//	pq.push(30);
+//	pq.push(10);
+//	pq.push(50);
+//
+//	//访问顶部元素
+//	cout << "Top element: " << pq.top() << endl;
+//
+//	//删除顶部元素
+//	pq.pop();
+//
+//	//访问修改后的顶部元素
+//	cout << "Top element after pop: " << pq.top() << endl;
+//
+//	return 0;
+//}
+
+
+
+
+
+
+
+////自定义类型
+//struct Person
+//{
+//	string name;
+//	int age;
+//
+//	Person(const string& n, int a)
+//		:name(n)
+//		, age(a)
+//	{}
+//};
+//
+//
+////自定义比较函数
+//struct ComparePerson
+//{
+//	bool operator()(const Person& p1,const Person& p2)
+//	{
+//		//按照年龄升序排序
+//		return p1.age > p2.age;
+//	}
+//};
+//
+//int main()
+//{
+//	//创建一个优先级队列,存储Person类型的元素
+//	priority_queue<Person, vector<Person>, ComparePerson> pq; //传入比较函数
+//
+//	//插入元素
+//	pq.push(Person("Alice", 25));
+//	pq.push(Person("Bob", 30));
+//	pq.push(Person("Charlie", 20));
+//
+//	cout << "Top person: " << pq.top().name << ", " << pq.top().age << endl;
+//
+//
+//	return 0;
+//}
+
+
+
+
+//
+//#include <iostream>
+//
+//template <typename T>
+//class AVLTree {
+//private:
+//    struct Node {
+//        T data;
+//        Node* left;
+//        Node* right;
+//        int height; // 存储当前节点的高度
+//
+//        Node(T val) : data(val), left(nullptr), right(nullptr), height(1) {}
+//    };
+//
+//    Node* root;
+//
+//    // 计算节点高度
+//    int height(Node* node) {
+//        if (node == nullptr)
+//            return 0;
+//        return node->height;
+//    }
+//
+//    // 获取节点的平衡因子
+//    int getBalanceFactor(Node* node) {
+//        if (node == nullptr)
+//            return 0;
+//        return height(node->left) - height(node->right);
+//    }
+//
+//    // 单左旋转
+//    Node* rotateLeft(Node* x) {
+//        Node* y = x->right;
+//        Node* T2 = y->left;
+//
+//        // 执行左旋转
+//        y->left = x;
+//        x->right = T2;
+//
+//        // 更新高度
+//        x->height = std::max(height(x->left), height(x->right)) + 1;
+//        y->height = std::max(height(y->left), height(y->right)) + 1;
+//
+//        return y;
+//    }
+//
+//    // 单右旋转
+//    Node* rotateRight(Node* y) {
+//        Node* x = y->left;
+//        Node* T2 = x->right;
+//
+//        // 执行右旋转
+//        x->right = y;
+//        y->left = T2;
+//
+//        // 更新高度
+//        y->height = std::max(height(y->left), height(y->right)) + 1;
+//        x->height = std::max(height(x->left), height(x->right)) + 1;
+//
+//        return x;
+//    }
+//
+//    // 插入节点
+//    Node* insert(Node* node, T val) {
+//        if (node == nullptr)
+//            return new Node(val);
+//
+//        if (val < node->data)
+//            node->left = insert(node->left, val);
+//        else if (val > node->data)
+//            node->right = insert(node->right, val);
+//        else // 重复值
+//            return node;
+//
+//        // 更新节点高度
+//        node->height = 1 + std::max(height(node->left), height(node->right));
+//
+//        // 获取平衡因子
+//        int balance = getBalanceFactor(node);
+//
+//        // 平衡维护
+//        // 左子树重，需要右旋转
+//        if (balance > 1 && val < node->left->data)
+//            return rotateRight(node);
+//
+//        // 右子树重，需要左旋转
+//        if (balance < -1 && val > node->right->data)
+//            return rotateLeft(node);
+//
+//        // 左子树重的情况下，需要先左旋转再右旋转
+//        if (balance > 1 && val > node->left->data) {
+//            node->left = rotateLeft(node->left);
+//            return rotateRight(node);
+//        }
+//
+//        // 右子树重的情况下，需要先右旋转再左旋转
+//        if (balance < -1 && val < node->right->data) {
+//            node->right = rotateRight(node->right);
+//            return rotateLeft(node);
+//        }
+//
+//        return node;
+//    }
+//
+//    // 查找最小节点
+//    Node* minValueNode(Node* node) {
+//        Node* current = node;
+//        while (current->left != nullptr)
+//            current = current->left;
+//        return current;
+//    }
+//
+//    // 删除节点
+//    Node* deleteNode(Node* root, T val) {
+//        if (root == nullptr)
+//            return root;
+//
+//        if (val < root->data)
+//            root->left = deleteNode(root->left, val);
+//        else if (val > root->data)
+//            root->right = deleteNode(root->right, val);
+//        else {
+//            // 节点找到，删除
+//            if (root->left == nullptr || root->right == nullptr) {
+//                Node* temp = root->left ? root->left : root->right;
+//
+//                if (temp == nullptr) {
+//                    temp = root;
+//                    root = nullptr;
+//                }
+//                else
+//                    *root = *temp;
+//
+//                delete temp;
+//            }
+//            else {
+//                // 有两个子节点，找到中序后继节点
+//                Node* temp = minValueNode(root->right);
+//
+//                // 将后继节点的数据复制到当前节点
+//                root->data = temp->data;
+//
+//                // 删除后继节点
+//                root->right = deleteNode(root->right, temp->data);
+//            }
+//        }
+//
+//        if (root == nullptr)
+//            return root;
+//
+//        // 更新节点高度
+//        root->height = 1 + std::max(height(root->left), height(root->right));
+//
+//        // 获取平衡因子
+//        int balance = getBalanceFactor(root);
+//
+//        // 平衡维护
+//        // 左子树重，需要右旋转
+//        if (balance > 1 && getBalanceFactor(root->left) >= 0)
+//            return rotateRight(root);
+//
+//        // 右子树重，需要左旋转
+//        if (balance < -1 && getBalanceFactor(root->right) <= 0)
+//            return rotateLeft(root);
+//
+//        // 左子树重的情况下，需要先左旋转再右旋转
+//        if (balance > 1 && getBalanceFactor(root->left) < 0) {
+//            root->left = rotateLeft(root->left);
+//            return rotateRight(root);
+//        }
+//
+//        // 右子树重的情况下，需要先右旋转再左旋转
+//        if (balance < -1 && getBalanceFactor(root->right) > 0) {
+//            root->right = rotateRight(root->right);
+//            return rotateLeft(root);
+//        }
+//
+//        return root;
+//    }
+//
+//public:
+//    AVLTree() : root(nullptr) {}
+//
+//    // 插入节点
+//    void insert(T val) {
+//        root = insert(root, val);
+//    }
+//
+//    // 删除节点
+//    void deleteValue(T val) {
+//        root = deleteNode(root, val);
+//    }
+//
+//    // 中序遍历树
+//    void inOrderTraversal(Node* node) {
+//        if (node == nullptr)
+//            return;
+//
+//        inOrderTraversal(node->left);
+//        std::cout << node->data << " ";
+//        inOrderTraversal(node->right);
+//    }
+//
+//    void inOrderTraversal() {
+//        inOrderTraversal(root);
+//        std::cout << std::endl;
+//    }
+//
+//    // 公开中序遍历接口
+//    void inOrderTraversal() {
+//        inOrderTraversal(root);
+//        std::cout << std::endl;
+//    }
+//};
+//
+//int main() {
+//    AVLTree<int> avlTree;
+//
+//    // 插入数据
+//    avlTree.insert(10);
+//    avlTree.insert(20);
+//    avlTree.insert(30);
+//    avlTree.insert(40);
+//    avlTree.insert(50);
+//    avlTree.insert(25);
+//
+//    // 中序遍历
+//    std::cout << "In-order Traversal: "; 
+//    avlTree.inOrderTraversal();
+//
+//    // 删除节点
+//    avlTree.deleteValue(30);
+//
+//    // 再次中序遍历
+//    std::cout << "In-order Traversal after deleting 30: ";
+//    avlTree.inOrderTraversal();
+//
+//    return 0;
+//}
+
+
+
+//左单旋
+void RotateL(Node* parent)
+{
+	Node* subR = parent->_right;
+	Node* subRL = subR->_left;
+
+	parent->right = subRL;
+	if (subRL)
+		subRL->_parent = parent;
+
+	Node* ppNode = parent->_parent;
+	subR->_left = parent;
+	parent->_parent = subR;
+
+	if (ppNode == nullptr)
+	{
+		_root = subR;
+		_root->_parent = nullptr;
+	}
+	else
+	{
+		if (ppNode->_left == parent)
+		{
+			ppNode->_left = subR;
+		}
+		else
+		{
+			ppNode->_right = subR;
+		}
+
+		subR->_parent = ppNode;
+	}
+
+	parent->_bf = sunR->_bf = 0;
+}
+
+
